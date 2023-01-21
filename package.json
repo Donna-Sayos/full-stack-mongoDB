@@ -2,9 +2,9 @@
   "name": "full-stack-app",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server/server.js",
   "scripts": {
-    "dev": "nodemon main.js"
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",

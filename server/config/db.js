@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 const mongoose = require('mongoose');
-mongoose.set("strictQuery", false);
+mongoose.set("strictQuery", false); // this is to prevent deprecation warnings
 
 const connectDB = async () => {
     try {
@@ -9,10 +9,10 @@ const connectDB = async () => {
             useUnifiedTopology: true, // prevents deprecation warnings
         });
 
-        console.log(chalk.yellow(`MongoDB connected: ${conn.connection.host}`));
+        console.log(chalk.blue(`MongoDB connected: ${conn.connection.host}`));
     } catch (err) {
         console.error(err);
-        process.exit(1);
+        process.exit(1); // terminate the node terminal; gracefully leaves the program; 0 = success, 1 = unhandled rejection
     }
 };
 

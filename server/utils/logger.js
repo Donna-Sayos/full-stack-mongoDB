@@ -1,6 +1,6 @@
 const chalk = require("chalk");
 
-const logger = (req, res, next) => {
+const logger = (req, res, next) => { 
   console.log(
     chalk.greenBright(
       `${req.method} ${req.protocol}://${req.get("host")}${req.originalUrl}`

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema; // This is a constructor function for creating new schemas
 
-const UserSchema = new Schema({
+const UserSchema = new Schema({ // This is a new instance of the Schema constructor
   username: {
     type: String,
     required: true,
