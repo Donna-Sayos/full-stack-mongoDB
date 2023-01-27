@@ -25,7 +25,7 @@ const UserSchema = new Schema({
   },
   gender: {
     type: String,
-    enum: ["Male", "Female"],
+    enum: ["male", "female", "non-binary", "transgender", "prefer not to say"],
   },
   email: {
     type: String,
@@ -35,6 +35,9 @@ const UserSchema = new Schema({
   password: {
     type: String,
     required: true,
+  },
+  iv: {
+    type: String,
   },
   timestamp: {
     type: Date,
@@ -53,14 +56,13 @@ UserSchema.index({ userId: 1 }); // create index for userId;
 
 // Encrypt the password; encrypt means to convert the password into a string of characters that cannot be read;
 const encryptPassword = (password) => {
-  const key = crypto.randomBytes(32); // key is used to encrypt and decrypt the data and is kept secret;
+  const key = process.env.ENCRYPT_KEY; // key is used to encrypt and decrypt the data and is kept secret;
   const iv = crypto.randomBytes(16); // IV (initialization vector) is a random value that is used to initialize the encryption algorithm and is typically sent along with the ciphertext;
   // "aes-256-cbc" is the algorithm used to encrypt the password;
   const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
   let encrypted = cipher.update(password);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
   return {
-    key: key.toString("hex"),
     iv: iv.toString("hex"),
     encrypted: encrypted.toString("hex"),
   };
@@ -68,7 +70,6 @@ const encryptPassword = (password) => {
 
 // Decrypt the password
 const decryptPassword = (key, iv, encrypted) => {
-  key = Buffer.from(key, "hex");
   iv = Buffer.from(iv, "hex");
   encrypted = Buffer.from(encrypted, "hex");
   const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
@@ -88,17 +89,14 @@ UserSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 
   // encrypt the password;
-  const { key, iv, encrypted } = encryptPassword(this.password);
-  this.password = { key, iv, encrypted };
+  const { iv, encrypted } = encryptPassword(this.password);
+  this.password = encrypted;
+  this.iv = iv;
 });
 
 //decrypt method;
 UserSchema.methods.decryptPassword = function () {
-  return decryptPassword( // this returns the text version of the password;
-    this.password.key,
-    this.password.iv,
-    this.password.encrypted
-  );
+  return decryptPassword(process.env.ENCRYPT_KEY, this.iv, this.password.encrypted); // this returns the decrypted password;
 };
 
 // instance method;
