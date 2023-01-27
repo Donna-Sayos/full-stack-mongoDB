@@ -51,10 +51,11 @@ UserSchema.plugin(autoIncrement.plugin, {
 
 UserSchema.index({ userId: 1 }); // create index for userId;
 
-// Encrypt the password
+// Encrypt the password; encrypt means to convert the password into a string of characters that cannot be read;
 const encryptPassword = (password) => {
-  const key = crypto.randomBytes(32);
-  const iv = crypto.randomBytes(16);
+  const key = crypto.randomBytes(32); // key is used to encrypt and decrypt the data and is kept secret;
+  const iv = crypto.randomBytes(16); // IV (initialization vector) is a random value that is used to initialize the encryption algorithm and is typically sent along with the ciphertext;
+  // "aes-256-cbc" is the algorithm used to encrypt the password;
   const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
   let encrypted = cipher.update(password);
   encrypted = Buffer.concat([encrypted, cipher.final()]);
