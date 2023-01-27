@@ -15,7 +15,8 @@ const getUsers = async (req, res, next) => {
       // set up pagination;
       if (limit) options.limit = parseInt(limit);
       // you can sort multiple fields by passing an object to sort;
-      if (sortByFirstName) options.sort = { firstName: sortByFirstName === "asc" ? 1 : -1 }; // 1 = ascending, -1 = descending;
+      if (sortByFirstName)
+        options.sort = { firstName: sortByFirstName === "asc" ? 1 : -1 }; // 1 = ascending, -1 = descending;
     }
 
     const result = await User.find({}, {}, options); // .find() can take 3 arguments: filter, projection, options;
@@ -27,14 +28,20 @@ const getUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const user = await User.create(req.body);
+    const highestUserId = await User.find().sort({ userId: -1 }).limit(1);
+    const nextUserId = highestUserId.length ? highestUserId[0].userId + 1 : 1;
+    const user = await User.create({ ...req.body, userId: nextUserId });
     const token = user.getSignedJwtToken();
 
     const options = {
       expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 1000 * 60), // 1000 = 1 second, 60 = 1 minute;
     };
 
-    res.status(201).setHeader("Content-Type", "application/json").cookie("token", token, options).json(user);
+    res
+      .status(201)
+      .setHeader("Content-Type", "application/json")
+      .cookie("token", token, options)
+      .json(user);
   } catch (err) {
     throw new Error(`Error at creating user: ${err.message}`);
   }
@@ -60,7 +67,10 @@ const deleteUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
   try {
-    const result = await User.updateOne({ userId: req.params.userId }, req.body);
+    const result = await User.updateOne(
+      { userId: req.params.userId },
+      req.body
+    );
     res.status(200).setHeader("Content-Type", "application/json").json(result);
   } catch (err) {
     throw new Error(`Error at updating single user: ${err.message}`);

@@ -6,17 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const autoIncrement = require("mongoose-auto-increment");
 
-const initAutoIncrement = async () => {
-  const lastUser = await User.findOne().sort({ userId: -1 });
-  const startAt = lastUser ? lastUser.userId + 1 : 1;
-
-  UserSchema.plugin(autoIncrement.plugin, {
-    model: "User",
-    field: "userId",
-    startAt: startAt,
-    incrementBy: 1,
-  });
-};
+autoIncrement.initialize(mongoose.connection);
 
 const UserSchema = new Schema({
   username: {
@@ -52,6 +42,13 @@ const UserSchema = new Schema({
   },
 });
 
+UserSchema.plugin(autoIncrement.plugin, {
+  model: "User",
+  field: "userId",
+  startAt: 1,
+  incrementBy: 1,
+});
+
 UserSchema.index({ userId: 1 }); // create index for userId;
 
 // pre-hook;
@@ -72,12 +69,10 @@ UserSchema.methods.getSignedJwtToken = function () {
   });
 };
 
-autoIncrement.initialize(mongoose.connection);
-
 const User = mongoose.model("User", UserSchema);
 
-(async function () {
-  await initAutoIncrement();
-})();
+// User.nextCount(function (err, count) {
+//   console.log("Next userId: ", count);
+// });
 
 module.exports = User;
