@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const autoIncrement = require("mongoose-auto-increment");
 
-autoIncrement.initialize(mongoose.connection);
+autoIncrement.initialize(mongoose.connection); // initialize autoIncrement;
 
 const UserSchema = new Schema({
   username: {
@@ -51,6 +51,31 @@ UserSchema.plugin(autoIncrement.plugin, {
 
 UserSchema.index({ userId: 1 }); // create index for userId;
 
+// Encrypt the password
+const encryptPassword = (password) => {
+  const key = crypto.randomBytes(32);
+  const iv = crypto.randomBytes(16);
+  const cipher = crypto.createCipheriv("aes-256-cbc", key, iv);
+  let encrypted = cipher.update(password);
+  encrypted = Buffer.concat([encrypted, cipher.final()]);
+  return {
+    key: key.toString("hex"),
+    iv: iv.toString("hex"),
+    encrypted: encrypted.toString("hex"),
+  };
+};
+
+// Decrypt the password
+const decryptPassword = (key, iv, encrypted) => {
+  key = Buffer.from(key, "hex");
+  iv = Buffer.from(iv, "hex");
+  encrypted = Buffer.from(encrypted, "hex");
+  const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
+  let decrypted = decipher.update(encrypted);
+  decrypted = Buffer.concat([decrypted, decipher.final()]);
+  return decrypted.toString();
+};
+
 // pre-hook;
 UserSchema.pre("save", async function (next) {
   // hash the password;
@@ -60,7 +85,20 @@ UserSchema.pre("save", async function (next) {
   }
   const salt = await bcrypt.genSalt(5);
   this.password = await bcrypt.hash(this.password, salt);
+
+  // encrypt the password;
+  const { key, iv, encrypted } = encryptPassword(this.password);
+  this.password = { key, iv, encrypted };
 });
+
+//decrypt method;
+UserSchema.methods.decryptPassword = function () {
+  return decryptPassword( // this returns the text version of the password;
+    this.password.key,
+    this.password.iv,
+    this.password.encrypted
+  );
+};
 
 // instance method;
 UserSchema.methods.getSignedJwtToken = function () {
@@ -70,9 +108,5 @@ UserSchema.methods.getSignedJwtToken = function () {
 };
 
 const User = mongoose.model("User", UserSchema);
-
-// User.nextCount(function (err, count) {
-//   console.log("Next userId: ", count);
-// });
 
 module.exports = User;
