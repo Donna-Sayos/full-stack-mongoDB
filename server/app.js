@@ -9,8 +9,11 @@ const logger = require("./utils/logger");
 
 // routes
 const uploader = require("./routes/upload");
-const auth = require("./routes/auth");
-const user = require("./routes/user");
+const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
+const postRoute = require("./routes/post");
+const conversationRoute = require("./routes/conversations");
+const messageRoute = require("./routes/messages");
 
 dotenv.config({ path: "./server/config/config.env" });
 
@@ -37,8 +40,11 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use("/api/v1", upload.single("file"), uploader);
-app.use("/api/v1/auth", auth);
-app.use("/api/v1/user", user);
+app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/users", userRoute);
+app.use("/api/v1/posts", postRoute);
+app.use("/api/v1/conversations", conversationRoute);
+app.use("/api/v1/messages", messageRoute);
 
 module.exports = {
   app,
