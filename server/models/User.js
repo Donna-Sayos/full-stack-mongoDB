@@ -4,9 +4,6 @@ const Schema = mongoose.Schema; // This is a constructor function for creating n
 const crypto = require("crypto"); // for resetting password;
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const autoIncrement = require("mongoose-auto-increment");
-
-autoIncrement.initialize(mongoose.connection); // initialize autoIncrement;
 
 const UserSchema = new Schema({
   username: {
@@ -39,20 +36,27 @@ const UserSchema = new Schema({
   iv: {
     type: String,
   },
+  userId: {
+    type: Number,
+    unique: true,
+  },
   timestamp: {
     type: Date,
     default: Date.now,
   },
 });
 
-UserSchema.plugin(autoIncrement.plugin, {
-  model: "User",
-  field: "userId",
-  startAt: 1,
-  incrementBy: 1,
-});
-
 UserSchema.index({ userId: 1 }); // create index for userId;
+
+// this is for auto-incrementing the userId based on the last userId;
+UserSchema.statics.nextCount = async function () {
+  const count = await this.countDocuments();
+  if (count === 0) {
+    return 1;
+  }
+  const lastUser = await this.findOne().sort({ userId: -1 });
+  return lastUser.userId + 1;
+};
 
 // Encrypt the password; encrypt means to convert the password into a string of characters that cannot be read;
 const encryptPassword = (password) => {
@@ -96,7 +100,11 @@ UserSchema.pre("save", async function (next) {
 
 //decrypt method;
 UserSchema.methods.decryptPassword = function () {
-  return decryptPassword(process.env.ENCRYPT_KEY, this.iv, this.password.encrypted); // this returns the decrypted password;
+  return decryptPassword(
+    process.env.ENCRYPT_KEY,
+    this.iv,
+    this.password.encrypted
+  ); // this returns the decrypted password;
 };
 
 // instance method;

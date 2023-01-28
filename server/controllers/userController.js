@@ -28,8 +28,8 @@ const getUsers = async (req, res, next) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const highestUserId = await User.find().sort({ userId: -1 }).limit(1);
-    const nextUserId = highestUserId.length ? highestUserId[0].userId + 1 : 1;
+    const nextUserId = await User.nextCount();
+    console.log("next UserId: ", nextUserId)
     const user = await User.create({ ...req.body, userId: nextUserId });
     const token = user.getSignedJwtToken();
 
