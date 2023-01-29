@@ -25,6 +25,7 @@ const UserSchema = new Schema(
     },
     gender: {
       type: String,
+      required: true,
       enum: [
         "male",
         "female",
@@ -36,11 +37,12 @@ const UserSchema = new Schema(
     },
     pronouns: {
       type: String,
+      required: true,
       enum: [
         "he/him",
         "she/her",
         "they/them",
-      ]
+      ],
     },
     email: {
       type: String,

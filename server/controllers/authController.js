@@ -3,13 +3,14 @@ const User = require("../models/User");
 
 const signup = async (req, res, next) => {
   try {
-    const { username, firstName, lastName, gender, email, password } = req.body;
+    const { username, firstName, lastName, gender, pronouns, email, password } = req.body;
     const userId = await User.nextCount();
     const user = new User({
       username,
       firstName,
       lastName,
       gender,
+      pronouns,
       email,
       password,
       userId,
