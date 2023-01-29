@@ -30,7 +30,7 @@ app.use(logger);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images");
+    cb(null, "./public/images"); // the files are saved in the "public/images" folder (relative to the root of the project)
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);

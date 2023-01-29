@@ -30,8 +30,17 @@ const UserSchema = new Schema(
         "female",
         "non-binary",
         "transgender",
+        "other", // please specify
         "prefer not to say",
       ],
+    },
+    pronouns: {
+      type: String,
+      enum: [
+        "he/him",
+        "she/her",
+        "they/them",
+      ]
     },
     email: {
       type: String,
