@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
 export default function app() {
-  return (
-    <div>app</div>
-  )
-}
+    return (
+        <div className='container text-center mt-5'>Hello from app!</div>
+      )
+};

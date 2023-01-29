@@ -2,8 +2,10 @@ const dotenv = require("dotenv");
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const morgan = require("morgan");
+const cors = require("cors");
 const helmet = require("helmet"); // helps secure Express apps by setting various HTTP headers;
 const multer = require("multer"); // helps parse multipart/form-data and for file uploads;
+const { join, extname } = require("path");
 const connectDB = require("./config/db");
 const logger = require("./utils/logger");
 
@@ -20,13 +22,21 @@ dotenv.config({ path: "./server/config/config.env" });
 connectDB();
 
 const app = express();
+app.use(morgan("dev"));
+const corsOptions = {
+  credentials: true,
+  methods: ["GET, POST", "PUT", "DELETE"],
+  origin: "http://localhost:5001",
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
-app.use(morgan("dev"));
 
 app.use(logger);
+
+app.use(express.static(join(__dirname, "..", "public")));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -45,6 +55,32 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/conversations", conversationRoute);
 app.use("/api/v1/messages", messageRoute);
+
+app.use((req, res, next) =>
+  res.sendFile(join(__dirname, "..", "public", "index.html"))
+);
+
+app.use((req, res, next) => {
+  if (extname(req.path).length) {
+    // if the path has an extension, then it is a file and not a route which means that it is not found;
+    const err = new Error("Not found");
+    err.status = 404;
+    next(err);
+  } else {
+    next();
+  }
+});
+
+app.use("*", (req, res) =>
+  res.sendFile(join(__dirname, "..", "public", "index.html"))
+);
+
+app.use((err, req, res, next) => {
+  // this is for handling errors;
+  res.status(err.status || 500);
+  console.error(err);
+  res.send(err.message || "Internal server error.");
+});
 
 module.exports = {
   app,
