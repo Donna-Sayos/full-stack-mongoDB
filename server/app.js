@@ -37,12 +37,12 @@ app.use(cookieParser());
 app.use(helmet());
 
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: [
+  helmet.contentSecurityPolicy({ // helmet.contentSecurityPolicy helps with allowing or blocking loading of resources;
+    directives: { // allows you to specify which sources are allowed or blocked for different types of resources, such as scripts, images, and styles;
+      defaultSrc: ["'self'"], // the default policy is to load all resources from the same origin;
+      scriptSrc: [ // the scriptSrc directive specifies valid sources for JavaScript;
         "'self'",
-        "https://code.jquery.com",
+        "https://code.jquery.com", 
         "https://cdn.jsdelivr.net",
       ],
     },
