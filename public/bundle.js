@@ -4055,9 +4055,8 @@ __webpack_require__.r(__webpack_exports__);
 function app() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "container text-center mt-5"
-  }, "Hello from app!");
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", null, "Hello from app!"));
 }
-;
 
 /***/ }),
 

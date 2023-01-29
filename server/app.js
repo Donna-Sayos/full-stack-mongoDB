@@ -21,18 +21,33 @@ dotenv.config({ path: "./server/config/config.env" });
 
 connectDB();
 
-const app = express();
-app.use(morgan("dev"));
 const corsOptions = {
   credentials: true,
   methods: ["GET, POST", "PUT", "DELETE"],
   origin: "http://localhost:5001",
 };
+
+const app = express();
+
+app.use(morgan("dev"));
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(helmet());
+
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: [
+        "'self'",
+        "https://code.jquery.com",
+        "https://cdn.jsdelivr.net",
+      ],
+    },
+  })
+);
 
 app.use(logger);
 
@@ -56,7 +71,7 @@ app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/conversations", conversationRoute);
 app.use("/api/v1/messages", messageRoute);
 
-app.use((req, res, next) =>
+app.use("/", (req, res, next) =>
   res.sendFile(join(__dirname, "..", "public", "index.html"))
 );
 
