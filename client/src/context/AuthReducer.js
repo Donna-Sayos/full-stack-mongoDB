@@ -1,30 +1,24 @@
-import LOGIN_REQUEST from "./AuthActions";
-import LOGIN_SUCCESS from "./AuthActions";
-import LOGIN_FAILURE from "./AuthActions";
-import FOLLOW from "./AuthActions";
-import UNFOLLOW from "./AuthActions";
-
 export default function AuthReducer(state, action) {
   switch (action.type) {
-    case LOGIN_REQUEST:
+    case "LOGIN_REQUEST":
       return {
         ...state,
         isFetching: true,
       };
-    case LOGIN_SUCCESS:
+    case "LOGIN_SUCCESS":
       return {
         ...state,
         user: action.payload,
         isFetching: false,
         error: false,
       };
-    case LOGIN_FAILURE:
+    case "LOGIN_FAILURE":
       return {
         ...state,
         isFetching: false,
         error: true,
       };
-    case FOLLOW:
+    case "FOLLOW":
       return {
         ...state,
         user: {
@@ -32,7 +26,7 @@ export default function AuthReducer(state, action) {
           followings: [...state.user.followings, action.payload],
         },
       };
-    case UNFOLLOW:
+    case "UNFOLLOW":
       return {
         ...state,
         user: {

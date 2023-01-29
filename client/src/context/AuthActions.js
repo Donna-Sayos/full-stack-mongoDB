@@ -1,8 +1,8 @@
-export const LOGIN_REQUEST = "LOGIN_REQUEST";
-export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
-export const LOGIN_FAILURE = "LOGIN_FAILURE";
-export const FOLLOW = "FOLLOW";
-export const UNFOLLOW = "UNFOLLOW";
+const LOGIN_REQUEST = "LOGIN_REQUEST";
+const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+const LOGIN_FAILURE = "LOGIN_FAILURE";
+const FOLLOW = "FOLLOW";
+const UNFOLLOW = "UNFOLLOW";
 
 export const loginRequest = (userCredential) => ({
   type: LOGIN_REQUEST,

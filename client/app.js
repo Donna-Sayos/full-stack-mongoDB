@@ -1,9 +1,22 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useAuthContext } from "../client/src/context/AuthProvider";
+import Login from "../client/src/components/login/Login";
+import Register from "../client/src/components/register/Register";
+import Home from "../client/src/components/home/Home";
+import Profile from "../client/src/components/profile/Profile";
 
 export default function app() {
+  const { user } = useAuthContext();
   return (
-    <div className="container text-center mt-5">
-      <h1>Hello from app!</h1>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" render={() => {user ? <Home /> : <Register />}} />
+          <Route path="/login" render={() => {user ? <Home /> : <Login />}} />
+          <Route path="/profile/:username" component={Profile} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
