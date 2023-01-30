@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Axios from "axios";
 import { BiShow, BiHide } from "react-icons/bi";
 
@@ -161,7 +161,10 @@ export default function Register() {
             </button>
             <hr className="my-4" />{" "}
             <p className="loginDesc">
-              Already have an account? <a href="/login">Sign In</a>
+              Already have an account?
+              <Link to="/login">
+                <button>Sign In</button>
+              </Link>
             </p>
           </form>
         </div>
