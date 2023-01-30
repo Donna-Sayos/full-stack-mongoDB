@@ -76,15 +76,15 @@ export default function Register() {
               id="lastName"
               placeholder="last name..."
               ref={lastName}
-              className="loginInput"
               required
+              className="loginInput"
             />
             <label htmlFor="lastName">Last Name</label>
             <select
               id="gender"
               placeholder="gender..."
-              required
               ref={gender}
+              required
               className="loginInput"
               defaultValue=""
               onChange={(e) => {

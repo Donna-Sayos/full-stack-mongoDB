@@ -1,20 +1,28 @@
+.title {
+    color: #ffbf00;
+}
+
+.create {
+    color: gray;
+}
+
 .gradient-custom-3 {
     /* fallback for old browsers */
-    background: #84fab0;
+    background: #f2f680;
     
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(134, 234, 171, 0.5), rgba(143, 211, 244, 0.5));
+    background: -webkit-linear-gradient(to right, rgba(234, 222, 44, 0.5), rgba(224, 231, 157, 0.5));
     
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(132, 250, 176, 0.5), rgba(143, 211, 244, 0.5))
+    background: linear-gradient(to right, rgba(234, 222, 44, 0.5), rgba(224, 231, 157, 0.5))
 }
 .gradient-custom-4 {
     /* fallback for old browsers */
-    background: #84fab0;
+    background: #faf684;
 
     /* Chrome 10-25, Safari 5.1-6 */
-    background: -webkit-linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1));
+    background: -webkit-linear-gradient(to right, rgba(254, 238, 2, 0.5), rgba(224, 231, 157, 0.5));
 
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    background: linear-gradient(to right, rgba(132, 250, 176, 1), rgba(143, 211, 244, 1))
+    background: linear-gradient(to right,  rgba(254, 238, 2, 0.5), rgba(224, 231, 157, 0.5))
 }
