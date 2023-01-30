@@ -12,10 +12,15 @@ export default function app() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" render={() => {user ? <Home /> : <Register />}} />
-          <Route path="/login" render={() => {user ? <Home /> : <Login />}} />
-          <Route path="/profile/:username" component={Profile} />
+          <Route path="/signup" element={<Register />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
+        {user && (
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        )}
       </BrowserRouter>
     </>
   );

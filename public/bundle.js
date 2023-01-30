@@ -4070,18 +4070,17 @@ function app() {
   var _useAuthContext = (0,_client_src_context_AuthProvider__WEBPACK_IMPORTED_MODULE_1__.useAuthContext)(),
     user = _useAuthContext.user;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
-    path: "/",
-    render: function render() {
-      user ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_home_Home__WEBPACK_IMPORTED_MODULE_4__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_register_Register__WEBPACK_IMPORTED_MODULE_3__["default"], null);
-    }
+    path: "/signup",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_register_Register__WEBPACK_IMPORTED_MODULE_3__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
     path: "/login",
-    render: function render() {
-      user ? /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_home_Home__WEBPACK_IMPORTED_MODULE_4__["default"], null) : /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_login_Login__WEBPACK_IMPORTED_MODULE_2__["default"], null);
-    }
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_login_Login__WEBPACK_IMPORTED_MODULE_2__["default"], null)
+  })), user && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
+    path: "/",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_home_Home__WEBPACK_IMPORTED_MODULE_4__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Route, {
-    path: "/profile/:username",
-    component: _client_src_components_profile_Profile__WEBPACK_IMPORTED_MODULE_5__["default"]
+    path: "/profile",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_client_src_components_profile_Profile__WEBPACK_IMPORTED_MODULE_5__["default"], null)
   }))));
 }
 
@@ -4126,7 +4125,9 @@ __webpack_require__.r(__webpack_exports__);
 function Login() {
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "container text-center mt-5 pt-5"
-  }, "Login");
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("h1", {
+    className: "mt-5 pt-5"
+  }, "Login page!!"));
 }
 
 /***/ }),
