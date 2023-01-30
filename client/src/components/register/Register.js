@@ -6,6 +6,47 @@ import "./index.css";
 import IMG from "../../../../public/assets/register.png";
 
 export default function Register() {
+  const username = useRef();
+  const firstName = useRef();
+  const lastName = useRef();
+  const gender = useRef();
+  const otherGender = useRef();
+  const pronouns = useRef();
+  const email = useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
+  const [showOtherGender, setShowOtherGender] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+
+  const clickHandler = async (e) => {
+    e.preventDefault();
+    if (confirmPassword.current.value !== password.current.value) {
+      confirmPassword.current.setCustomValidity(
+        "The passwords entered don't match. Please try again."
+      );
+    } else {
+      let userGender = gender.current.value;
+      if (userGender === "other") {
+        userGender = otherGender.current.value;
+      }
+      const user = {
+        username: username.current.value,
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
+        gender: userGender,
+        pronouns: pronouns.current.value,
+        email: email.current.value,
+        password: password.current.value,
+      };
+      try {
+        await Axios.post("/api/v1/auth/signup", user);
+        navigate("/login");
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
   return (
     <section
       className="vh-100 vw-100 bg-image "
@@ -19,9 +60,12 @@ export default function Register() {
             <div className="col-12 col-md-9 col-lg-7 col-xl-6">
               <div className="card" style={{ borderRadius: "15px" }}>
                 <div className="card-body p-5">
-                  <h2 className="text-uppercase text-center mb-5">
+                  <h1 className="text-uppercase text-center pb-2">
+                    Welcome to JustBeYou
+                  </h1>
+                  <h3 className="text-uppercase text-center mb-5">
                     Create an account
-                  </h2>
+                  </h3>
 
                   <form>
                     <div className="form-outline mb-4">
