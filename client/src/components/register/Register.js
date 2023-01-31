@@ -1,6 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
 import { BiShow, BiHide } from "react-icons/bi";
 import "./index.css";
 import IMG from "../../../../public/assets/register.png";
@@ -19,7 +20,18 @@ export default function Register() {
   const [showOtherGender, setShowOtherGender] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [env, setEnv] = useState({});
   const navigate = useNavigate();
+
+  async function getEnv() {
+    const response = await fetch("http://localhost:5001/env");
+    const env = await response.json();
+    setEnv(env);
+  }
+
+  useEffect(() => {
+    getEnv();
+  }, []);
 
   const clickHandler = async (e) => {
     e.preventDefault();
@@ -249,6 +261,13 @@ export default function Register() {
                       </label>
                     </div>
 
+                    <div className="d-flex justify-content-center mb-2">
+                      <ReCAPTCHA
+                        sitekey={`${env.API_KEY}`}
+                        // onChange={onChange}
+                      />
+                    </div>
+
                     <div className="d-flex justify-content-center">
                       <button
                         type="submit"
@@ -259,7 +278,7 @@ export default function Register() {
                     </div>
 
                     <p className="text-center text-muted mt-5 mb-0">
-                      Have already an account?{" "}
+                      Already have an account?{" "}
                       <Link className="fw-bold text-body" to="/login">
                         <u>Login here</u>
                       </Link>

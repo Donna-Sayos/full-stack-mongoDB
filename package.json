@@ -7,7 +7,7 @@
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "start": "node index.js",
-    "start:dev": "concurrently \"npm run build:dev\" \"npm run start-server\" --kill-others-on-fail",
+    "start:dev": "concurrently \"npm run build:dev\" \"npm run start-server\" \"webpack-dev-server --mode=development --config webpack.config.js --host localhost --port 8080 --open\"",
     "start-server": "nodemon index.js -e html,js,jsx,css --ignore public --ignore client"
   },
   "keywords": [],
@@ -31,9 +31,11 @@
     "mongoose": "^6.8.4",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "needle": "^3.2.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "^18.2.0",
+    "react-google-recaptcha": "^2.1.0",
     "react-icons": "^4.7.1",
     "react-router-dom": "^6.8.0",
     "react-scripts": "^5.0.1",
@@ -51,6 +53,7 @@
     "concurrently": "^7.6.0",
     "nodemon": "^2.0.20",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.11.1"
   }
 }
