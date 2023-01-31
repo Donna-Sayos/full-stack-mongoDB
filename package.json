@@ -1,5 +1,5 @@
 {
-  "name": "full-stack-app",
+  "name": "JustBeYou",
   "version": "1.0.0",
   "description": "Social app created with the use of MERN stack, JavaScript.",
   "main": "server/index.js",
