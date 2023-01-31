@@ -51,8 +51,6 @@ app.use(
 
 app.use(logger);
 
-app.use(express.static(join(__dirname, "..", "public")));
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/images"); // the files are saved in the "public/images" folder (relative to the root of the project)
@@ -71,9 +69,11 @@ app.use("/api/v1/posts", postRoute);
 app.use("/api/v1/conversations", conversationRoute);
 app.use("/api/v1/messages", messageRoute);
 
-app.use("/", (req, res, next) =>
+app.get("/", (req, res, next) =>
   res.sendFile(join(__dirname, "..", "public", "index.html"))
 );
+
+app.use(express.static(join(__dirname, "..", "public")));
 
 app.use((req, res, next) => {
   if (extname(req.path).length) {

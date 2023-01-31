@@ -13,12 +13,12 @@ export default function app() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/signup" element={<Register />} />
+          <Route exact path="/" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
         {user && (
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route exact path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
           </Routes>
         )}

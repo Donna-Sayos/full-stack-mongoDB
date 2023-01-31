@@ -236,7 +236,6 @@ export default function Register() {
                       <input
                         className="form-check-input me-2"
                         type="checkbox"
-                        value=""
                         ref={checkbox}
                         checked={isChecked}
                         onChange={() => setIsChecked(!isChecked)}
