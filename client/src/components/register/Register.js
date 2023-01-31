@@ -16,11 +16,10 @@ export default function Register() {
   const email = useRef();
   const password = useRef();
   const confirmPassword = useRef();
-  const checkbox = useRef();
   const [showOtherGender, setShowOtherGender] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
   const [env, setEnv] = useState({});
+  const [isdisabled, setIsdisabled] = useState(true);
   const navigate = useNavigate();
 
   async function getEnv() {
@@ -33,15 +32,16 @@ export default function Register() {
     getEnv();
   }, []);
 
+  const handleRecaptcha = (value) => {
+    console.log("RECAPTCHA", value);
+    setIsdisabled(false);
+  };
+
   const clickHandler = async (e) => {
     e.preventDefault();
     if (confirmPassword.current.value !== password.current.value) {
       confirmPassword.current.setCustomValidity(
         "The passwords entered don't match. Please try again."
-      );
-    } else if (isChecked === false) {
-      checkbox.current.setCustomValidity(
-        "Please agree to the terms and conditions."
       );
     } else {
       let userGender = gender.current.value;
@@ -248,9 +248,6 @@ export default function Register() {
                       <input
                         className="form-check-input me-2"
                         type="checkbox"
-                        ref={checkbox}
-                        checked={isChecked}
-                        onChange={() => setIsChecked(!isChecked)}
                         id="agreement"
                       />
                       <label className="form-check-label" htmlFor="agreement">
@@ -264,14 +261,15 @@ export default function Register() {
                     <div className="d-flex justify-content-center mb-2">
                       <ReCAPTCHA
                         sitekey={`${env.API_KEY}`}
-                        // onChange={onChange}
+                        onChange={handleRecaptcha}
                       />
                     </div>
 
                     <div className="d-flex justify-content-center">
                       <button
                         type="submit"
-                        className="btn btn-warning btn-block btn-lg gradient-custom-4 text-body"
+                        disabled={isdisabled}
+                        className={isdisabled === true ? "btn btn-outline-warning btn-block btn-lg text-body" : "btn btn-warning btn-block btn-lg gradient-custom-4 text-body"}
                       >
                         Register
                       </button>
