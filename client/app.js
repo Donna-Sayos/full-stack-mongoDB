@@ -13,9 +13,9 @@ export default function app() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          {/* <Route path="/" element={<Login />} /> */}
+          {/* <Route exact path="/" element={<Register />} />
+          <Route path="/login" element={<Login />} /> */}
+          <Route path="/" element={<Login />} />
         </Routes>
         {user && (
           <Routes>

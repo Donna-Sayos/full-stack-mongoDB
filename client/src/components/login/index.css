@@ -21,3 +21,7 @@
 
      border: 1px solid 	#ff7b7b;
 }
+
+.border-right {
+    border-right: 1px solid #ddd;
+}

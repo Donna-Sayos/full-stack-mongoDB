@@ -4072,11 +4072,7 @@ function app() {
   var _useAuthContext = (0,_client_src_context_AuthProvider__WEBPACK_IMPORTED_MODULE_2__.useAuthContext)(),
     user = _useAuthContext.user;
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement((react__WEBPACK_IMPORTED_MODULE_1___default().Fragment), null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.BrowserRouter, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
-    exact: true,
     path: "/",
-    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_client_src_components_register_Register__WEBPACK_IMPORTED_MODULE_4__["default"], null)
-  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
-    path: "/login",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(_client_src_components_login_Login__WEBPACK_IMPORTED_MODULE_3__["default"], null)
   })), user && /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Routes, null, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Route, {
     exact: true,
@@ -4207,7 +4203,7 @@ function Login() {
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
     className: "row justify-content-center"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
-    className: "col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1 text-center"
+    className: "col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1 text-center border-right"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("img", {
     className: "mb-5 mx-1 mx-md-4 mt-2",
     src: _public_assets_logo_png__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -4801,7 +4797,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".cardContainer {\n    background-color: rgba(252, 233, 219, 0.3)\n}\n\n.create {\n    color: gray;\n}\n\n.login {\n    background-color: #ffb3ba;\n    border: 1px solid \t#ff7b7b;\n}\n\n.login:hover {\n     /* fallback for old browsers */\n     background: #ffb3ba;\n\n     background: -webkit-linear-gradient(to right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     background: linear-gradient(to right,  right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     border: 1px solid \t#ff7b7b;\n}", "",{"version":3,"sources":["webpack://./client/src/components/login/index.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,yBAAyB;IACzB,0BAA0B;AAC9B;;AAEA;KACK,8BAA8B;KAC9B,mBAAmB;;KAEnB,mGAAmG;;KAEnG,mGAAmG;;KAEnG,0BAA0B;AAC/B","sourcesContent":[".cardContainer {\n    background-color: rgba(252, 233, 219, 0.3)\n}\n\n.create {\n    color: gray;\n}\n\n.login {\n    background-color: #ffb3ba;\n    border: 1px solid \t#ff7b7b;\n}\n\n.login:hover {\n     /* fallback for old browsers */\n     background: #ffb3ba;\n\n     background: -webkit-linear-gradient(to right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     background: linear-gradient(to right,  right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     border: 1px solid \t#ff7b7b;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".cardContainer {\n    background-color: rgba(252, 233, 219, 0.3)\n}\n\n.create {\n    color: gray;\n}\n\n.login {\n    background-color: #ffb3ba;\n    border: 1px solid \t#ff7b7b;\n}\n\n.login:hover {\n     /* fallback for old browsers */\n     background: #ffb3ba;\n\n     background: -webkit-linear-gradient(to right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     background: linear-gradient(to right,  right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     border: 1px solid \t#ff7b7b;\n}\n\n.border-right {\n    border-right: 1px solid #ddd;\n}", "",{"version":3,"sources":["webpack://./client/src/components/login/index.css"],"names":[],"mappings":"AAAA;IACI;AACJ;;AAEA;IACI,WAAW;AACf;;AAEA;IACI,yBAAyB;IACzB,0BAA0B;AAC9B;;AAEA;KACK,8BAA8B;KAC9B,mBAAmB;;KAEnB,mGAAmG;;KAEnG,mGAAmG;;KAEnG,0BAA0B;AAC/B;;AAEA;IACI,4BAA4B;AAChC","sourcesContent":[".cardContainer {\n    background-color: rgba(252, 233, 219, 0.3)\n}\n\n.create {\n    color: gray;\n}\n\n.login {\n    background-color: #ffb3ba;\n    border: 1px solid \t#ff7b7b;\n}\n\n.login:hover {\n     /* fallback for old browsers */\n     background: #ffb3ba;\n\n     background: -webkit-linear-gradient(to right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     background: linear-gradient(to right,  right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));\n\n     border: 1px solid \t#ff7b7b;\n}\n\n.border-right {\n    border-right: 1px solid #ddd;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

@@ -34,7 +34,7 @@ export default function Login() {
             >
               <div className="card-body p-md-2">
                 <div className="row justify-content-center">
-                  <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1 text-center">
+                  <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1 text-center border-right">
                     <img
                       className="mb-5 mx-1 mx-md-4 mt-2"
                       src={IMG}
