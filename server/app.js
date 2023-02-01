@@ -5,7 +5,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const helmet = require("helmet"); // helps secure Express apps by setting various HTTP headers;
 const multer = require("multer"); // helps parse multipart/form-data and for file uploads;
-const needle = require("needle"); // helps with making HTTP requests;
 const { join, extname } = require("path");
 const connectDB = require("./config/db");
 const logger = require("./utils/logger");

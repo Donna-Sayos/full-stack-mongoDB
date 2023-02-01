@@ -1,0 +1,19 @@
+.cardContainer {
+    background-color: rgba(252, 233, 219, 0.3)
+}
+
+.login {
+    background-color: #ffb3ba;
+    border: 1px solid 	#ff7b7b;
+}
+
+.login:hover {
+     /* fallback for old browsers */
+     background: #ffb3ba;
+
+     background: -webkit-linear-gradient(to right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));
+
+     background: linear-gradient(to right,  right, rgba(251, 138, 149, 0.463), rgba(191, 113, 121, 0.5));
+
+     border: 1px solid 	#ff7b7b;
+}

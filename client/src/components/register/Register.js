@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Axios from "axios";
-import ReCAPTCHA from "react-google-recaptcha";
 import { BiShow, BiHide } from "react-icons/bi";
 import "./index.css";
 import IMG from "../../../../public/assets/register.png";
@@ -18,24 +17,8 @@ export default function Register() {
   const confirmPassword = useRef();
   const [showOtherGender, setShowOtherGender] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [env, setEnv] = useState({});
-  const [isdisabled, setIsdisabled] = useState(true);
+  
   const navigate = useNavigate();
-
-  async function getEnv() {
-    const response = await fetch("http://localhost:5001/env");
-    const env = await response.json();
-    setEnv(env);
-  }
-
-  useEffect(() => {
-    getEnv();
-  }, []);
-
-  const handleRecaptcha = (value) => {
-    console.log("RECAPTCHA", value);
-    setIsdisabled(false);
-  };
 
   const clickHandler = async (e) => {
     e.preventDefault();
@@ -258,18 +241,10 @@ export default function Register() {
                       </label>
                     </div>
 
-                    <div className="d-flex justify-content-center mb-2">
-                      <ReCAPTCHA
-                        sitekey={`${env.API_KEY}`}
-                        onChange={handleRecaptcha}
-                      />
-                    </div>
-
                     <div className="d-flex justify-content-center">
                       <button
                         type="submit"
-                        disabled={isdisabled}
-                        className={isdisabled === true ? "btn btn-outline-warning btn-block btn-lg text-body" : "btn btn-warning btn-block btn-lg gradient-custom-4 text-body"}
+                        className="btn btn-warning btn-block btn-lg gradient-custom-4 text-body"
                       >
                         Register
                       </button>
