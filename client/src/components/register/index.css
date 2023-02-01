@@ -2,6 +2,14 @@
     color: #ff7b7b;
 }
 
+a {
+    color: black;
+}
+
+a:hover {
+    color: black;
+}
+
 .cardContainer {
     background-color: rgba(252, 233, 219, 0.3)
 }

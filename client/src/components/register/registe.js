@@ -5,40 +5,39 @@ import { BiShow, BiHide } from "react-icons/bi";
 import "./index.css";
 
 export default function Register() {
-  const [username, setUsername] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [gender, setGender] = useState("");
-  const [otherGender, setOtherGender] = useState("");
-  const [pronouns, setPronouns] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const username = useRef();
+  const firstName = useRef();
+  const lastName = useRef();
+  const gender = useRef();
+  const otherGender = useRef();
+  const pronouns = useRef();
+  const email = useRef();
+  const password = useRef();
+  const confirmPassword = useRef();
+  const [showOtherGender, setShowOtherGender] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const passwordRef = useRef();
 
   const navigate = useNavigate();
 
   const clickHandler = async (e) => {
     e.preventDefault();
-    if (confirmPassword !== password) {
-      passwordRef.current.setCustomValidity(
+    if (confirmPassword.current.value !== password.current.value) {
+      confirmPassword.current.setCustomValidity(
         "The passwords entered don't match. Please try again."
       );
     } else {
-      let userGender = gender;
+      let userGender = gender.current.value;
       if (userGender === "other") {
-        userGender = otherGender;
+        userGender = otherGender.current.value;
       }
       const user = {
-        username,
-        firstName,
-        lastName,
+        username: username.current.value,
+        firstName: firstName.current.value,
+        lastName: lastName.current.value,
         gender: userGender,
-        pronouns,
-        email,
-        password,
+        pronouns: pronouns.current.value,
+        email: email.current.value,
+        password: password.current.value,
       };
       try {
         await Axios.post("/api/v1/auth/signup", user);
@@ -74,51 +73,58 @@ export default function Register() {
                       <input
                         type="text"
                         id="username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
+                        ref={username}
                         required
                         className="form-control form-control-lg"
                       />
-                      <label className="form-label mt-2" htmlFor="username">
+                      <label className="form-label" htmlFor="username">
                         Username
                       </label>
                     </div>
-                    <div className="row  mt-2">
+
+                    <div className="row">
                       <div className="col form-outline mb-1">
                         <input
                           type="text"
                           id="firstName"
-                          value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
+                          ref={firstName}
                           required
                           className="form-control form-control-lg"
                         />
-                        <label className="form-label mt-2" htmlFor="firstName">
+                        <label className="form-label" htmlFor="firstName">
                           First Name
                         </label>
                       </div>
+
                       <div className="col form-outline mb-1">
                         <input
                           type="text"
                           id="lastName"
-                          value={lastName}
-                          onChange={(e) => setLastName(e.target.value)}
+                          ref={lastName}
                           required
                           className="form-control form-control-lg"
                         />
-                        <label className="form-label mt-2" htmlFor="lastName">
+                        <label className="form-label" htmlFor="lastName">
                           Last Name
                         </label>
                       </div>
                     </div>
-                    <div className="row mt-2">
+
+                    <div className="row">
                       <div className="col form-outline mb-1">
                         <select
                           id="gender"
-                          value={gender}
-                          onChange={(e) => setGender(e.target.value)}
+                          ref={gender}
                           required
                           className="form-control form-control-lg form-select"
+                          defaultValue=""
+                          onChange={(e) => {
+                            if (e.target.value === "other") {
+                              setShowOtherGender(true);
+                            } else {
+                              setShowOtherGender(false);
+                            }
+                          }}
                         >
                           <option value="" disabled>
                             Choose your gender
@@ -129,33 +135,26 @@ export default function Register() {
                           <option value="transgender">Transgender</option>
                           <option value="other">Other</option>
                         </select>
-                        <label className="form-label mt-2" htmlFor="gender">
+                        <label className="form-label" htmlFor="gender">
                           Gender
                         </label>
-                        {gender === "other" && (
-                          <div className="form-outline mb-1">
-                            <input
-                              type="text"
-                              id="otherGender"
-                              value={otherGender}
-                              onChange={(e) => setOtherGender(e.target.value)}
-                              required
-                              className="form-control form-control-lg"
-                            />
-                            <label className="form-label" htmlFor="otherGender">
-                              Please specify your gender
-                            </label>
-                          </div>
+                        {showOtherGender && (
+                          <input
+                            type="text"
+                            id="otherGender"
+                            ref={otherGender}
+                            required
+                          />
                         )}
                       </div>
 
                       <div className="col form-outline mb-1">
                         <select
                           id="pronouns"
-                          value={pronouns}
-                          onChange={(e) => setPronouns(e.target.value)}
-                          className="form-control form-control-lg form-select"
                           required
+                          ref={pronouns}
+                          className="form-control form-control-lg form-select"
+                          defaultValue=""
                         >
                           <option value="" disabled>
                             Select your pronouns
@@ -164,112 +163,93 @@ export default function Register() {
                           <option value="she/her">She/Her</option>
                           <option value="they/them">They/Them</option>
                         </select>
-                        <label className="form-label mt-2" htmlFor="pronouns">
+                        <label className="form-label" htmlFor="pronouns">
                           Pronouns
                         </label>
                       </div>
                     </div>
-                    <div className="form-outline mb-1 mt-2">
+
+                    <div className="form-outline mb-1">
                       <input
                         type="email"
                         id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
+                        ref={email}
                         className="form-control form-control-lg"
                       />
-                      <label className="form-label mt-2" htmlFor="email">
-                        Email
+                      <label className="form-label" htmlFor="email">
+                        Your Email
                       </label>
                     </div>
-                    <div className="row mt-2">
-                      <div className="col form-group form-outline mb-1">
-                        <div className="input-group">
-                          <input
-                            type={showPassword ? "text" : "password"}
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="form-control form-control-lg"
-                          />
-                          <div className="input-group-addon m-2">
+
+                    <div className="row">
+                      <div className="col form-outline mb-1">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="password"
+                          ref={password}
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" htmlFor="password">
+                          Password{" "}
+                          <button
+                            className="mt-1 rounded-pill"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
                             {showPassword ? (
-                              <Link
-                                to=""
-                                onClick={() => setShowPassword(!showPassword)}
-                              >
-                                <BiShow size={20} />
-                              </Link>
+                              <BiHide size={20} />
                             ) : (
-                              <Link
-                                to=""
-                                onClick={() => setShowPassword(!showPassword)}
-                              >
-                                <BiHide size={20} />
-                              </Link>
+                              <BiShow size={20} />
                             )}
-                          </div>
-                        </div>
-                        <label className="form-label mt-2" htmlFor="password">
-                          Password
+                          </button>
                         </label>
                       </div>
 
-                      <div className="col form-group form-outline mb-1">
-                        <div className="input-group">
-                          <input
-                            type={showPassword ? "text" : "password"}
-                            id="confirmPassword"
-                            value={confirmPassword}
-                            ref={passwordRef}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            className="form-control form-control-lg"
-                          />
-                          <div className="input-group-addon m-2">
+                      <div className="col form-outline mb-1">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          id="confirmPassword"
+                          ref={confirmPassword}
+                          className="form-control form-control-lg"
+                        />
+                        <label className="form-label" htmlFor="confirmPassword">
+                          Confirm password{" "}
+                          <button
+                            className="mt-1 rounded-pill"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
                             {showPassword ? (
-                              <Link
-                                to=""
-                                onClick={() => setShowPassword(!showPassword)}
-                              >
-                                <BiShow size={20} />
-                              </Link>
+                              <BiHide size={20} />
                             ) : (
-                              <Link
-                                to=""
-                                onClick={() => setShowPassword(!showPassword)}
-                              >
-                                <BiHide size={20} />
-                              </Link>
+                              <BiShow size={20} />
                             )}
-                          </div>
-                        </div>
-                        <label className="form-label mt-2" htmlFor="confirmPassword">
-                          Confirm password
+                          </button>
                         </label>
                       </div>
                     </div>
-                    <div className="form-check d-flex justify-content-center mb-2 mt-2">
+
+                    <div className="form-check d-flex justify-content-center mb-2">
                       <input
                         className="form-check-input me-2"
                         type="checkbox"
                         id="agreement"
                       />
                       <label className="form-check-label" htmlFor="agreement">
-                        I agree to {" "}
+                        I agree to all statements in{" "}
                         <Link to="#!" className="text-body">
-                          <b>just be me</b>
-                        </Link> .
+                          <u>Terms of service</u>
+                        </Link>
                       </label>
                     </div>
+
                     <div className="d-flex justify-content-center">
                       <button
                         type="submit"
-                        className="btn btn-warning btn-block btn-lg gradient-custom-4 text-body mt-2 mb-2"
+                        className="btn btn-warning btn-block btn-lg gradient-custom-4 text-body"
                       >
                         Register
                       </button>
                     </div>
-                    <hr className="d-flex justify-content-center" />{" "}
+
                     <p className="text-center text-muted mt-5 mb-0">
                       Already have an account?{" "}
                       <Link className="fw-bold text-body" to="/login">
