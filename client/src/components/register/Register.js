@@ -31,7 +31,7 @@ export default function Register() {
       if (userGender === "other") {
         userGender = otherGender;
       }
-      const user = {
+      const newUser = {
         username,
         firstName,
         lastName,
@@ -41,7 +41,7 @@ export default function Register() {
         password,
       };
       try {
-        await Axios.post("/api/v1/auth/signup", user);
+        await Axios.post("http://localhost:5001/api/v1/auth/signup", newUser);
         navigate("/login");
       } catch (err) {
         console.error(err);

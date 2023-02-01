@@ -24,16 +24,7 @@ connectDB();
 const corsOptions = {
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],
-  origin: function (origin, callback) {
-    if (
-      origin === "http://localhost:5001" ||
-      origin === "http://localhost:8080"
-    ) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
+  origin: "http://localhost:8080",
 };
 
 const app = express();

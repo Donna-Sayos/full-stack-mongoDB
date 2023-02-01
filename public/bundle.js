@@ -4376,7 +4376,7 @@ function Register() {
   var navigate = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_2__.useNavigate)();
   var clickHandler = /*#__PURE__*/function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(e) {
-      var userGender, user;
+      var userGender, newUser;
       return _regeneratorRuntime().wrap(function _callee$(_context) {
         while (1) switch (_context.prev = _context.next) {
           case 0:
@@ -4393,7 +4393,7 @@ function Register() {
             if (userGender === "other") {
               userGender = otherGender;
             }
-            user = {
+            newUser = {
               username: username,
               firstName: firstName,
               lastName: lastName,
@@ -4404,7 +4404,7 @@ function Register() {
             };
             _context.prev = 8;
             _context.next = 11;
-            return axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("/api/v1/auth/signup", user);
+            return axios__WEBPACK_IMPORTED_MODULE_3__["default"].post("http://localhost:5001/api/v1/auth/signup", newUser);
           case 11:
             navigate("/login");
             _context.next = 17;
