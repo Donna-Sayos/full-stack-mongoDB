@@ -1,5 +1,9 @@
 .title {
-    color: #ffbf00;
+    color: #ff7b7b;
+}
+
+.cardContainer {
+    background-color: rgba(252, 233, 219, 0.3)
 }
 
 .create {

@@ -2,6 +2,10 @@
     background-color: rgba(252, 233, 219, 0.3)
 }
 
+.create {
+    color: gray;
+}
+
 .login {
     background-color: #ffb3ba;
     border: 1px solid 	#ff7b7b;

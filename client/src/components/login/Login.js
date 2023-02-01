@@ -36,11 +36,17 @@ export default function Login() {
                 <div className="row justify-content-center">
                   <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1 text-center">
                     <img
-                      className="mb-5 mx-1 mx-md-4 mt-4"
+                      className="mb-5 mx-1 mx-md-4 mt-2"
                       src={IMG}
                       height={200}
                       width={200}
                     />
+
+                    <div className="mb-5 mx-1 mx-md-4">
+                      <h3 className="create text-uppercase mb-3">
+                        Sign in to your account
+                      </h3>
+                    </div>
 
                     <form className="mx-1 mx-md-4">
                       <div className="d-flex flex-row align-items-center mb-4">
@@ -69,7 +75,7 @@ export default function Login() {
                           </label>
                         </div>
                       </div>
-                      <div className="form-check d-flex justify-content-center mb-5">
+                      <div className="form-check d-flex justify-content-center mb-3">
                         <ReCAPTCHA
                           sitekey={`${env.API_KEY}`}
                           onChange={handleRecaptcha}
@@ -88,11 +94,9 @@ export default function Login() {
                           Login
                         </button>
                       </div>
-
                       <hr className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" />{" "}
-
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-2">
-                        <p className="text-center text-muted mt-5 mb-0">
+                        <p className="text-center text-muted mt-4 mb-0">
                           Don't have an account?{" "}
                           <Link className="fw-bold text-body" to="/">
                             <u>Signup here</u>

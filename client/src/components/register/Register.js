@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import Axios from "axios";
 import { BiShow, BiHide } from "react-icons/bi";
 import "./index.css";
-import IMG from "../../../../public/assets/register.png";
 
 export default function Register() {
   const username = useRef();
@@ -51,18 +50,16 @@ export default function Register() {
   return (
     <section
       className="vh-100 vw-100 bg-image "
-      style={{
-        backgroundImage: `url(${IMG})`,
-      }}
+      style={{ backgroundColor: "#eee" }}
     >
-      <div className="mask d-flex align-items-center h-100 gradient-custom-3">
+      <div className="mask d-flex align-items-center h-100">
         <div className="container h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-12 col-md-9 col-lg-7 col-xl-6">
-              <div className="card" style={{ borderRadius: "15px" }}>
+              <div className="cardContainer card" style={{ borderRadius: "15px" }}>
                 <div className="card-body p-5">
                   <h1 className="text-uppercase text-center pb-2">
-                    Welcome to <span className="title">JustBeYou</span>
+                    Welcome to <i className="title">JustBeYou</i>
                   </h1>
                   <h3 className="create text-uppercase text-center mb-5">
                     Create an account
