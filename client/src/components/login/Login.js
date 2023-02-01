@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import IMG from "../../../../public/assets/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
+import Typewriter from "typewriter-effect";
+import STRINGS from "./Strings";
 
 export default function Login() {
   const [env, setEnv] = useState({});
@@ -106,11 +108,27 @@ export default function Login() {
                     </form>
                   </div>
 
-                  <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-                    <img
-                      src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                      className="img-fluid"
-                      alt="Sample image"
+                  <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center justify-content-center order-1 order-lg-2">
+                    <Typewriter
+                      onInit={(typewriter) => {
+                        typewriter
+                          .typeString("Welcome to JustBeYou!")
+                          .callFunction(() => {
+                            console.log("String typed out!");
+                          })
+                          .pauseFor(500)
+                          .deleteAll()
+                          .typeString(
+                            "A place where you can be yourself"
+                          )
+                          .pauseFor(500)
+                          .deleteAll()
+                          .typeString("And be accepted for who you are.")
+                          .pauseFor(500)
+                          .deleteAll()
+                          .typeString("Hope you enjoy your visit! 🤗")
+                          .start();
+                      }}
                     />
                   </div>
                 </div>
