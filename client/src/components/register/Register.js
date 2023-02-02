@@ -190,6 +190,7 @@ export default function Register() {
                             id="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            required
                             className="form-control form-control-lg"
                           />
                           <div className="input-group-addon m-2">
@@ -220,9 +221,10 @@ export default function Register() {
                           <input
                             type={showPassword ? "text" : "password"}
                             id="confirmPassword"
-                            value={confirmPassword}
                             ref={passwordRef}
+                            value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
                             className="form-control form-control-lg"
                           />
                           <div className="input-group-addon m-2">

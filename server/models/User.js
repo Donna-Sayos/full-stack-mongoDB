@@ -154,7 +154,7 @@ UserSchema.methods.decryptPassword = function () {
   return decryptPassword(
     process.env.ENCRYPT_KEY,
     this.iv,
-    this.password.encrypted
+    this.password
   ); // this returns the decrypted password;
 };
 

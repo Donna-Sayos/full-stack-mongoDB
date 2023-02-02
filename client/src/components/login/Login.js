@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
 import IMG from "../../../../public/assets/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import Typewriter from "typewriter-effect";
+import { BiShow, BiHide } from "react-icons/bi";
+import { loginCalls } from "../../authLogger";
+import { useAuthContext } from "../../context/AuthProvider";
 
 export default function Login() {
   const [env, setEnv] = useState({});
   const [isdisabled, setIsdisabled] = useState(true);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const { isFetching, dispatch } = useAuthContext();
 
   async function getEnv() {
     const response = await fetch("http://localhost:5001/env");
@@ -22,6 +29,12 @@ export default function Login() {
   const handleRecaptcha = (value) => {
     console.log("RECAPTCHA", value);
     setIsdisabled(false);
+  };
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    loginCalls({ email, password }, dispatch);
+    console.log("Logging in.......");
   };
 
   return (
@@ -49,14 +62,16 @@ export default function Login() {
                       </h3>
                     </div>
 
-                    <form className="mx-1 mx-md-4">
+                    <form className="mx-1 mx-md-4" onSubmit={submitHandler}>
                       <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-envelope fa-lg me-3 fa-fw"></i>
                         <div className="form-outline flex-fill mb-0">
                           <input
                             type="email"
                             id="email"
                             className="form-control form-control-lg"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
                           />
                           <label className="form-label mt-2" htmlFor="email">
                             Your Email
@@ -64,13 +79,34 @@ export default function Login() {
                         </div>
                       </div>
                       <div className="d-flex flex-row align-items-center mb-4">
-                        <i className="fas fa-lock fa-lg me-3 fa-fw"></i>
-                        <div className="form-outline flex-fill mb-0">
-                          <input
-                            type="password"
-                            id="password"
-                            className="form-control form-control-lg"
-                          />
+                        <div className="form-group form-outline flex-fill mb-0">
+                          <div className="input-group">
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              id="password"
+                              className="form-control form-control-lg"
+                              value={password}
+                              onChange={(e) => setPassword(e.target.value)}
+                              required
+                            />
+                            <div className="input-group-addon m-2">
+                              {showPassword ? (
+                                <Link
+                                  to=""
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  <BiShow size={20} />
+                                </Link>
+                              ) : (
+                                <Link
+                                  to=""
+                                  onClick={() => setShowPassword(!showPassword)}
+                                >
+                                  <BiHide size={20} />
+                                </Link>
+                              )}
+                            </div>
+                          </div>
                           <label className="form-label mt-2" htmlFor="password">
                             Password
                           </label>
@@ -84,7 +120,7 @@ export default function Login() {
                       </div>
                       <div className="d-flex justify-content-center mx-4 mb-4">
                         <button
-                          type="button"
+                          type="submit"
                           disabled={isdisabled}
                           className={
                             isdisabled === true
@@ -92,7 +128,18 @@ export default function Login() {
                               : "btn login btn-block btn-lg fw-bold p-3 text-body"
                           }
                         >
-                          Login
+                          {isFetching ? (
+                            <div
+                              className="spinner-border text-danger"
+                              role="status"
+                            >
+                              <span className="visually-hidden">
+                                Loading...
+                              </span>
+                            </div>
+                          ) : (
+                            "Login"
+                          )}
                         </button>
                       </div>
                       <hr className="d-flex justify-content-center mx-4 mb-3 mb-lg-4" />{" "}
@@ -109,30 +156,33 @@ export default function Login() {
 
                   <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center justify-content-center order-1 order-lg-2">
                     <Typewriter
-                    options={{
-                      loop: true,
-                      deleteSpeed: 100,
-                    }}
+                      options={{
+                        loop: true,
+                        deleteSpeed: 100,
+                      }}
                       onInit={(typewriter) => {
-                        typewriter                       
+                        typewriter
                           .typeString(
                             "<h1>✨<b style='color: #ff7b7b; line-height: 2;' >JustBeYou</b>✨</h1>"
-                          )                         
+                          )
                           .typeString(
                             "<h2 style='text-align: center; line-height: 2;'>A place where</h2>"
-                          )                         
+                          )
                           .typeString(
                             "<h2 style='text-align: center; line-height: 2;'>you can be</h2>"
-                          )                         
+                          )
                           .typeString(
                             "<h2 style='text-align: center; line-height: 2; color: gray;'><i>yourself</i></h2>"
-                          )                         
+                          )
                           .typeString(
-                            "<h2 style='text-align: center; line-height: 2;'>Hope you enjoy</h2>")
+                            "<h2 style='text-align: center; line-height: 2;'>Hope you enjoy</h2>"
+                          )
                           .typeString(
-                            "<h2 style='text-align: center; line-height: 2;'>your visit!</h2>")
+                            "<h2 style='text-align: center; line-height: 2;'>your visit!</h2>"
+                          )
                           .typeString(
-                            "<h2 style='text-align: center; line-height: 2;'>🤗🤗🤗</h2>")
+                            "<h2 style='text-align: center; line-height: 2;'>🤗🤗🤗</h2>"
+                          )
                           .pauseFor(5000)
                           .start();
                       }}
