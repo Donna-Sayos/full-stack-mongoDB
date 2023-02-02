@@ -4272,7 +4272,7 @@ function Login() {
       deleteSpeed: 100
     },
     onInit: function onInit(typewriter) {
-      typewriter.typeString("<h1>Welcome to <b style='color: #ff7b7b; line-height: 2;' >JustBeYou</b> !</h1>").stop().typeString("<h2 style='text-align: center; line-height: 2;'>A place where you can be yourself.</h2>").typeString("<h2 style='text-align: center; line-height: 2;'>Hope you enjoy your visit! 🤗🤗🤗</h2>").pauseFor(5000).start();
+      typewriter.typeString("<h1>✨<b style='color: #ff7b7b; line-height: 2;' >JustBeYou</b>✨</h1>").typeString("<h2 style='text-align: center; line-height: 2;'>A place where</h2>").typeString("<h2 style='text-align: center; line-height: 2;'>you can be</h2>").typeString("<h2 style='text-align: center; line-height: 2; color: gray;'><i>yourself</i></h2>").typeString("<h2 style='text-align: center; line-height: 2;'>Hope you enjoy</h2>").typeString("<h2 style='text-align: center; line-height: 2;'>your visit!</h2>").typeString("<h2 style='text-align: center; line-height: 2;'>🤗🤗🤗</h2>").pauseFor(5000).start();
     }
   })))))))));
 }
