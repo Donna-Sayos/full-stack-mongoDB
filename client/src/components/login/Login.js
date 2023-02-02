@@ -4,7 +4,6 @@ import "./index.css";
 import IMG from "../../../../public/assets/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import Typewriter from "typewriter-effect";
-import STRINGS from "./Strings";
 
 export default function Login() {
   const [env, setEnv] = useState({});
@@ -110,23 +109,23 @@ export default function Login() {
 
                   <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center justify-content-center order-1 order-lg-2">
                     <Typewriter
+                    options={{
+                      loop: true,
+                      deleteSpeed: 100,
+                    }}
                       onInit={(typewriter) => {
                         typewriter
-                          .typeString("Welcome to JustBeYou!")
-                          .callFunction(() => {
-                            console.log("String typed out!");
-                          })
-                          .pauseFor(500)
-                          .deleteAll()
                           .typeString(
-                            "A place where you can be yourself"
+                            "<h1>Welcome to <b style='color: #ff7b7b; line-height: 2;' >JustBeYou</b> !</h1>"
                           )
-                          .pauseFor(500)
-                          .deleteAll()
-                          .typeString("And be accepted for who you are.")
-                          .pauseFor(500)
-                          .deleteAll()
-                          .typeString("Hope you enjoy your visit! 🤗")
+                          .stop()
+                          .typeString(
+                            "<h2 style='text-align: center; line-height: 2;'>A place where you can be yourself.</h2>"
+                          )                         
+                          .typeString(
+                            "<h2 style='text-align: center; line-height: 2;'>Hope you enjoy your visit! 🤗🤗🤗</h2>"
+                          )
+                          .pauseFor(5000)
                           .start();
                       }}
                     />
