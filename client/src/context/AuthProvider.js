@@ -19,7 +19,7 @@ export default function AuthContextProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        value: state.user,
+        user: state.user,
         isFetching: state.isFetching,
         error: state.error,
         dispatch,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import IMG from "../../../../public/assets/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -15,6 +15,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { isFetching, dispatch } = useAuthContext();
+
+  const navigate = useNavigate();
 
   async function getEnv() {
     const response = await fetch("http://localhost:5001/env");
@@ -35,6 +37,8 @@ export default function Login() {
     e.preventDefault();
     loginCalls({ email, password }, dispatch);
     console.log("Logging in.......");
+
+    navigate("/home");
   };
 
   return (
