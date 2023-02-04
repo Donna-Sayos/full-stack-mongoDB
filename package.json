@@ -7,7 +7,7 @@
     "build": "webpack",
     "build:dev": "npm run build -- --watch --mode=development",
     "start": "node index.js",
-    "start:dev": "concurrently \"npm run build:dev\" \"npm run start-server\" \"webpack-dev-server --mode=development --config webpack.config.js --host localhost --port 8080 --open\"",
+    "start:dev": "concurrently \"npm run build:dev\" \"npm run start-server\"",
     "start-server": "nodemon index.js -e html,js,jsx,css --ignore public --ignore client"
   },
   "keywords": [],

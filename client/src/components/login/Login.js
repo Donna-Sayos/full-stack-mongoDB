@@ -33,12 +33,16 @@ export default function Login() {
     setIsdisabled(false);
   };
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    loginCalls({ email, password }, dispatch);
-    console.log("Logging in.......");
+  const submitHandler = async (e) => {
+    try {
+      e.preventDefault();
+      await loginCalls({ email, password }, dispatch);
+      console.log("Logging in.......");
 
-    navigate("/home");
+      navigate("/");
+    } catch (err) {
+      console;
+    }
   };
 
   return (
