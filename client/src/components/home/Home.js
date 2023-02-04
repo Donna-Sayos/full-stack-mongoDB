@@ -1,7 +1,12 @@
-import React from 'react'
+import React from "react";
+import "./index.css";
+import TopNav from "../topNav/TopNav";
 
 export default function Home() {
   return (
-    <div className='container text-center mt-5 pt-5'>Home</div>
-  )
+    <>
+      <TopNav />
+      <div className="homeContainer">Home</div>
+    </>
+  );
 }

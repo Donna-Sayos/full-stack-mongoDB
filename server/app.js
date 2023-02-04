@@ -56,7 +56,7 @@ app.use(logger);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/images"); // the files are saved in the "public/images" folder (relative to the root of the project)
+    cb(null, "public/images"); // the files are saved in the "public/images" folder (relative to the root of the project)
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
@@ -65,7 +65,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.use("/api/v1", upload.single("file"), uploader);
+app.use("/api/v1/upload", upload.single("file"), uploader);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/posts", postRoute);
@@ -80,6 +80,7 @@ app.get("/env", async function (req, res) {
   try {
     res.status(200).json({
       API_KEY: process.env.RECAPTCHA_KEY,
+      FILES_ROUTE: process.env.FILES_ROUTE,
     });
   } catch (err) {
     res.status(500).send(err.message || "ENV api error.");
