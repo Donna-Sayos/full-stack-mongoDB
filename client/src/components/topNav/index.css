@@ -1,7 +1,7 @@
 .topNavContainer {
     height: 50px;
     width: 100%;
-    background-color: #1877f2;
+    background-color: #ff7b7b;
     display: flex;
     align-items: center;
     position: sticky;
@@ -26,7 +26,7 @@
 }
 
 .searchbar {
-    width: 100%;
+    width: 95%;
     height: 30px;
     background-color: white;
     border-radius: 30px;
@@ -35,7 +35,7 @@
 }
 
 .searchIcon {
-    font-size: 20px !important;
+    font-size: 22px !important;
     margin-left: 10px;
 }
 
@@ -73,18 +73,18 @@
 }
 
 .topNavIconBadge {
-    width: 15px;
-    height: 15px;
-    background-color: red;
+    width: 13px;
+    height: 13px;
+    background-color: #71c7ec;
     border-radius: 50%;
     color: white;
     position: absolute;
-    top: -5px;
-    right: -5px;
+    top: -6px;
+    right: -6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 10px;
 }
 
 .topNavImg {

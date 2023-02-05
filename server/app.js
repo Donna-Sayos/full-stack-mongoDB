@@ -88,6 +88,7 @@ app.get("/env", async function (req, res) {
 });
 
 app.use(express.static(join(__dirname, "..", "public")));
+app.use("/images", express.static(join(__dirname, "public/images")));
 
 app.use((req, res, next) => {
   if (extname(req.path).length) {
