@@ -59,9 +59,9 @@ export default function TopNav() {
             src={
               user.profilePicture
                 ? FR.FILES_ROUTE + user.profilePicture
-                : FR.FILES_ROUTE + "user/no-user-photo.png"
+                : FR.FILES_ROUTE + "user/default-user-photo.png"
             }
-            alt=""
+            alt="user"
             className="topNavImg"
           />
         </Link>

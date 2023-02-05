@@ -81,6 +81,7 @@ app.get("/env", async function (req, res) {
     res.status(200).json({
       API_KEY: process.env.RECAPTCHA_KEY,
       FILES_ROUTE: process.env.FILES_ROUTE,
+      GET_USERS: process.env.GET_USERS,
     });
   } catch (err) {
     res.status(500).send(err.message || "ENV api error.");
