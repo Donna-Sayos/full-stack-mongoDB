@@ -10,12 +10,11 @@ export default function TopNav() {
     const response = await fetch("http://localhost:5001/env");
     const env = await response.json();
     setFR(env);
-    console.log("FR", FR.FILES_ROUTE);
   }
 
   useEffect(() => {
     getEnv();
   }, []);
 
-  return <div>TopNav</div>;
+  return <div>{FR.FILES_ROUTE}</div>;
 }

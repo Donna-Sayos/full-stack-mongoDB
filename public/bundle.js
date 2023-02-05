@@ -4876,8 +4876,7 @@ function TopNav() {
           case 5:
             env = _context.sent;
             setFR(env);
-            console.log("FR", FR.FILES_ROUTE);
-          case 8:
+          case 7:
           case "end":
             return _context.stop();
         }
@@ -4888,7 +4887,7 @@ function TopNav() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     getEnv();
   }, []);
-  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, "TopNav");
+  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", null, FR.FILES_ROUTE);
 }
 
 /***/ }),
