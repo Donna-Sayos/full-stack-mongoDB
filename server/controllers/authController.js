@@ -58,6 +58,11 @@ const login = async (req, res, next) => {
       success: true,
       token,
       username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      gender: user.gender,
+      pronouns: user.pronouns,
+      _id: user._id,
     });
   } catch (error) {
     console.error(error);

@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useParams } from "react-router";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
+import RightSidebar from "../rightSidebar/RightSidebar";
 
 export default function Profile() {
   const [user, setUser] = useState({});
@@ -50,10 +51,10 @@ export default function Profile() {
               <span className="profileInfoDesc">{user.desc}</span>
             </div>
           </div>
-          {/* <div className="profileRightBottom">
-            <Feed username={username} />
-            <Rightbar user={user} />
-          </div> */}
+          <div className="profileRightBottom">
+            {/* <Feed username={username} /> */}
+            <RightSidebar user={user} />
+          </div>
         </div>
       </div>
     </>
