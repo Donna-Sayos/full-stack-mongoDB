@@ -1,23 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
-import Axios from "axios";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/AuthProvider";
 
 export default function TopNav() {
-  const [FR, setFR] = useState({});
   const { user } = useAuthContext();
-
-  async function getEnv() {
-    const { data } = await Axios.get("/env");
-    setFR(data);
-  }
-
-  useEffect(() => {
-    getEnv();
-  }, []);
 
   return (
     <div className="topNavContainer">
@@ -29,10 +18,7 @@ export default function TopNav() {
       <div className="topNavCenter">
         <div className="searchbar">
           <BiSearchAlt2 className="searchIcon" />
-          <input
-            placeholder="Search"
-            className="searchInput"
-          />
+          <input placeholder="Search" className="searchInput" />
         </div>
       </div>
       <div className="topNavRight">
@@ -58,8 +44,8 @@ export default function TopNav() {
           <img
             src={
               user.profilePicture
-                ? FR.FILES_ROUTE + user.profilePicture
-                : FR.FILES_ROUTE + "user/default-user-photo.png"
+                ? "/images/" + user.profilePicture
+                : "/images/" + "avatar/default-user-photo.png"
             }
             alt="user"
             className="topNavImg"

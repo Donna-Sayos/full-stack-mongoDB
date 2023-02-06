@@ -54,6 +54,9 @@ app.use(
 
 app.use(logger);
 
+app.use(express.static(join(__dirname, "..", "public")));
+app.use("/images", express.static(join(__dirname, "public/images")));
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "public/images"); // the files are saved in the "public/images" folder (relative to the root of the project)
@@ -80,15 +83,11 @@ app.get("/env", async function (req, res) {
   try {
     res.status(200).json({
       API_KEY: process.env.RECAPTCHA_KEY,
-      FILES_ROUTE: process.env.FILES_ROUTE,
     });
   } catch (err) {
     res.status(500).send(err.message || "ENV api error.");
   }
 });
-
-app.use(express.static(join(__dirname, "..", "public")));
-app.use("/images", express.static(join(__dirname, "public/images")));
 
 app.use((req, res, next) => {
   if (extname(req.path).length) {

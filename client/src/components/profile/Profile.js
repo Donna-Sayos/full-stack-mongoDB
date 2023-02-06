@@ -6,14 +6,8 @@ import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 
 export default function Profile() {
-  const [route, setRoute] = useState({});
   const [user, setUser] = useState({});
   const username = useParams().username;
-
-  async function getEnv() {
-    const { data } = await Axios.get("/env");
-    setRoute(data);
-  }
 
   async function getUser() {
     const { data } = await Axios.get(`/api/v1/users?username=${username}`);
@@ -21,9 +15,9 @@ export default function Profile() {
   }
 
   useEffect(() => {
-    getEnv();
     getUser();
-  }, []);
+  }, [username]);
+
   return (
     <>
       <TopNav />
@@ -36,19 +30,19 @@ export default function Profile() {
                 className="profileCoverImg"
                 src={
                   user.coverPicture
-                    ? route.FILES_ROUTE + user.coverPicture
-                    : route.FILES_ROUTE + "user/default-cover.png"
+                    ? "/images/" + user.coverPicture
+                    : "/images/" + "avatar/default-cover.png"
                 }
-                alt=""
+                alt="user cover"
               />
               <img
                 className="profileUserImg"
                 src={
                   user.profilePicture
-                    ? route.FILES_ROUTE + user.profilePicture
-                    : route.FILES_ROUTE + "user/default-user-photo.png"
+                    ? "/images/" + user.profilePicture
+                    : "/images/" + "avatar/default-user-photo.png"
                 }
-                alt=""
+                alt="user"
               />
             </div>
             <div className="profileInfo">
