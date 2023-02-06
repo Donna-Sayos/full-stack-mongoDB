@@ -6,8 +6,14 @@ import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 
 export default function Profile() {
+  const [route, setRoute] = useState({});
   const [user, setUser] = useState({});
   const username = useParams().username;
+
+  async function getEnv() {
+    const { data } = await Axios.get("/env");
+    setRoute(data);
+  }
 
   async function getUser() {
     const { data } = await Axios.get(`/api/v1/users?username=${username}`);
@@ -15,6 +21,7 @@ export default function Profile() {
   }
 
   useEffect(() => {
+    getEnv();
     getUser();
   }, []);
   return (
@@ -29,8 +36,8 @@ export default function Profile() {
                 className="profileCoverImg"
                 src={
                   user.coverPicture
-                    ? PF + user.coverPicture
-                    : PF + "user/default-cover.png"
+                    ? route.FILES_ROUTE + user.coverPicture
+                    : route.FILES_ROUTE + "user/default-cover.png"
                 }
                 alt=""
               />
