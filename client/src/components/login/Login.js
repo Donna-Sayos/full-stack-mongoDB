@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
 import IMG from "../../../../public/assets/logo.png";
@@ -19,9 +20,8 @@ export default function Login() {
   const navigate = useNavigate();
 
   async function getEnv() {
-    const response = await fetch("http://localhost:5001/env");
-    const env = await response.json();
-    setEnv(env);
+    const { data } = await Axios.get("/env");
+    setEnv(data);
   }
 
   useEffect(() => {

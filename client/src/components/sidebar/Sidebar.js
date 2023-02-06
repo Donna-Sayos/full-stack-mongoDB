@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
+import Axios from "axios";
 import Friends from "../friends/Friends";
 import {
   MdRssFeed,
@@ -15,23 +16,24 @@ import {
 
 export default function Sidebar() {
   const [users, setUsers] = useState([]);
-  const [route, setRoute] = useState({});
-
-  async function getRoute() {
-    const response = await fetch("http://localhost:5001/env");
-    const route = await response.json();
-    setRoute(route);
-  }
 
   async function getUsers() {
-    const response = await fetch(`${route.GET_USERS}`);
-    const users = await response.json();
-    setUsers(users);
+    const { data } = await Axios.get("/api/v1/users");
+    setUsers(data);
   }
 
   useEffect(() => {
-    getRoute();
     getUsers();
   }, []);
-  return <div>{users}</div>;
+  return (
+    <div>
+      {users.map((user) => (
+        <div key={user.userId}>
+          <h3>
+            {user.firstName} {user.LastName}
+          </h3>
+        </div>
+      ))}
+    </div>
+  );
 }

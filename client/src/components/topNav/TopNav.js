@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
+import Axios from "axios";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/AuthProvider";
@@ -10,9 +11,8 @@ export default function TopNav() {
   const { user } = useAuthContext();
 
   async function getEnv() {
-    const response = await fetch("http://localhost:5001/env");
-    const env = await response.json();
-    setFR(env);
+    const { data } = await Axios.get("/env");
+    setFR(data);
   }
 
   useEffect(() => {

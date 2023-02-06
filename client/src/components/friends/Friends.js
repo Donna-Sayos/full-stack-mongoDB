@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
+import Axios from "axios";
 
 export default function Friends({ user }) {
   const [FR, setFR] = useState({});
 
   async function getEnv() {
-    const response = await fetch("http://localhost:5001/env");
-    const env = await response.json();
-    setFR(env);
+    const { data } = await Axios.get("/env");
+    setFR(data);
   }
 
   useEffect(() => {
