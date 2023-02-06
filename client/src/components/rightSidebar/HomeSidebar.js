@@ -17,12 +17,20 @@ export default function HomeSidebar() {
   return (
     <>
       <div className="birthdayContainer">
-        <img className="birthdayImg" src={"/images/" + "gift.png"} alt="birthday" />
+        <img
+          className="birthdayImg"
+          src={"/images/" + "others/gift.png"}
+          alt="birthday"
+        />
         <span className="birthdayText">
           <b>Pola Foster</b> and <b>3 other friends</b> have a birhday today.
         </span>
       </div>
-      <img className="rightSidebarAd" src="assets/ad.png" alt="" />
+      <img
+        className="rightSidebarAd"
+        src={"/images/" + "others/quote.png"}
+        alt="self-love quote"
+      />
       <h4 className="rightSidebarTitle">Online Friends</h4>
       <ul className="rightSidebarFriendList">
         {users.map((user) => (

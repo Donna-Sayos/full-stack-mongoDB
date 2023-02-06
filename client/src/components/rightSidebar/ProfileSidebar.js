@@ -8,7 +8,7 @@ export default function ProfileSidebar({ user }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useAuthContext();
   const [followed, setFollowed] = useState(
-    user && currentUser ? currentUser.followings.includes(user._id) : false
+    currentUser.followings.includes(user?._id)
   );
 
   async function getFriends() {
@@ -54,7 +54,9 @@ export default function ProfileSidebar({ user }) {
       <div className="rightSidebarInfo">
         <div className="rightSidebarInfoItem">
           <span className="rightSidebarInfoKey">Full Name:</span>
-          <span className="rightSidebarInfoValue">{user.firstName} {user.lastName}</span>
+          <span className="rightSidebarInfoValue">
+            {user.firstName} {user.lastName}
+          </span>
         </div>
         <div className="rightSidebarInfoItem">
           <span className="rightSidebarInfoKey">Gender:</span>
@@ -62,9 +64,7 @@ export default function ProfileSidebar({ user }) {
         </div>
         <div className="rightSidebarInfoItem">
           <span className="rightSidebarInfoKey">Pronouns:</span>
-          <span className="rightSidebarInfoValue">
-            {user.pronouns}
-          </span>
+          <span className="rightSidebarInfoValue">{user.pronouns}</span>
         </div>
       </div>
       <h4 className="rightSidebarTitle">User friends</h4>

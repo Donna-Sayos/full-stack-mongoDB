@@ -16,7 +16,9 @@ export default function Online({ user }) {
         />
         <span className="rightSidebarOnline"></span>
       </div>
-      <span className="rightSidebarUsername">{user.username}</span>
+      <div className="rightSidebarUsername">
+        {user.username} <span style={{ color: "gray" }}>({user.pronouns})</span>
+      </div>
     </li>
   );
 }

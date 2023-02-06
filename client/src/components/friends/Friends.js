@@ -14,8 +14,7 @@ export default function Friends({ user }) {
         alt="friend"
       />
       <div className="sidebarFriendName">
-        {user.firstName}{" "}
-        <span style={{ color: "gray" }}>({user.pronouns})</span>
+        {user.username} <span style={{ color: "gray" }}>({user.pronouns})</span>
       </div>
     </li>
   );
