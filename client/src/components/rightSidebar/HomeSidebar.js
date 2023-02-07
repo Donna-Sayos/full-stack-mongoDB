@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import Online from "../online/Online";
+import { useAuthContext } from "../../context/AuthProvider";
 
 export default function HomeSidebar() {
   const [users, setUsers] = useState([]);
+  const { user } = useAuthContext();
 
   async function getUsers() {
     const { data } = await Axios.get("/api/v1/users");
-    setUsers(data);
+    setUsers(data.filter((u) => u._id !== user._id));
   }
 
   useEffect(() => {

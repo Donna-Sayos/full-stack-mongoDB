@@ -21,7 +21,7 @@ export default function Sidebar() {
 
   async function getUsers() {
     const { data } = await Axios.get("/api/v1/users");
-    setOtherUsers(data.filter(u => u._id !== user._id));
+    setOtherUsers(data.filter((u) => u._id !== user._id));
   }
 
   useEffect(() => {

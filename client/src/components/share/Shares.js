@@ -7,7 +7,6 @@ import {
   MdOutlineMood,
   MdOutlineCancel,
 } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
 import Axios from "axios";
 import { useAuthContext } from "../../context/AuthProvider";
 
@@ -15,8 +14,6 @@ export default function Shares() {
   const [file, setFile] = useState(null);
   const desc = useRef();
   const { user } = useAuthContext();
-
-  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -39,7 +36,7 @@ export default function Shares() {
     }
     try {
       await Axios.post("/api/v1/posts", newPost);
-      navigate("/");
+      window.location.reload();
     } catch (err) {
       console.error("Error creating post: ", err.message);
     }
@@ -98,6 +95,10 @@ export default function Shares() {
             <div className="shareOption">
               <MdOutlineLocationOn color="green" className="shareIcon" />
               <span className="shareOptionText">Location</span>
+            </div>
+            <div className="shareOption">
+              <MdOutlineMood color="goldenrod" className="shareIcon" />
+              <span className="shareOptionText">Feelings</span>
             </div>
           </div>
           <button className="shareBtn" type="submit">

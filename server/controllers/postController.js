@@ -1,6 +1,24 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 
+const getAllPosts = async (req, res) => {
+  try {
+    const posts = await Post.find();
+    res.status(200).json({
+      success: true,
+      message: "All posts",
+      count: posts.length,
+      posts,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error at getAllPosts",
+      error: err.message,
+    });
+  }
+};
+
 const createPost = async (req, res) => {
   const newPost = new Post(req.body);
   try {
@@ -89,6 +107,7 @@ const getUserPosts = async (req, res) => {
 };
 
 module.exports = {
+  getAllPosts,
   createPost,
   updatePost,
   deletePost,
