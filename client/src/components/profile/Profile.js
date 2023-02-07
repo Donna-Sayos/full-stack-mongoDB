@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useParams } from "react-router";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
+import Feed from "../feed/Feed";
 import RightSidebar from "../rightSidebar/RightSidebar";
 
 export default function Profile() {
@@ -52,7 +53,7 @@ export default function Profile() {
             </div>
           </div>
           <div className="profileRightBottom">
-            {/* <Feed username={username} /> */}
+            <Feed username={username} />
             <RightSidebar user={user} />
           </div>
         </div>

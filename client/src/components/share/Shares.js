@@ -1,7 +1,110 @@
 import React, { useState, useRef } from "react";
 import "./index.css";
-import { MdPermMedia, MdOutlineLabel, MdOutlineLocationOn, MdOutlineMood, MdOutlineCancel } from "react-icons/md";
+import {
+  MdPermMedia,
+  MdOutlineLabel,
+  MdOutlineLocationOn,
+  MdOutlineMood,
+  MdOutlineCancel,
+} from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+import Axios from "axios";
+import { useAuthContext } from "../../context/AuthProvider";
 
 export default function Shares() {
-  return <div>Shares</div>;
+  const [file, setFile] = useState(null);
+  const desc = useRef();
+  const { user } = useAuthContext();
+
+  const navigate = useNavigate();
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const newPost = {
+      userId: user._id,
+      desc: desc.current.value,
+    };
+    if (file) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+      data.append("name", fileName);
+      data.append("file", file);
+      newPost.img = fileName;
+      console.log("NEW POST: ", newPost);
+      try {
+        await Axios.post("/api/v1/upload", data);
+      } catch (err) {
+        console.error("Error uploading file: ", err.message);
+      }
+    }
+    try {
+      await Axios.post("/api/v1/posts", newPost);
+      navigate("/");
+    } catch (err) {
+      console.error("Error creating post: ", err.message);
+    }
+  };
+
+  return (
+    <div className="share">
+      <div className="shareWrapper">
+        <div className="shareTop">
+          <img
+            className="shareProfileImg"
+            src={
+              user.profilePicture
+                ? "/images/" + user.profilePicture
+                : "/images/" + "avatar/default-user-photo.png"
+            }
+            alt="user"
+          />
+          <input
+            placeholder={`What's on your mind ${user.firstName}?`}
+            className="shareInput"
+            ref={desc}
+          />
+        </div>
+        <hr className="shareHr" />
+        {file && (
+          <div className="shareImgContainer">
+            <img
+              className="shareImg"
+              src={URL.createObjectURL(file)}
+              alt="file"
+            />
+            <MdOutlineCancel
+              className="shareCancelImg"
+              onClick={() => setFile(null)}
+            />
+          </div>
+        )}
+        <form className="shareBottom" onSubmit={submitHandler}>
+          <div className="shareOptions">
+            <label htmlFor="file" className="shareOption">
+              <MdPermMedia color="tomato" className="shareIcon" />
+              <span className="shareOptionText">Photo or Video</span>
+              <input
+                style={{ display: "none" }}
+                type="file"
+                id="file"
+                accept=".png,.jpeg,.jpg"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </label>
+            <div className="shareOption">
+              <MdOutlineLabel color="blue" className="shareIcon" />
+              <span className="shareOptionText">Tag</span>
+            </div>
+            <div className="shareOption">
+              <MdOutlineLocationOn color="green" className="shareIcon" />
+              <span className="shareOptionText">Location</span>
+            </div>
+          </div>
+          <button className="shareBtn" type="submit">
+            Share
+          </button>
+        </form>
+      </div>
+    </div>
+  );
 }

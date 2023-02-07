@@ -10,7 +10,6 @@ const connectDB = require("./config/db");
 const logger = require("./utils/logger");
 
 // routes
-const uploader = require("./routes/upload");
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const postRoute = require("./routes/post");
@@ -48,6 +47,7 @@ app.use(
         "https://www.gstatic.com",
       ],
       frameSrc: ["https://www.google.com"],
+      imgSrc: ["'self'", "data:", "blob:"],
     },
   })
 );
@@ -65,7 +65,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-app.use("/api/v1/upload", upload.single("file"), uploader);
+app.post("/api/v1/upload", upload.single("file"), (req, res) => {
+  try {
+    return res.status(200).json("File uploded successfully");
+  } catch (error) {
+    console.error('Error at server-side upload api', error);
+  }
+});
+
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/posts", postRoute);
