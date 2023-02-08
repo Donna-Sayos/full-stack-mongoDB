@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import Axios from "axios";
 import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../context/AuthProvider";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import Feed from "../feed/Feed";
@@ -11,6 +13,14 @@ export default function Profile() {
   const [user, setUser] = useState([]);
   const username = useParams().username;
   const specificUser = user.filter((user) => user.username === username)[0];
+
+  const { dispatch } = useAuthContext();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/login");
+  };
 
   async function getUser() {
     const { data } = await Axios.get(`/api/v1/users?username=${username}`);
@@ -39,6 +49,9 @@ export default function Profile() {
                   }
                   alt="user cover"
                 />
+                <div className="logout">
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
                 <img
                   className="profileUserImg"
                   src={
@@ -51,7 +64,7 @@ export default function Profile() {
               </div>
               <div className="profileInfo">
                 <h4 className="profileInfoName">{specificUser.username}</h4>
-                <span className="profileInfoDesc">{specificUser.desc}</span>
+                {/* <span className="profileInfoDesc">{specificUser.desc}</span> */}
               </div>
             </div>
             <div className="profileRightBottom">

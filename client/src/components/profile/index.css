@@ -48,3 +48,20 @@
 .profileRightBottom{
     display: flex;
 }
+
+.logout {
+    display: flex;
+    justify-content: flex-end;
+
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 10px;
+}
+
+button {
+    padding: 3px;
+}

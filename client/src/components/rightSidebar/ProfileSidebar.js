@@ -48,10 +48,6 @@ export default function ProfileSidebar({ specificUser }) {
     }
   };
 
-  console.log("currentUser: ", currentUser);
-  console.log("CURRENT USER FOLLOWINGS: ", currentUser.followings);
-  console.log("FOLLOWED: ", followed);
-
   return (
     <>
       {specificUser && specificUser.username !== currentUser.username && (

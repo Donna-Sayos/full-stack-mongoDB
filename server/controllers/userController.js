@@ -110,7 +110,7 @@ const createUser = async (req, res, next) => {
     const token = user.getSignedJwtToken();
 
     const options = {
-      expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 1000 * 60), // 1000 = 1 second, 60 = 1 minute;
+      expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 1000 * 1000 * 60), // 1000 = 1 second, 60 = 1 minute;
     };
 
     res
