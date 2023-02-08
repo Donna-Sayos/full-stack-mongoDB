@@ -39,9 +39,17 @@ const getFriends = async (req, res) => {
       const { _id, username, profilePicture } = friend;
       friendList.push({ _id, username, profilePicture });
     });
-    res.status(200).json(friendList);
+    res.status(200).json({
+      status: "success",
+      results: friendList.length,
+      message: "friends fetched successfully",
+      friends: friendList,
+    });
   } catch (err) {
-    res.status(500).json(err);
+    res.status(500).json({
+      status: "fail",
+      message: err.message,
+    });
   }
 };
 

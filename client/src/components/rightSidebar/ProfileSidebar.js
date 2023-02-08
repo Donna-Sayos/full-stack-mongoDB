@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
+import Axios from "axios";
 import { useAuthContext } from "../../context/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
@@ -8,12 +9,12 @@ export default function ProfileSidebar({ user }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useAuthContext();
   const [followed, setFollowed] = useState(
-    currentUser.followings.includes(user?._id)
+    currentUser.followings && currentUser.followings.includes(user?._id)
   );
 
   async function getFriends() {
     try {
-      const { data } = Axios.get("/api/v1/users/friends/" + user._id);
+      const { data } = await Axios.get("/api/v1/users/friends/" + user._id);
       setFriends(data);
     } catch (err) {
       console.error("Error at getting FRIENDS. ", err);
@@ -42,6 +43,9 @@ export default function ProfileSidebar({ user }) {
       console.error("Error at following/unfollowing. ", err);
     }
   };
+
+  // console.log("FRIENDS: ", friends);
+  // console.log("USER: ", user);
   return (
     <>
       {user.username !== currentUser.username && (
@@ -69,27 +73,28 @@ export default function ProfileSidebar({ user }) {
       </div>
       <h4 className="rightSidebarTitle">User friends</h4>
       <div className="rightSidebarFollowings">
-        {friends.map((friend) => (
-          <Link
-            to={"/profile/" + friend.username}
-            style={{ textDecoration: "none" }}
-          >
-            <div className="rightSidebarFollowing">
-              <img
-                src={
-                  friend.profilePicture
-                    ? "/images/" + user.profilePicture
-                    : "/images/" + "avatar/default-user-photo.png"
-                }
-                alt="friend"
-                className="rightSidebarFollowingImg"
-              />
-              <span className="rightSidebarFollowingName">
-                {friend.username}
-              </span>
-            </div>
-          </Link>
-        ))}
+        {friends &&
+          friends.map((friend) => (
+            <Link
+              to={"/profile/" + friend.username}
+              style={{ textDecoration: "none" }}
+            >
+              <div className="rightSidebarFollowing">
+                <img
+                  src={
+                    friend.profilePicture
+                      ? "/images/" + user.profilePicture
+                      : "/images/" + "avatar/default-user-photo.png"
+                  }
+                  alt="friend"
+                  className="rightSidebarFollowingImg"
+                />
+                <span className="rightSidebarFollowingName">
+                  {friend.username}
+                </span>
+              </div>
+            </Link>
+          ))}
       </div>
     </>
   );
