@@ -5,7 +5,7 @@ import { useAuthContext } from "../../context/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 
-export default function ProfileSidebar({ user }) {
+export default function ProfileSidebar({ user, specificUser }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useAuthContext();
   const [followed, setFollowed] = useState(
@@ -14,7 +14,9 @@ export default function ProfileSidebar({ user }) {
 
   async function getFriends() {
     try {
-      const { data } = await Axios.get("/api/v1/users/friends/" + user._id);
+      const { data } = await Axios.get(
+        "/api/v1/users/friends/" + user._id
+      );
       setFriends(data);
     } catch (err) {
       console.error("Error at getting FRIENDS. ", err);
@@ -28,15 +30,15 @@ export default function ProfileSidebar({ user }) {
   const handleClick = async () => {
     try {
       if (followed) {
-        await Axios.put(`/api/v1/users/${user._id}/unfollow`, {
+        await Axios.put(`/api/v1/users/${specificUser._id}/unfollow`, {
           _id: currentUser._id,
         });
-        dispatch({ type: "UNFOLLOW", payload: user._id });
+        dispatch({ type: "UNFOLLOW", payload: specificUser._id });
       } else {
-        await Axios.put(`/api/v1/users/${user._id}/follow`, {
+        await Axios.put(`/api/v1/users/${specificUser._id}/follow`, {
           _id: currentUser._id,
         });
-        dispatch({ type: "FOLLOW", payload: user._id });
+        dispatch({ type: "FOLLOW", payload: specificUser._id });
       }
       setFollowed(!followed);
     } catch (err) {
@@ -46,29 +48,33 @@ export default function ProfileSidebar({ user }) {
 
   return (
     <>
-      {user.username !== currentUser.username && (
+      {specificUser && specificUser.username !== currentUser.username && (
         <button className="rightSidebarFollowButton" onClick={handleClick}>
           {followed ? "Unfollow" : "Follow"}
           {followed ? <IoIosRemove /> : <IoIosAdd />}
         </button>
       )}
       <h4 className="rightSidebarTitle">User information</h4>
-      <div className="rightSidebarInfo">
-        <div className="rightSidebarInfoItem">
-          <span className="rightSidebarInfoKey">Full Name:</span>
-          <span className="rightSidebarInfoValue">
-            {user.firstName} {user.lastName}
-          </span>
+      {specificUser && (
+        <div className="rightSidebarInfo">
+          <div className="rightSidebarInfoItem">
+            <span className="rightSidebarInfoKey">Full Name:</span>
+            <span className="rightSidebarInfoValue">
+              {specificUser.firstName} {specificUser.lastName}
+            </span>
+          </div>
+          <div className="rightSidebarInfoItem">
+            <span className="rightSidebarInfoKey">Gender:</span>
+            <span className="rightSidebarInfoValue">{specificUser.gender}</span>
+          </div>
+          <div className="rightSidebarInfoItem">
+            <span className="rightSidebarInfoKey">Pronouns:</span>
+            <span className="rightSidebarInfoValue">
+              {specificUser.pronouns}
+            </span>
+          </div>
         </div>
-        <div className="rightSidebarInfoItem">
-          <span className="rightSidebarInfoKey">Gender:</span>
-          <span className="rightSidebarInfoValue">{user.gender}</span>
-        </div>
-        <div className="rightSidebarInfoItem">
-          <span className="rightSidebarInfoKey">Pronouns:</span>
-          <span className="rightSidebarInfoValue">{user.pronouns}</span>
-        </div>
-      </div>
+      )}
       <h4 className="rightSidebarTitle">User friends</h4>
       <div className="rightSidebarFollowings">
         {friends &&
@@ -81,7 +87,7 @@ export default function ProfileSidebar({ user }) {
                 <img
                   src={
                     friend.profilePicture
-                      ? "/images/" + user.profilePicture
+                      ? "/images/" + friend.profilePicture
                       : "/images/" + "avatar/default-user-photo.png"
                   }
                   alt="friend"
