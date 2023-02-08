@@ -5,17 +5,17 @@ import { useAuthContext } from "../../context/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 
-export default function ProfileSidebar({ user, specificUser }) {
+export default function ProfileSidebar({ specificUser }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useAuthContext();
   const [followed, setFollowed] = useState(
-    currentUser.followings && currentUser.followings.includes(user?._id)
+    currentUser.followings && currentUser.followings.includes(specificUser?._id)
   );
 
   async function getFriends() {
     try {
       const { data } = await Axios.get(
-        "/api/v1/users/friends/" + user._id
+        "/api/v1/users/friends/" + specificUser._id
       );
       setFriends(data);
     } catch (err) {
@@ -25,7 +25,7 @@ export default function ProfileSidebar({ user, specificUser }) {
 
   useEffect(() => {
     getFriends();
-  }, [user]);
+  }, [specificUser]);
 
   const handleClick = async () => {
     try {
@@ -45,6 +45,8 @@ export default function ProfileSidebar({ user, specificUser }) {
       console.error("Error at following/unfollowing. ", err);
     }
   };
+
+  console.log("specificUser _ID: ", specificUser._id);
 
   return (
     <>
@@ -77,7 +79,7 @@ export default function ProfileSidebar({ user, specificUser }) {
       )}
       <h4 className="rightSidebarTitle">User friends</h4>
       <div className="rightSidebarFollowings">
-        {friends &&
+        {friends && Array.isArray(friends) && friends.length > 0 ? (
           friends.map((friend) => (
             <Link
               to={"/profile/" + friend.username}
@@ -98,7 +100,10 @@ export default function ProfileSidebar({ user, specificUser }) {
                 </span>
               </div>
             </Link>
-          ))}
+          ))
+        ) : (
+          <p>You have no friends</p>
+        )}
       </div>
     </>
   );

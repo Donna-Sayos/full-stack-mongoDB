@@ -1,8 +1,22 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
+import Axios from "axios";
+import { useAuthContext } from "../../context/AuthProvider";
 import Online from "../online/Online";
 
-export default function HomeSidebar({ user }) {
+export default function HomeSidebar() {
+  const [otherUsers, setOtherUsers] = useState([]);
+  const { user } = useAuthContext();
+
+  async function getUsers() {
+    const { data } = await Axios.get("/api/v1/users");
+    setOtherUsers(data.filter((u) => u._id !== user._id));
+  }
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
   return (
     <>
       <div className="birthdayContainer">
@@ -22,7 +36,7 @@ export default function HomeSidebar({ user }) {
       />
       <h4 className="rightSidebarTitle">Online Friends</h4>
       <ul className="rightSidebarFriendList">
-        {user && Array.isArray(user) && user.map((user) => (
+        {otherUsers && otherUsers.map((user) => (
           <Online key={user._id} user={user} />
         ))}
       </ul>
