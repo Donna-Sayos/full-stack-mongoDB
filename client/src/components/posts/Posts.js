@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 export default function Posts({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+  const specificUser = user ? user.find(u => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
 
   useEffect(() => {
@@ -36,56 +37,58 @@ export default function Posts({ post }) {
 
   return (
     <div className="post">
-      <div className="postWrapper">
-        <div className="postTop">
-          <div className="postTopLeft">
-            <Link to={`/profile/${user.username}`}>
+      {specificUser && (
+        <div className="postWrapper">
+          <div className="postTop">
+            <div className="postTopLeft">
+              <Link to={`/profile/${specificUser.username}`}>
+                <img
+                  className="postProfileImg"
+                  src={
+                    specificUser.profilePicture
+                      ? "/images/" + specificUser.profilePicture
+                      : "/images/" + "avatar/default-user-photo.png"
+                  }
+                  alt=""
+                />
+              </Link>
+              <span className="postUsername">{specificUser.username}</span>
+              <span className="postDate">{format(post.createdAt)}</span>
+            </div>
+            <div className="postTopRight">
+              <MdMoreVert />
+            </div>
+          </div>
+          <div className="postCenter">
+            <span className="postText">{post?.desc}</span>
+            <img
+              className="postImg"
+              src={"/images/posts/" + post.img}
+              alt="post"
+            />
+          </div>
+          <div className="postBottom">
+            <div className="postBottomLeft">
               <img
-                className="postProfileImg"
-                src={
-                  user.profilePicture
-                    ? "/images/" + user.profilePicture
-                    : "/images/" + "avatar/default-user-photo.png"
-                }
-                alt=""
+                className="likeIcon"
+                src={"/images/" + "others/thumbsup.png"}
+                onClick={likeHandler}
+                alt="like"
               />
-            </Link>
-            <span className="postUsername">{user.username}</span>
-            <span className="postDate">{format(post.createdAt)}</span>
-          </div>
-          <div className="postTopRight">
-            <MdMoreVert />
-          </div>
-        </div>
-        <div className="postCenter">
-          <span className="postText">{post?.desc}</span>
-          <img
-            className="postImg"
-            src={"/images/posts/" + post.img}
-            alt="post"
-          />
-        </div>
-        <div className="postBottom">
-          <div className="postBottomLeft">
-            <img
-              className="likeIcon"
-              src={"/images/" + "others/thumbsup.png"}
-              onClick={likeHandler}
-              alt="like"
-            />
-            <img
-              className="likeIcon"
-              src={"/images/" + "others/heart.png"}
-              onClick={likeHandler}
-              alt="heart"
-            />
-            <span className="postLikeCounter">{like} people like it</span>
-          </div>
-          <div className="postBottomRight">
-            <span className="postCommentText">{post.comment} comments</span>
+              <img
+                className="likeIcon"
+                src={"/images/" + "others/heart.png"}
+                onClick={likeHandler}
+                alt="heart"
+              />
+              <span className="postLikeCounter">{like} people like it</span>
+            </div>
+            <div className="postBottomRight">
+              <span className="postCommentText">{post.comment} comments</span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

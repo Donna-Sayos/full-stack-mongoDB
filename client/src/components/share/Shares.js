@@ -56,7 +56,7 @@ export default function Shares() {
             alt="user"
           />
           <input
-            placeholder={`What's on your mind ${user.firstName}?`}
+            placeholder={`What's on your mind?`}
             className="shareInput"
             ref={desc}
           />

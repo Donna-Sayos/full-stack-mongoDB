@@ -24,6 +24,7 @@ export default function Feed({ username }) {
     fetchPosts();
   }, [username, user._id]);
 
+  console.log("posts", posts)
   return (
     <div className="feed">
       <div className="feedWrapper">
