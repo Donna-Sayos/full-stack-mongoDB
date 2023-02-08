@@ -20,7 +20,7 @@ export default function Online({ user }) {
 
   return (
     <>
-      {onlineUser ? (
+      {onlineUser && (
         <li className="rightSidebarFriend">
           <div className="rightSidebarProfileImgContainer">
             <img
@@ -39,8 +39,6 @@ export default function Online({ user }) {
             <span style={{ color: "gray" }}>({onlineUser.pronouns})</span>
           </div>
         </li>
-      ) : (
-        <p style={{ color: "gray" }}>No online users</p>
       )}
     </>
   );

@@ -26,10 +26,13 @@ export default function HomeSidebar() {
       />
       <h4 className="rightSidebarTitle">Online Friends</h4>
       <ul className="rightSidebarFriendList">
-        {currentUser &&
+        {currentUser && currentUser.followings > 0 ? (
           currentUser.followings.map((user, i) => (
             <Online key={i} user={user} />
-          ))}
+          ))
+        ) : (
+          <p style={{ color: "gray" }}>No online users</p>
+        )}
       </ul>
     </div>
   );
