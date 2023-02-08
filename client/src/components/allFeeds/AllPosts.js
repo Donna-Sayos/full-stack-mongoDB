@@ -55,7 +55,7 @@ export default function AllPosts({ post }) {
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             <div className="postTopRight">
-              <MdMoreVert />
+              <MdMoreVert /> {/* TODO: needs to add some functionality */}
             </div>
           </div>
           <div className="postCenter">

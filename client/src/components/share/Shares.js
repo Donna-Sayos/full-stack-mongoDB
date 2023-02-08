@@ -27,7 +27,6 @@ export default function Shares() {
       data.append("name", fileName);
       data.append("file", file);
       newPost.img = fileName;
-      console.log("NEW POST: ", newPost);
       try {
         await Axios.post("/api/v1/upload", data);
       } catch (err) {

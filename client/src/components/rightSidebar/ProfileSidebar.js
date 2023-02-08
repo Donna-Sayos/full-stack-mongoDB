@@ -44,8 +44,6 @@ export default function ProfileSidebar({ user }) {
     }
   };
 
-  console.log("FRIENDS: ", friends);
-  console.log("USER: ", user);
   return (
     <>
       {user.username !== currentUser.username && (

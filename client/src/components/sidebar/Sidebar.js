@@ -15,7 +15,7 @@ import {
   MdEvent,
 } from "react-icons/md";
 
-export default function Sidebar() {
+export default function Sidebar() { {/* TODO: needs to add some functionality */}
   const [otherUsers, setOtherUsers] = useState([]);
   const { user } = useAuthContext();
 
