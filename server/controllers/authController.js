@@ -46,7 +46,7 @@ const login = async (req, res, next) => {
     const decryptedPass = user.decryptPassword();
     // Compare plain text password with hashed password
     const isMatch = await bcrypt.compare(password, decryptedPass);
-  
+
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -63,6 +63,8 @@ const login = async (req, res, next) => {
       gender: user.gender,
       pronouns: user.pronouns,
       _id: user._id,
+      followings: user.followings,
+      desc: user.desc,
     });
   } catch (error) {
     console.error(error);

@@ -9,7 +9,9 @@ export default function ProfileSidebar({ specificUser }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useAuthContext();
   const [followed, setFollowed] = useState(
-    currentUser.followings && currentUser.followings.includes(specificUser?._id)
+    currentUser &&
+      currentUser.followings &&
+      currentUser.followings.includes(specificUser?._id)
   );
 
   async function getFriends() {
@@ -17,7 +19,7 @@ export default function ProfileSidebar({ specificUser }) {
       const { data } = await Axios.get(
         "/api/v1/users/friends/" + specificUser._id
       );
-      setFriends(data);
+      setFriends(data.friends);
     } catch (err) {
       console.error("Error at getting FRIENDS. ", err);
     }
@@ -31,12 +33,12 @@ export default function ProfileSidebar({ specificUser }) {
     try {
       if (followed) {
         await Axios.put(`/api/v1/users/${specificUser._id}/unfollow`, {
-          _id: currentUser._id,
+          userId: currentUser._id,
         });
         dispatch({ type: "UNFOLLOW", payload: specificUser._id });
       } else {
         await Axios.put(`/api/v1/users/${specificUser._id}/follow`, {
-          _id: currentUser._id,
+          userId: currentUser._id,
         });
         dispatch({ type: "FOLLOW", payload: specificUser._id });
       }
@@ -46,7 +48,9 @@ export default function ProfileSidebar({ specificUser }) {
     }
   };
 
-  console.log("specificUser _ID: ", specificUser._id);
+  console.log("currentUser: ", currentUser);
+  console.log("CURRENT USER FOLLOWINGS: ", currentUser.followings);
+  console.log("FOLLOWED: ", followed);
 
   return (
     <>
@@ -82,6 +86,7 @@ export default function ProfileSidebar({ specificUser }) {
         {friends && Array.isArray(friends) && friends.length > 0 ? (
           friends.map((friend) => (
             <Link
+              key={friend._id}
               to={"/profile/" + friend.username}
               style={{ textDecoration: "none" }}
             >
@@ -102,7 +107,7 @@ export default function ProfileSidebar({ specificUser }) {
             </Link>
           ))
         ) : (
-          <p>You have no friends</p>
+          <p>No friends</p>
         )}
       </div>
     </>
