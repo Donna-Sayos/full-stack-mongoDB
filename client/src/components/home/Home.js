@@ -3,6 +3,7 @@ import "./index.css";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import AllFeeds from "../allFeeds/AllFeeds";
+import FriendFeeds from "../friendFeeds/FriendFeeds";
 import RightSidebar from "../rightSidebar/RightSidebar";
 
 export default function Home() {
@@ -11,7 +12,8 @@ export default function Home() {
       <TopNav />
       <div className="homeContainer">
         <Sidebar />
-        <AllFeeds />
+        {/* <AllFeeds /> */}
+        <FriendFeeds />
         <RightSidebar />
       </div>
     </>

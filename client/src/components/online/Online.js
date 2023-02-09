@@ -3,11 +3,11 @@ import "./index.css";
 import Axios from "axios";
 import { useAuthContext } from "../../context/AuthProvider";
 
-export default function Online({ user }) {
+export default function Online({ userId }) {
   const [otherUsers, setOtherUsers] = useState([]);
   const { user: currentUser } = useAuthContext();
 
-  const onlineUser = otherUsers.filter((u) => u._id === user)[0];
+  const onlineUser = otherUsers.filter((u) => u._id === userId)[0];
 
   async function getUsers() {
     const { data } = await Axios.get("/api/v1/users");

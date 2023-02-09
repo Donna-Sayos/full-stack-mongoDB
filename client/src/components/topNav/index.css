@@ -95,6 +95,15 @@
     cursor: pointer;
 }
 
+.navLink {
+    color: white;
+    text-decoration: none;
+}
+
+.navLink:hover {
+    color: bisque;
+}
+
 @media screen and (max-width: 768px)  {
     .topNavLink{
         display: none;

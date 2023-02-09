@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import { MdMoreVert } from "react-icons/md";
 import Axios from "axios";
 import { useAuthContext } from "../../context/AuthProvider";
+import { MdMoreVert } from "react-icons/md";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 
@@ -34,7 +34,7 @@ export default function AllPosts({ post }) {
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
-  
+
   return (
     <div className="post">
       {specificUser && (
