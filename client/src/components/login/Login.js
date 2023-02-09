@@ -76,7 +76,7 @@ export default function Login() {
                           <input
                             type="email"
                             id="email"
-                            className="form-control form-control-lg"
+                            className="box form-control form-control-lg"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required

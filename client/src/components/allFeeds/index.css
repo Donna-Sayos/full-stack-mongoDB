@@ -84,3 +84,10 @@
     border-bottom: 1px dashed gray;
     font-size: 15px;
 }
+
+.empty {
+    color: gray;
+    text-align: center;
+    margin-top: 20px;
+    font-size: large;
+}

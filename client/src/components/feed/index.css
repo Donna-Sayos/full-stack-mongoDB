@@ -5,3 +5,10 @@
 .feedWrapper{
     padding: 20px;
 }
+
+.empty {
+    color: gray;
+    text-align: center;
+    margin-top: 20px;
+    font-size: large;
+}

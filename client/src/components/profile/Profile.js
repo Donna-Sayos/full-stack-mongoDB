@@ -69,7 +69,7 @@ export default function Profile() {
             </div>
             <div className="profileRightBottom">
               <Feed username={username} />
-              <RightSidebar user={user} specificUser={specificUser} />
+              <RightSidebar specificUser={specificUser} />
             </div>
           </div>
         )}

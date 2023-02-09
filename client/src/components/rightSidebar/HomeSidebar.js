@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/AuthProvider";
 import Online from "../online/Online";
@@ -26,7 +26,7 @@ export default function HomeSidebar() {
       />
       <h4 className="rightSidebarTitle">Online Friends</h4>
       <ul className="rightSidebarFriendList">
-        {currentUser && currentUser.followings > 0 ? (
+        {currentUser && currentUser.followings.length > 0 ? (
           currentUser.followings.map((user, i) => (
             <Online key={i} user={user} />
           ))

@@ -23,8 +23,8 @@ export default function TopNav() {
       </div>
       <div className="topNavRight">
         <div className="topNavLinks">
-          <span className="topNavLink">Homepage</span>
-          <span className="topNavLink">Timeline</span>
+          <span className="topNavLink">Homepage</span> {/* TODO: add navigate() */}
+          <span className="topNavLink">Timeline</span> {/* TODO: add navigate() */}
         </div>
         <div className="topNavIcons">
           <div className="topNavIconItem">

@@ -28,9 +28,13 @@ export default function Feed({ username }) {
     <div className="feed">
       <div className="feedWrapper">
         {(!username || username === user.username) && <Shares />}
-        {posts.map((post) => (
-          <Posts key={post._id} post={post} />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <Posts key={post._id} post={post} />
+          ))
+        ) : (
+          <p className="empty">Be the first to make a post!</p>
+        )}
       </div>
     </div>
   );

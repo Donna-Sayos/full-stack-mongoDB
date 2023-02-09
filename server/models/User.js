@@ -1,8 +1,8 @@
 require("dotenv").config({ path: "./server/config/config.env" });
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema; // This is a constructor function for creating new schemas
-const crypto = require("crypto"); // for resetting password;
-const bcrypt = require("bcrypt");
+const crypto = require("crypto"); // crypto is for hashing passwords more securely
+const bcrypt = require("bcrypt"); // bcrypt is for 
 const jwt = require("jsonwebtoken");
 
 const UserSchema = new Schema(
@@ -125,7 +125,7 @@ const encryptPassword = (password) => {
 
 // Decrypt the password
 const decryptPassword = (key, iv, encrypted) => {
-  iv = Buffer.from(iv, "hex");
+  iv = Buffer.from(iv, "hex"); 
   encrypted = Buffer.from(encrypted, "hex");
   const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
   let decrypted = decipher.update(encrypted);

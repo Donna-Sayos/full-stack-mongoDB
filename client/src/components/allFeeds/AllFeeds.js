@@ -23,9 +23,13 @@ export default function AllFeeds() {
     <div className="feed">
       <div className="feedWrapper">
         <Shares />
-        {allPosts.map((post) => (
-          <AllPosts key={post._id} post={post} />
-        ))}
+        {allPosts && allPosts.length > 0 ? (
+          allPosts.map((post) => (
+            <AllPosts key={post._id} post={post} />
+          ))
+        ) : (
+          <p className="empty">Be the first to make a post!</p>
+        )}
       </div>
     </div>
   );
