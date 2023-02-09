@@ -19,8 +19,6 @@ export default function AllFeeds() {
     fetchPosts();
   }, []);
 
-  console.log("allPosts at ALLFEEDS.js: ", allPosts)
-
   return (
     <div className="feed">
       <div className="feedWrapper">

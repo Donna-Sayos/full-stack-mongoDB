@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./index.css";
-import Axios from "axios";
 import { useAuthContext } from "../../context/AuthProvider";
 import Friends from "../friends/Friends";
 import {
@@ -15,18 +14,11 @@ import {
   MdEvent,
 } from "react-icons/md";
 
-export default function Sidebar() { {/* TODO: needs to add some functionality */}
-  const [otherUsers, setOtherUsers] = useState([]);
-  const { user } = useAuthContext();
-
-  async function getUsers() {
-    const { data } = await Axios.get("/api/v1/users");
-    setOtherUsers(data.filter((u) => u._id !== user._id));
+export default function Sidebar() {
+  {
+    /* TODO: needs to add some functionality */
   }
-
-  useEffect(() => {
-    getUsers();
-  }, []);
+  const { user: currentUser } = useAuthContext();
 
   return (
     <div className="sidebar">
@@ -72,9 +64,9 @@ export default function Sidebar() { {/* TODO: needs to add some functionality */
         <button className="sidebarButton">Show More</button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
-          {otherUsers.map((u) => (
-            <Friends key={u._id} user={u} />
-          ))}
+          {currentUser && currentUser.followings.length > 0
+            ? currentUser.followings.map((u, i) => <Friends key={i} user={u} />)
+            : null}
         </ul>
       </div>
     </div>

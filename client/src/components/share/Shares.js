@@ -27,7 +27,6 @@ export default function Shares() {
       data.append("name", fileName);
       data.append("uploadImg", file);
       newPost.img = fileName;
-      console.log("newPost: ", newPost);
       try {
         await Axios.post("/api/v1/upload", data);
       } catch (err) {
@@ -41,8 +40,6 @@ export default function Shares() {
       console.error("Error creating post: ", err.message);
     }
   };
-
-  console.log("FILE from Shares.js: ", file);
 
   return (
     <div className="share">

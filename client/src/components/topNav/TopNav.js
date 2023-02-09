@@ -29,15 +29,15 @@ export default function TopNav() {
         <div className="topNavIcons">
           <div className="topNavIconItem">
             <BiUserPin size={25} />
-            <span className="topNavIconBadge">1</span>
+            {/* <span className="topNavIconBadge">1</span> */}
           </div>
           <div className="topNavIconItem">
             <BsFillChatLeftTextFill size={18} />
-            <span className="topNavIconBadge">2</span>
+            {/* <span className="topNavIconBadge">2</span> */}
           </div>
           <div className="topNavIconItem">
             <BsFillBellFill size={18} />
-            <span className="topNavIconBadge">1</span>
+            {/* <span className="topNavIconBadge">1</span> */}
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>

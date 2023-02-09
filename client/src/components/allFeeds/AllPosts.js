@@ -34,6 +34,7 @@ export default function AllPosts({ post }) {
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
   };
+  
   return (
     <div className="post">
       {specificUser && (

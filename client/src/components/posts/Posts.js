@@ -10,7 +10,7 @@ export default function Posts({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
-  const specificUser = user ? user.find(u => u._id === post.userId) : null;
+  const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
 
   useEffect(() => {
@@ -61,11 +61,9 @@ export default function Posts({ post }) {
           </div>
           <div className="postCenter">
             <span className="postText">{post?.desc}</span>
-            <img
-              className="postImg"
-              src={"/assets/" + post.img}
-              alt="post"
-            />
+            {post.img && (
+              <img className="postImg" src={"/assets/" + post.img} alt="post" />
+            )}
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
