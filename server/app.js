@@ -54,22 +54,25 @@ app.use(
 
 app.use(logger);
 
+app.use(express.static(join(__dirname, "..", "public")));
+app.use("/images", express.static(join(__dirname, "public/images")));
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images"); // the files are saved in the "public/images" folder (relative to the root of the project)
+    cb(null, "public/images");
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
   },
 });
 
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
 
 app.post("/api/v1/upload", upload.single("file"), (req, res) => {
   try {
-    return res.status(200).json("File uploded successfully");
-  } catch (error) {
-    console.error('Error at server-side upload api', error);
+    res.status(200).send({ message: "Image uploaded successfully" });
+  } catch (err) {
+    res.status(500).send({ message: "Error uploading image" });
   }
 });
 
@@ -92,9 +95,6 @@ app.get("/env", async function (req, res) {
     res.status(500).send(err.message || "ENV api error.");
   }
 });
-
-app.use(express.static(join(__dirname, "..", "public")));
-app.use("/images", express.static(join(__dirname, "public/images")));
 
 app.use((req, res, next) => {
   if (extname(req.path).length) {

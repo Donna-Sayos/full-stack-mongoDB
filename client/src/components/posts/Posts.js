@@ -61,11 +61,11 @@ export default function Posts({ post }) {
           </div>
           <div className="postCenter">
             <span className="postText">{post?.desc}</span>
-            {/* <img
+            <img
               className="postImg"
               src={"/images/posts/" + post.img}
               alt="post"
-            /> */}
+            />
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">

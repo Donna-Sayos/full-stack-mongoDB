@@ -23,19 +23,23 @@ export default function Shares() {
     };
     if (file) {
       const data = new FormData();
-      const fileName = Date.now() + file.name;
+      const fileName = file.name;
       data.append("name", fileName);
       data.append("file", file);
       newPost.img = fileName;
+      console.log("newPost: ", newPost)
       try {
-        await Axios.post("/api/v1/upload", data);
+        // await Axios.post("/api/v1/upload", data);
+        const response = await Axios.post("/api/v1/upload", data);
+        console.log("response: ", response)
       } catch (err) {
         console.error("Error uploading file: ", err.message);
       }
     }
     try {
+      console.log("newPost: ", newPost)
       await Axios.post("/api/v1/posts", newPost);
-      window.location.reload();
+      // window.location.reload();
     } catch (err) {
       console.error("Error creating post: ", err.message);
     }
