@@ -5,7 +5,7 @@ import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/AuthProvider";
 
-export default function TopNav() {
+export default function TopNav({ toggleShowAllFeeds }) {
   const { user } = useAuthContext();
 
   return (
@@ -23,11 +23,12 @@ export default function TopNav() {
       </div>
       <div className="topNavRight">
         <div className="topNavLinks">
-          <Link to="/" className="navLink">
+          <Link to="/" className="navLink" onClick={toggleShowAllFeeds}>
             <span className="topNavLink">Homepage</span>
           </Link>
-          <span className="topNavLink">Timeline</span>{" "}
-          {/* TODO: add navigate() */}
+          <Link to="/" className="navLink" onClick={toggleShowAllFeeds}>
+            <span className="topNavLink">Timeline</span>
+          </Link>
         </div>
         <div className="topNavIcons">
           <div className="topNavIconItem">
