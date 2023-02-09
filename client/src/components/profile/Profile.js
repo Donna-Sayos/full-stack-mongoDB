@@ -44,8 +44,8 @@ export default function Profile() {
                   className="profileCoverImg"
                   src={
                     specificUser.coverPicture
-                      ? "/images/" + specificUser.coverPicture
-                      : "/images/" + "avatar/default-cover.png"
+                      ? "/assets/" + specificUser.coverPicture
+                      : "/assets/" + "user/default-cover.png"
                   }
                   alt="user cover"
                 />
@@ -56,8 +56,8 @@ export default function Profile() {
                   className="profileUserImg"
                   src={
                     specificUser.profilePicture
-                      ? "/images/" + specificUser.profilePicture
-                      : "/images/" + "avatar/default-user-photo.png"
+                      ? "/assets/" + specificUser.profilePicture
+                      : "/assets/" + "user/default-user-photo.png"
                   }
                   alt="user"
                 />

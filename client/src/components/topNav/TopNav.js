@@ -44,8 +44,8 @@ export default function TopNav() {
           <img
             src={
               user.profilePicture
-                ? "/images/" + user.profilePicture
-                : "/images/" + "avatar/default-user-photo.png"
+                ? "/assets/" + user.profilePicture
+                : "/assets/" + "user/default-user-photo.png"
             }
             alt="user"
             className="topNavImg"

@@ -45,8 +45,8 @@ export default function AllPosts({ post }) {
                   className="postProfileImg"
                   src={
                     specificUser.profilePicture
-                      ? "/images/" + specificUser.profilePicture
-                      : "/images/" + "avatar/default-user-photo.png"
+                      ? "/assets/" + specificUser.profilePicture
+                      : "/assets/" + "user/default-user-photo.png"
                   }
                   alt=""
                 />
@@ -62,7 +62,7 @@ export default function AllPosts({ post }) {
             <span className="postText">{post?.desc}</span>
             <img
               className="postImg"
-              src={post.img}
+              src={"/assets/posts/" + post.img}
               alt="post"
             />
           </div>
@@ -70,13 +70,13 @@ export default function AllPosts({ post }) {
             <div className="postBottomLeft">
               <img
                 className="likeIcon"
-                src={"/images/" + "others/thumbsup.png"}
+                src={"/assets/" + "others/thumbsup.png"}
                 onClick={likeHandler}
                 alt="like"
               />
               <img
                 className="likeIcon"
-                src={"/images/" + "others/heart.png"}
+                src={"/assets/" + "others/heart.png"}
                 onClick={likeHandler}
                 alt="heart"
               />

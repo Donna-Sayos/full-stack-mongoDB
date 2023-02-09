@@ -23,7 +23,7 @@ export default function Shares() {
     };
     if (file) {
       const data = new FormData();
-      const fileName = file.name;
+      const fileName = new Date.now() + file.name;
       data.append("name", fileName);
       data.append("file", file);
       newPost.img = fileName;
@@ -53,8 +53,8 @@ export default function Shares() {
             className="shareProfileImg"
             src={
               user.profilePicture
-                ? "/images/" + user.profilePicture
-                : "/images/" + "avatar/default-user-photo.png"
+                ? "/assets/" + user.profilePicture
+                : "/assets/" + "user/default-user-photo.png"
             }
             alt="user"
           />

@@ -54,12 +54,9 @@ app.use(
 
 app.use(logger);
 
-app.use(express.static(join(__dirname, "..", "public")));
-app.use("/images", express.static(join(__dirname, "public/images")));
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/images");
+    cb(null, "../public/assets");
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
@@ -95,6 +92,9 @@ app.get("/env", async function (req, res) {
     res.status(500).send(err.message || "ENV api error.");
   }
 });
+
+app.use(express.static(join(__dirname, "..", "public")));
+app.use("/assets", express.static(join(__dirname, "..", "public/assets")));
 
 app.use((req, res, next) => {
   if (extname(req.path).length) {

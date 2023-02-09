@@ -8,8 +8,8 @@ export default function Friends({ user }) {
         className="sidebarFriendImg"
         src={
           user.profilePicture
-            ? "/images/" + user.profilePicture
-            : "/images/" + "avatar/default-user-photo.png"
+            ? "/assets/" + user.profilePicture
+            : "/assets/" + "user/default-user-photo.png"
         }
         alt="friend"
       />

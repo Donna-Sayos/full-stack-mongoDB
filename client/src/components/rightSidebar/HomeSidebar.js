@@ -11,7 +11,7 @@ export default function HomeSidebar() {
       <div className="birthdayContainer">
         <img
           className="birthdayImg"
-          src={"/images/" + "others/gift.png"}
+          src={"/assets/" + "others/gift.png"}
           alt="birthday"
         />
         <span className="birthdayText">
@@ -21,7 +21,7 @@ export default function HomeSidebar() {
       </div>
       <img
         className="rightSidebarAd"
-        src={"/images/" + "others/quote.png"}
+        src={"/assets/" + "others/quote.png"}
         alt="self-love quote"
       />
       <h4 className="rightSidebarTitle">Online Friends</h4>

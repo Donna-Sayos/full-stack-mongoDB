@@ -90,8 +90,8 @@ export default function ProfileSidebar({ specificUser }) {
                 <img
                   src={
                     friend.profilePicture
-                      ? "/images/" + friend.profilePicture
-                      : "/images/" + "avatar/default-user-photo.png"
+                      ? "/assets/" + friend.profilePicture
+                      : "/assets/" + "user/default-user-photo.png"
                   }
                   alt="friend"
                   className="rightSidebarFollowingImg"

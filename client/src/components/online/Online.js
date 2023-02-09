@@ -27,8 +27,8 @@ export default function Online({ user }) {
               className="rightSidebarProfileImg"
               src={
                 onlineUser.profilePicture
-                  ? "/images/" + onlineUser.profilePicture
-                  : "/images/" + "avatar/default-user-photo.png"
+                  ? "/assets/" + onlineUser.profilePicture
+                  : "/assets/" + "user/default-user-photo.png"
               }
               alt="user"
             />
