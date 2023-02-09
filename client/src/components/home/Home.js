@@ -7,16 +7,14 @@ import FriendFeeds from "../friendFeeds/FriendFeeds";
 import RightSidebar from "../rightSidebar/RightSidebar";
 
 export default function Home() {
-  const [showAllFeeds, setShowAllFeeds] = useState(true);
-
-  const toggleShowAllFeeds = () => setShowAllFeeds(!showAllFeeds);
+  const [displayFeed, setDisplayFeed] = useState("friendFeeds");
 
   return (
     <>
-      <TopNav toggleShowAllFeeds={toggleShowAllFeeds} />
+      <TopNav setDisplayFeed={setDisplayFeed} />
       <div className="homeContainer">
         <Sidebar />
-        {showAllFeeds ? <FriendFeeds /> : <AllFeeds />}
+        {displayFeed === "allFeeds" ? <AllFeeds /> : <FriendFeeds />}
         <RightSidebar />
       </div>
     </>

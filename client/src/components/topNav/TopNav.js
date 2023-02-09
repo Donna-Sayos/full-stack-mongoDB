@@ -5,7 +5,7 @@ import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/AuthProvider";
 
-export default function TopNav({ toggleShowAllFeeds }) {
+export default function TopNav({ setDisplayFeed }) {
   const { user } = useAuthContext();
 
   return (
@@ -23,10 +23,10 @@ export default function TopNav({ toggleShowAllFeeds }) {
       </div>
       <div className="topNavRight">
         <div className="topNavLinks">
-          <Link to="/" className="navLink" onClick={toggleShowAllFeeds}>
+          <Link to="/" className="navLink" onClick={() => setDisplayFeed("friendFeeds")}>
             <span className="topNavLink">Homepage</span>
           </Link>
-          <Link to="/" className="navLink" onClick={toggleShowAllFeeds}>
+          <Link to="/" className="navLink" onClick={() => setDisplayFeed("allFeeds")}>
             <span className="topNavLink">Timeline</span>
           </Link>
         </div>
