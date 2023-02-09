@@ -60,11 +60,9 @@ export default function AllPosts({ post }) {
           </div>
           <div className="postCenter">
             <span className="postText">{post?.desc}</span>
-            <img
-              className="postImg"
-              src={"/assets/posts/" + post.img}
-              alt="post"
-            />
+            {post.img && (
+              <img className="postImg" src={"/assets/" + post.img} alt="post" />
+            )}
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">

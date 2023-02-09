@@ -23,27 +23,26 @@ export default function Shares() {
     };
     if (file) {
       const data = new FormData();
-      const fileName = new Date.now() + file.name;
+      const fileName = Date.now() + file.name;
       data.append("name", fileName);
-      data.append("file", file);
+      data.append("uploadImg", file);
       newPost.img = fileName;
-      console.log("newPost: ", newPost)
+      console.log("newPost: ", newPost);
       try {
-        // await Axios.post("/api/v1/upload", data);
-        const response = await Axios.post("/api/v1/upload", data);
-        console.log("response: ", response)
+        await Axios.post("/api/v1/upload", data);
       } catch (err) {
         console.error("Error uploading file: ", err.message);
       }
     }
     try {
-      console.log("newPost: ", newPost)
       await Axios.post("/api/v1/posts", newPost);
-      // window.location.reload();
+      window.location.reload();
     } catch (err) {
       console.error("Error creating post: ", err.message);
     }
   };
+
+  console.log("FILE from Shares.js: ", file);
 
   return (
     <div className="share">
@@ -87,6 +86,7 @@ export default function Shares() {
                 style={{ display: "none" }}
                 type="file"
                 id="file"
+                name="uploadImg"
                 accept=".png,.jpeg,.jpg"
                 onChange={(e) => setFile(e.target.files[0])}
               />

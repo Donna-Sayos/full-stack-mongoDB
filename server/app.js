@@ -56,7 +56,7 @@ app.use(logger);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "../public/assets");
+    cb(null, join(__dirname, "..", "public/assets"));
   },
   filename: (req, file, cb) => {
     cb(null, req.body.name);
@@ -65,8 +65,16 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-app.post("/api/v1/upload", upload.single("file"), (req, res) => {
+app.post("/api/v1/upload", upload.single("uploadImg"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send({ message: "No file included in the request" });
+  }
+
   try {
+    console.log(
+      "File path:",
+      `../public/assets/${Date.now() + extname(req.file.originalname)}`
+    );
     res.status(200).send({ message: "Image uploaded successfully" });
   } catch (err) {
     res.status(500).send({ message: "Error uploading image" });
