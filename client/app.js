@@ -20,6 +20,7 @@ export default function app() {
 
   const resetRecaptcha = () => {
     recaptchaRef.current.reset();
+    console.log("recaptcha reset");
     setIsdisabled(true);
   };
 
