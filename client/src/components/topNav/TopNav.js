@@ -23,10 +23,18 @@ export default function TopNav({ setDisplayFeed }) {
       </div>
       <div className="topNavRight">
         <div className="topNavLinks">
-          <Link to="/" className="navLink" onClick={() => setDisplayFeed("friendFeeds")}>
+          <Link
+            to="/?home"
+            className="navLink"
+            onClick={() => setDisplayFeed("friendFeeds")}
+          >
             <span className="topNavLink">Homepage</span>
           </Link>
-          <Link to="/" className="navLink" onClick={() => setDisplayFeed("allFeeds")}>
+          <Link
+            to="/?timeline"
+            className="navLink"
+            onClick={() => setDisplayFeed("allFeeds")}
+          >
             <span className="topNavLink">Timeline</span>
           </Link>
         </div>
