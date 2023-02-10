@@ -1,31 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import "./index.css";
-import Axios from "axios";
 import SinglePost from "./SinglePost";
 
-export default function FriendPosts({ userId }) {
-  const [allPosts, setAllPosts] = useState([]);
-  const friendPost = allPosts.filter((p) => p.userId === userId);
+export default function FriendPosts({ userId, currentUser, posts }) {
+  const friendAndCurrentUserPost = currentUser
+    ? posts.filter(
+        (p) => p.userId === userId || p.userId === currentUser._id
+      )
+    : [];
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { data } = await Axios.get("/api/v1/posts/");
-      setAllPosts(
-        data.posts.sort(
-          (p1, p2) => new Date(p2.createdAt) - new Date(p1.createdAt)
-        )
-      );
-    };
-
-    fetchPosts();
-  }, []);
-
+    console.log(friendAndCurrentUserPost)
+  
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {friendPost && friendPost.length > 0 ? (
-          friendPost.map((p) => <SinglePost key={p._id} post={p} />)
-        ) : null}
+        {friendAndCurrentUserPost && friendAndCurrentUserPost.length > 0
+          ? friendAndCurrentUserPost.map((p) => (
+              <SinglePost key={p._id} post={p} />
+            ))
+          : null}
       </div>
     </div>
   );
