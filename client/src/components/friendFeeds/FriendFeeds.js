@@ -26,31 +26,34 @@ export default function FriendFeeds() {
     <div className="feed">
       <div className="feedWrapper">
         <Shares />
-        {/* {currentUser && currentUser.followings.length > 0 ? (
-          currentUser.followings.map((uid, i) => (
-            <FriendPosts key={i} userId={uid} currentUser={currentUser} posts={posts}/>
-          ))
-        ) : (
-          <p className="empty">Be the first to make a post!</p>
-        )} */}
-        {currentUser && currentUser.followings.length > 0 ? (
-          currentUser.followings.map((uid, i) => (
+        {currentUser ? (
+          currentUser.followings.length > 0 ? (
+            currentUser.followings
+              .map((uid, i) => (
+                <FriendPosts
+                  key={i}
+                  userId={uid}
+                  currentUser={currentUser}
+                  posts={posts}
+                />
+              ))
+              .filter((p) => p)
+          ) : (
             <FriendPosts
-              key={i}
-              userId={uid}
+              userId={currentUser._id}
               currentUser={currentUser}
               posts={posts}
             />
-          ))
-        ) : currentUser ? (
-          <FriendPosts
-            userId={currentUser._id}
-            currentUser={currentUser}
-            posts={posts}
-          />
-        ) : (
-          <p className="empty">Be the first to make a post!</p>
-        )}
+          )
+        ) : null}
+        {currentUser &&
+          posts.filter(
+            (p) =>
+              p.userId === currentUser._id ||
+              currentUser.followings.includes(p.userId)
+          ).length === 0 && (
+            <p className="empty">Be the first to make a post!</p>
+          )}
       </div>
     </div>
   );

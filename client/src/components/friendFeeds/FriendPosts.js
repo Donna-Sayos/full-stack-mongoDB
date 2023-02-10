@@ -8,8 +8,6 @@ export default function FriendPosts({ userId, currentUser, posts }) {
       ? posts.filter((p) => p.userId === userId || p.userId === currentUser._id)
       : [];
 
-  console.log("friendAndCurrentUserPost", friendAndCurrentUserPost);
-
   return (
     <div className="feed">
       <div className="feedWrapper">
