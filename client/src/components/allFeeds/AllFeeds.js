@@ -20,14 +20,14 @@ export default function AllFeeds() {
     fetchPosts();
   }, []);
 
+  console.log("all posts from AllFeeds.js", allPosts);
+
   return (
     <div className="feed">
       <div className="feedWrapper">
         <Shares />
         {allPosts && allPosts.length > 0 ? (
-          allPosts.map((post) => (
-            <AllPosts key={post._id} post={post} />
-          ))
+          allPosts.map((post) => <AllPosts key={post._id} post={post} />)
         ) : (
           <p className="empty">Be the first to make a post!</p>
         )}

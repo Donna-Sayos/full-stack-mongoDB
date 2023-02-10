@@ -65,6 +65,7 @@ const login = async (req, res, next) => {
       _id: user._id,
       followings: user.followings,
       desc: user.desc,
+      likedPosts: user.likedPosts,
     });
   } catch (error) {
     console.error(error);

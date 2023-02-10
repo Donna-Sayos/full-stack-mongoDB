@@ -31,9 +31,6 @@ export default function Profile() {
     getUser();
   }, [username]);
 
-  console.log("currentUser", currentUser.username);
-  console.log("specificUser", specificUser);
-
   return (
     <>
       <TopNav />

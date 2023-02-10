@@ -2,7 +2,7 @@ require("dotenv").config({ path: "./server/config/config.env" });
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema; // This is a constructor function for creating new schemas
 const crypto = require("crypto"); // crypto is for hashing passwords more securely
-const bcrypt = require("bcrypt"); // bcrypt is for 
+const bcrypt = require("bcrypt"); // bcrypt is for
 const jwt = require("jsonwebtoken");
 
 const UserSchema = new Schema(
@@ -77,6 +77,11 @@ const UserSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    likedPosts: {
+      type: [Schema.Types.ObjectId],
+      ref: "Post",
+      default: [],
+    },
     desc: {
       type: String,
       max: 50,
@@ -125,7 +130,7 @@ const encryptPassword = (password) => {
 
 // Decrypt the password
 const decryptPassword = (key, iv, encrypted) => {
-  iv = Buffer.from(iv, "hex"); 
+  iv = Buffer.from(iv, "hex");
   encrypted = Buffer.from(encrypted, "hex");
   const decipher = crypto.createDecipheriv("aes-256-cbc", key, iv);
   let decrypted = decipher.update(encrypted);
@@ -151,11 +156,7 @@ UserSchema.pre("save", async function (next) {
 
 //decrypt method;
 UserSchema.methods.decryptPassword = function () {
-  return decryptPassword(
-    process.env.ENCRYPT_KEY,
-    this.iv,
-    this.password
-  ); // this returns the decrypted password;
+  return decryptPassword(process.env.ENCRYPT_KEY, this.iv, this.password); // this returns the decrypted password;
 };
 
 // instance method;
