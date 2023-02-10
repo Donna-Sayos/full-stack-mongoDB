@@ -6,8 +6,8 @@ import Shares from "../share/Shares";
 import FriendPosts from "./FriendPosts";
 
 export default function FriendFeeds() {
-    const [posts, setPosts] = useState([]);
-    const { user: currentUser } = useAuthContext();
+  const [posts, setPosts] = useState([]);
+  const { user: currentUser } = useAuthContext();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -26,10 +26,28 @@ export default function FriendFeeds() {
     <div className="feed">
       <div className="feedWrapper">
         <Shares />
-        {currentUser && currentUser.followings.length > 0 ? (
+        {/* {currentUser && currentUser.followings.length > 0 ? (
           currentUser.followings.map((uid, i) => (
             <FriendPosts key={i} userId={uid} currentUser={currentUser} posts={posts}/>
           ))
+        ) : (
+          <p className="empty">Be the first to make a post!</p>
+        )} */}
+        {currentUser && currentUser.followings.length > 0 ? (
+          currentUser.followings.map((uid, i) => (
+            <FriendPosts
+              key={i}
+              userId={uid}
+              currentUser={currentUser}
+              posts={posts}
+            />
+          ))
+        ) : currentUser ? (
+          <FriendPosts
+            userId={currentUser._id}
+            currentUser={currentUser}
+            posts={posts}
+          />
         ) : (
           <p className="empty">Be the first to make a post!</p>
         )}

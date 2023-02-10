@@ -3,14 +3,13 @@ import "./index.css";
 import SinglePost from "./SinglePost";
 
 export default function FriendPosts({ userId, currentUser, posts }) {
-  const friendAndCurrentUserPost = currentUser
-    ? posts.filter(
-        (p) => p.userId === userId || p.userId === currentUser._id
-      )
-    : [];
+  const friendAndCurrentUserPost =
+    currentUser && posts
+      ? posts.filter((p) => p.userId === userId || p.userId === currentUser._id)
+      : [];
 
-    console.log(friendAndCurrentUserPost)
-  
+  console.log("friendAndCurrentUserPost", friendAndCurrentUserPost);
+
   return (
     <div className="feed">
       <div className="feedWrapper">

@@ -33,7 +33,7 @@ export default function Feed({ username }) {
             <Posts key={post._id} post={post} />
           ))
         ) : (
-          <p className="empty">Be the first to make a post!</p>
+          <p className="empty">Don't be shy. Make a post!</p>
         )}
       </div>
     </div>
