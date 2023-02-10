@@ -19,7 +19,7 @@ export default function Profile() {
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
-    navigate("/login");
+    navigate("/");
   };
 
   async function getUser() {

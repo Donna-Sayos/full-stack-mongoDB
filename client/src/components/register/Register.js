@@ -20,7 +20,7 @@ export default function Register({ resetRecaptcha }) {
 
   const navigate = useNavigate();
 
-  const clickHandler = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     if (confirmPassword !== password) {
       passwordRef.current.setCustomValidity(
@@ -69,12 +69,25 @@ export default function Register({ resetRecaptcha }) {
                     Create an account
                   </h3>
 
-                  <form onSubmit={clickHandler}>
+                  <form onSubmit={submitHandler}>
                     <div className="form-outline mb-1">
                       <input
                         type="text"
                         id="username"
                         value={username}
+                        onBlur={(e) => {
+                          if (
+                            !e.target.value.match(
+                              /^[^\\\/\:\*\?\"\<\>\|\.\#]+$/
+                            )
+                          ) {
+                            e.target.setCustomValidity(
+                              'The characters \\ / : * ? " < > | . # are not allowed in the username.'
+                            );
+                          } else {
+                            e.target.setCustomValidity("");
+                          }
+                        }}
                         onChange={(e) => setUsername(e.target.value)}
                         required
                         className="form-control form-control-lg"
