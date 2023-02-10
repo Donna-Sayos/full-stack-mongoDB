@@ -14,7 +14,7 @@ export default function Profile() {
   const username = useParams().username;
   const specificUser = user.filter((user) => user.username === username)[0];
 
-  const { dispatch } = useAuthContext();
+  const { user: currentUser, dispatch } = useAuthContext();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -30,6 +30,9 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, [username]);
+
+  console.log("currentUser", currentUser.username);
+  console.log("specificUser", specificUser);
 
   return (
     <>
@@ -49,9 +52,11 @@ export default function Profile() {
                   }
                   alt="user cover"
                 />
-                <div className="logout">
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
+                {currentUser.username === specificUser.username && (
+                  <div className="logout">
+                    <button onClick={handleLogout}>Logout</button>
+                  </div>
+                )}
                 <img
                   className="profileUserImg"
                   src={

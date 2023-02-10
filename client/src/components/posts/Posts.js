@@ -52,7 +52,7 @@ export default function Posts({ post }) {
                   alt=""
                 />
               </Link>
-              <span className="postUsername">{specificUser.username}</span>
+              <span className="post-Username">{specificUser.username}</span>
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             <div className="postTopRight">
@@ -67,12 +67,6 @@ export default function Posts({ post }) {
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
-              <img
-                className="likeIcon"
-                src={"/assets/" + "others/thumbsup.png"}
-                onClick={likeHandler}
-                alt="like"
-              />
               <img
                 className="likeIcon"
                 src={"/assets/" + "others/heart.png"}

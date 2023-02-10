@@ -28,9 +28,9 @@
     object-fit: cover;
 }
 
-.postUsername {
+.post-Username {
     font-size: 15px;
-    font-weight: 500;
+    font-weight: bold;
     margin: 0 10px;
 }
 

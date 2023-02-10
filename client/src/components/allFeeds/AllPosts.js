@@ -69,12 +69,6 @@ export default function AllPosts({ post }) {
             <div className="postBottomLeft">
               <img
                 className="likeIcon"
-                src={"/assets/" + "others/thumbsup.png"}
-                onClick={likeHandler}
-                alt="like"
-              />
-              <img
-                className="likeIcon"
                 src={"/assets/" + "others/heart.png"}
                 onClick={likeHandler}
                 alt="heart"
