@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import "./index.css";
-import IMG from "../../../../public/assets/others/logo.png";
+import IMG from "../../../../../public/assets/others/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import Typewriter from "typewriter-effect";
 import { BiShow, BiHide } from "react-icons/bi";
-import { loginCalls } from "../../authLogger";
-import { useAuthContext } from "../../context/AuthProvider";
+import { loginCalls } from "../../../authLogger";
+import { useAuthContext } from "../../../context/AuthProvider";
 
 export default function Login({
   handleRecaptcha,

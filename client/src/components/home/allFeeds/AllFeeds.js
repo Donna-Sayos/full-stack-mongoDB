@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import Axios from "axios";
-import Shares from "../share/Shares";
+import Shares from "../../share/Shares";
 import AllPosts from "./AllPosts";
 
 export default function AllFeeds() {

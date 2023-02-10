@@ -3,8 +3,8 @@ import { useLocation } from "react-router-dom";
 import "./index.css";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
-import AllFeeds from "../allFeeds/AllFeeds";
-import FriendFeeds from "../friendFeeds/FriendFeeds";
+import AllFeeds from "./allFeeds/AllFeeds";
+import FriendFeeds from "./friendFeeds/FriendFeeds";
 import RightSidebar from "../rightSidebar/RightSidebar";
 
 export default function Home() {

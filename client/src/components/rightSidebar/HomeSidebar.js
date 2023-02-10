@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/AuthProvider";
-import Online from "../online/Online";
+import Online from "./online/Online";
 
 export default function HomeSidebar() {
   const { user: currentUser } = useAuthContext();

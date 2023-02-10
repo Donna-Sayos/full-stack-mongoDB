@@ -1,7 +1,7 @@
 import React from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/AuthProvider";
-import Friends from "../friends/Friends";
+import Friends from "./friends/Friends";
 import {
   MdRssFeed,
   MdOutlineChat,

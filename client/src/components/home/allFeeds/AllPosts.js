@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
-import { MdMoreVert } from "react-icons/md";
 import Axios from "axios";
-import { useAuthContext } from "../../context/AuthProvider";
+import { useAuthContext } from "../../../context/AuthProvider";
+import { MdMoreVert } from "react-icons/md";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 
-export default function Posts({ post }) {
+export default function AllPosts({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
@@ -52,11 +52,11 @@ export default function Posts({ post }) {
                   alt=""
                 />
               </Link>
-              <span className="post-Username">{specificUser.username}</span>
+              <span className="postUsername">{specificUser.username}</span>
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             <div className="postTopRight">
-              <MdMoreVert />
+              <MdMoreVert /> {/* TODO: needs to add some functionality */}
             </div>
           </div>
           <div className="postCenter">

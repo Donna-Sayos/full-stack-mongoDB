@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./index.css";
-import { useAuthContext } from "../../context/AuthProvider";
-import Axios from "axios";
 import { MdMoreVert } from "react-icons/md";
+import Axios from "axios";
+import { useAuthContext } from "../../../context/AuthProvider";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 
-export default function SinglePost({ post }) {
+export default function Posts({ post }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
@@ -56,23 +56,13 @@ export default function SinglePost({ post }) {
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             <div className="postTopRight">
-              <MdMoreVert size={24} />{" "}
-              {/* TODO: needs to add some functionality */}
+              <MdMoreVert />
             </div>
           </div>
           <div className="postCenter">
-            <div className="postText">
-              <span>{post?.desc}</span>
-            </div>
+            <span className="postText">{post?.desc}</span>
             {post.img && (
-              <div>
-                <hr className="share-Hr" />
-                <img
-                  className="postImg"
-                  src={"/assets/" + post.img}
-                  alt="post"
-                />
-              </div>
+              <img className="postImg" src={"/assets/" + post.img} alt="post" />
             )}
           </div>
           <div className="postBottom">

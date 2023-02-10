@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthProvider";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
-import Feed from "../feed/Feed";
+import Feed from "./feed/Feed";
 import RightSidebar from "../rightSidebar/RightSidebar";
 
 export default function Profile() {
