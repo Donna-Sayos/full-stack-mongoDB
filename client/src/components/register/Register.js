@@ -4,7 +4,7 @@ import Axios from "axios";
 import { BiShow, BiHide } from "react-icons/bi";
 import "./index.css";
 
-export default function Register() {
+export default function Register({ resetRecaptcha }) {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -245,7 +245,10 @@ export default function Register() {
                             )}
                           </div>
                         </div>
-                        <label className="form-label mt-2" htmlFor="confirmPassword">
+                        <label
+                          className="form-label mt-2"
+                          htmlFor="confirmPassword"
+                        >
                           Confirm password
                         </label>
                       </div>
@@ -257,10 +260,11 @@ export default function Register() {
                         id="agreement"
                       />
                       <label className="form-check-label" htmlFor="agreement">
-                        I agree to {" "}
+                        I agree to{" "}
                         <Link to="#!" className="text-body">
                           <b>just be me</b>
-                        </Link> .
+                        </Link>{" "}
+                        .
                       </label>
                     </div>
                     <div className="d-flex justify-content-center">
@@ -274,7 +278,11 @@ export default function Register() {
                     <hr className="d-flex justify-content-center" />{" "}
                     <p className="text-center text-muted mt-5 mb-0">
                       Already have an account?{" "}
-                      <Link className="fw-bold text-body" to="/login">
+                      <Link
+                        className="fw-bold text-body"
+                        to="/"
+                        onClick={resetRecaptcha}
+                      >
                         <u>Login here</u>
                       </Link>
                     </p>

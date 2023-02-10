@@ -9,9 +9,13 @@ import { BiShow, BiHide } from "react-icons/bi";
 import { loginCalls } from "../../authLogger";
 import { useAuthContext } from "../../context/AuthProvider";
 
-export default function Login() {
+export default function Login({
+  handleRecaptcha,
+  resetRecaptcha,
+  isdisabled,
+  recaptchaRef,
+}) {
   const [env, setEnv] = useState({});
-  const [isdisabled, setIsdisabled] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,16 +32,10 @@ export default function Login() {
     getEnv();
   }, []);
 
-  const handleRecaptcha = (value) => {
-    console.log("RECAPTCHA", value);
-    setIsdisabled(false);
-  };
-
   const submitHandler = async (e) => {
     try {
       e.preventDefault();
       await loginCalls({ email, password }, dispatch);
-      console.log("Logging in.......");
 
       navigate("/");
     } catch (err) {
@@ -122,6 +120,7 @@ export default function Login() {
                       </div>
                       <div className="form-check d-flex justify-content-center mb-3">
                         <ReCAPTCHA
+                          ref={recaptchaRef}
                           sitekey={`${env.API_KEY}`}
                           onChange={handleRecaptcha}
                         />
@@ -154,7 +153,11 @@ export default function Login() {
                       <div className="d-flex justify-content-center mx-4 mb-3 mb-lg-2">
                         <p className="text-center text-muted mt-4 mb-0">
                           Don't have an account?{" "}
-                          <Link className="fw-bold text-body" to="/">
+                          <Link
+                            className="fw-bold text-body"
+                            to="/signup"
+                            onClick={resetRecaptcha}
+                          >
                             <u>Signup here</u>
                           </Link>
                         </p>

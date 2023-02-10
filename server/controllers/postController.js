@@ -106,7 +106,7 @@ const getTimelinePosts = async (req, res) => {
 
 const getUserPosts = async (req, res) => {
   try {
-    const user = await User.findOne({ username: req.params.username });
+    const user = await User.findOne({ username: req.params.username.toLowerCase() });
     const posts = await Post.find({ userId: user._id });
     res.status(200).json(posts);
   } catch (err) {
