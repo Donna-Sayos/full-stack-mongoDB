@@ -6,7 +6,7 @@ import IMG from "../../../../../public/assets/others/logo.png";
 import ReCAPTCHA from "react-google-recaptcha";
 import Typewriter from "typewriter-effect";
 import { BiShow, BiHide } from "react-icons/bi";
-import { loginCalls } from "../../../authLogger";
+import { loginCalls } from "../../../utils/authLogger";
 import { useAuthContext } from "../../../context/auth/AuthProvider";
 
 export default function Login({
