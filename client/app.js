@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAuthContext } from "../client/src/context/AuthProvider";
+import { useAuthContext } from "../client/src/context/auth/AuthProvider";
 import Login from "../client/src/components/auth/login/Login";
 import Register from "../client/src/components/auth/register/Register";
 import Home from "../client/src/components/home/Home";

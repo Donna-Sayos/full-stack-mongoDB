@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import Axios from "axios";
-import { useAuthContext } from "../../context/AuthProvider";
+import { useAuthContext } from "../../context/auth/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 

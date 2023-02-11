@@ -3,7 +3,7 @@ import "./index.css";
 import Axios from "axios";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../context/AuthProvider";
+import { useAuthContext } from "../../context/auth/AuthProvider";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import Feed from "./feed/Feed";

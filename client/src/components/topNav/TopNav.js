@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import "./index.css";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
-import { useAuthContext } from "../../context/AuthProvider";
+import { useAuthContext } from "../../context/auth/AuthProvider";
 
 export default function TopNav({ setDisplayFeed }) {
   const { user } = useAuthContext();

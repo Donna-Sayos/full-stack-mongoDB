@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import { useAuthContext } from "../../context/AuthProvider";
+import { useAuthContext } from "../../context/auth/AuthProvider";
 import Online from "./online/Online";
 
 export default function HomeSidebar() {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
 import Axios from "axios";
-import { useAuthContext } from "../../../context/AuthProvider";
+import { useAuthContext } from "../../../context/auth/AuthProvider";
 
 export default function Online({ userId }) {
   const [otherUsers, setOtherUsers] = useState([]);

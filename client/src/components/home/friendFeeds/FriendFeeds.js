@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Axios from "axios";
-import { useAuthContext } from "../../../context/AuthProvider";
+import { useAuthContext } from "../../../context/auth/AuthProvider";
 import Shares from "../../../common/share/Shares";
 import FriendPosts from "./FriendPosts";
 
