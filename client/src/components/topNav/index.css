@@ -58,8 +58,9 @@
 
 .topNavLink {
     margin-right: 10px;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 .topNavIcons {
@@ -98,6 +99,7 @@
 .navLink {
     color: white;
     text-decoration: none;
+    padding-right: 5px;
 }
 
 .navLink:hover {

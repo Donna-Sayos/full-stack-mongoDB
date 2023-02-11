@@ -10,7 +10,7 @@ import RightSidebar from "../rightSidebar/RightSidebar";
 export default function Home() {
   const location = useLocation();
   const defaultFeed =
-    location.search === "?timeline" ? "allFeeds" : "friendFeeds";
+    location.search === "?explore" ? "allFeeds" : "friendFeeds";
   const [displayFeed, setDisplayFeed] = useState(defaultFeed);
 
   return (

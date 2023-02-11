@@ -22,6 +22,10 @@ export default function Shares() {
       desc: desc.current.value,
     };
     if (file) {
+      if (file.size > 10000000) { // 10 MB
+        console.error("File size is too large, max 10 MB allowed");
+        return;
+      }
       const data = new FormData();
       const fileName = Date.now() + file.name;
       data.append("name", fileName);

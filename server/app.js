@@ -63,7 +63,17 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  storage: storage,
+  fileFilter: (req, file, cb) => {
+    if (file.size <= 10 * 1024 * 1024) {
+      cb(null, true);
+    } else {
+      cb(null, false);
+      return cb(new Error("File size must be less than 10 MB"));
+    }
+  },
+});
 
 app.post("/api/v1/upload", upload.single("uploadImg"), (req, res) => {
   if (!req.file) {
@@ -84,7 +94,7 @@ app.post("/api/v1/upload", upload.single("uploadImg"), (req, res) => {
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/posts", postRoute);
-app.use("/api/v1/conversations", conversationRoute); 
+app.use("/api/v1/conversations", conversationRoute);
 app.use("/api/v1/messages", messageRoute);
 
 app.get("/", (req, res, next) =>
