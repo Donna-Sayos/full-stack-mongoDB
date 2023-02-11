@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../index.css";
 import Axios from "axios";
 import { useAuthContext } from "../../../context/AuthProvider";
-import Shares from "../../share/Shares";
+import Shares from "../../../common/share/Shares";
 import FriendPosts from "./FriendPosts";
 
 export default function FriendFeeds() {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
 import Axios from "axios";
-import Shares from "../../share/Shares";
-import Post from "../../../common/Post";
+import Shares from "../../../common/share/Shares";
+import Post from "../../../common/post/Post";
 
 export default function AllFeeds() {
   const [allPosts, setAllPosts] = useState([]);

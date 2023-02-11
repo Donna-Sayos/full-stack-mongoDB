@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import { useAuthContext } from "../context/AuthProvider";
+import { useAuthContext } from "../../context/AuthProvider";
 import Axios from "axios";
 import { MdMoreVert } from "react-icons/md";
 import { format } from "timeago.js";

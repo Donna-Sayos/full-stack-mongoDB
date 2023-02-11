@@ -1,6 +1,6 @@
 import React from "react";
 import "../index.css";
-import Post from "../../../common/Post";
+import Post from "../../../common/post/Post";
 
 export default function FriendPosts({ userId, currentUser, posts }) {
   const friendAndCurrentUserPost =

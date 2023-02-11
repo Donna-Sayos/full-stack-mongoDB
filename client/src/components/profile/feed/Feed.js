@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
-import Post from "../../../common/Post";
-import Shares from "../../share/Shares";
+import Post from "../../../common/post/Post";
+import Shares from "../../../common/share/Shares";
 import Axios from "axios";
 import { useAuthContext } from "../../../context/AuthProvider";
 
