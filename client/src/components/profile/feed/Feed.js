@@ -7,31 +7,39 @@ import Axios from "axios";
 export default function Feed({ username, currentUser }) {
   const [posts, setPosts] = useState([]);
   const [file, setFile] = useState(null);
+  const [error, setError] = useState(null);
   const desc = useRef();
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    setError(null);
+
     const newPost = {
       userId: currentUser?._id,
       desc: desc.current.value,
     };
+
     if (file) {
       if (file.size > 10000000) {
         // 10 MB
-        console.error("File size is too large, max 10 MB allowed");
+        setError("File size is too large, max 10 MB allowed");
         return;
       }
+
       const data = new FormData();
       const fileName = Date.now() + file.name;
       data.append("name", fileName);
       data.append("uploadImg", file);
       newPost.img = fileName;
+
       try {
         await Axios.post("/api/v1/upload", data);
       } catch (err) {
         console.error("Error uploading file: ", err.message);
+        setError("Error uploading file. Please try again later.");
       }
     }
+
     try {
       await Axios.post("/api/v1/posts", newPost);
       const { data } = username
@@ -45,6 +53,7 @@ export default function Feed({ username, currentUser }) {
       desc.current.value = null;
     } catch (err) {
       console.error("Error creating post: ", err.message);
+      setError("Error creating post. Please try again later.");
     }
   };
 
@@ -73,6 +82,7 @@ export default function Feed({ username, currentUser }) {
             setFile={setFile}
             desc={desc}
             currentUser={currentUser}
+            error={error}
           />
         )}
         {posts.length > 0 ? (
