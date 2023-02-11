@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import SinglePost from "./SinglePost";
+import Post from "../../../common/Post";
 
 export default function FriendPosts({ userId, currentUser, posts }) {
   const friendAndCurrentUserPost =
@@ -12,9 +12,7 @@ export default function FriendPosts({ userId, currentUser, posts }) {
     <div className="feed">
       <div className="feedWrapper">
         {friendAndCurrentUserPost && friendAndCurrentUserPost.length > 0
-          ? friendAndCurrentUserPost.map((p) => (
-              <SinglePost key={p._id} post={p} />
-            ))
+          ? friendAndCurrentUserPost.map((p) => <Post key={p._id} post={p} />)
           : null}
       </div>
     </div>

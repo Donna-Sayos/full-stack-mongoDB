@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
-import Posts from "../posts/Posts";
+import Post from "../../../common/Post";
 import Shares from "../../share/Shares";
 import Axios from "axios";
 import { useAuthContext } from "../../../context/AuthProvider";
@@ -29,9 +29,7 @@ export default function Feed({ username }) {
       <div className="feedWrapper">
         {(!username || username === user.username) && <Shares />}
         {posts.length > 0 ? (
-          posts.map((post) => (
-            <Posts key={post._id} post={post} />
-          ))
+          posts.map((post) => <Post key={post._id} post={post} />)
         ) : (
           <p className="empty">Don't be shy. Make a post!</p>
         )}
