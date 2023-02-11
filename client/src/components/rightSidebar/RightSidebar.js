@@ -7,7 +7,13 @@ export default function RightSidebar({ specificUser }) {
   return (
     <div className="rightSidebar">
       <div className="rightSidebarWrapper">
-        {specificUser ? <ProfileSidebar specificUser={specificUser} /> : <HomeSidebar />}
+        {specificUser ? (
+          <ProfileSidebar
+            specificUser={specificUser}
+          />
+        ) : (
+          <HomeSidebar />
+        )}
       </div>
     </div>
   );

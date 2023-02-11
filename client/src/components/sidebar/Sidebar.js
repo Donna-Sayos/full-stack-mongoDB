@@ -1,6 +1,5 @@
 import React from "react";
 import "./index.css";
-import { useAuthContext } from "../../context/auth/AuthProvider";
 import Friends from "./friends/Friends";
 import {
   MdRssFeed,
@@ -14,11 +13,10 @@ import {
   MdEvent,
 } from "react-icons/md";
 
-export default function Sidebar() {
+export default function Sidebar({ currentUser }) {
   {
     /* TODO: needs to add some functionality */
   }
-  const { user: currentUser } = useAuthContext();
 
   return (
     <div className="sidebar">

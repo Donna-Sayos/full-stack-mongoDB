@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Axios from "axios";
-import { useAuthContext } from "../../../context/auth/AuthProvider";
 import Shares from "../../../common/share/Shares";
 import FriendPosts from "./FriendPosts";
 
-export default function FriendFeeds() {
+export default function FriendFeeds({ currentUser }) {
   const [posts, setPosts] = useState([]);
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const desc = useRef();
-  const { user: currentUser } = useAuthContext();
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -69,6 +67,8 @@ export default function FriendFeeds() {
 
     fetchPosts();
   }, []);
+
+  console.log("Posts from FriendFeeds: ", posts);
 
   return (
     <div className="feed">

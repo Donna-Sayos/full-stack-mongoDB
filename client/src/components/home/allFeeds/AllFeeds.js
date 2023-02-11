@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Axios from "axios";
-import { useAuthContext } from "../../../context/auth/AuthProvider";
 import Shares from "../../../common/share/Shares";
 import Post from "../../../common/post/Post";
 
-export default function AllFeeds() {
+export default function AllFeeds({ currentUser }) {
   const [posts, setPosts] = useState([]);
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const desc = useRef();
-  const { user: currentUser } = useAuthContext();
 
   const submitHandler = async (e) => {
     e.preventDefault();
