@@ -60,7 +60,7 @@ export default function Profile() {
                     specificUser.profilePicture
                       ? "/assets/" + specificUser.profilePicture
                       : "/assets/" + "user/default-user-photo.png"
-                  }
+                  } 
                   alt="user"
                 />
               </div>
@@ -70,7 +70,7 @@ export default function Profile() {
               </div>
             </div>
             <div className="profileRightBottom">
-              <Feed username={username} />
+              <Feed username={username} currentUser={currentUser} />
               <RightSidebar specificUser={specificUser} />
             </div>
           </div>

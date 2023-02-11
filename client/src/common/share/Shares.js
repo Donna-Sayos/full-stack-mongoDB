@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React from "react";
 import "./index.css";
 import {
   MdPermMedia,
@@ -7,44 +7,14 @@ import {
   MdOutlineMood,
   MdOutlineCancel,
 } from "react-icons/md";
-import Axios from "axios";
-import { useAuthContext } from "../../context/AuthProvider";
 
-export default function Shares() {
-  const [file, setFile] = useState(null);
-  const desc = useRef();
-  const { user } = useAuthContext();
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    const newPost = {
-      userId: user._id,
-      desc: desc.current.value,
-    };
-    if (file) {
-      if (file.size > 10000000) { // 10 MB
-        console.error("File size is too large, max 10 MB allowed");
-        return;
-      }
-      const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
-      data.append("uploadImg", file);
-      newPost.img = fileName;
-      try {
-        await Axios.post("/api/v1/upload", data);
-      } catch (err) {
-        console.error("Error uploading file: ", err.message);
-      }
-    }
-    try {
-      await Axios.post("/api/v1/posts", newPost);
-      window.location.reload();
-    } catch (err) {
-      console.error("Error creating post: ", err.message);
-    }
-  };
-
+export default function Shares({
+  submitHandler,
+  file,
+  setFile,
+  currentUser,
+  desc,
+}) {
   return (
     <div className="share">
       <div className="shareWrapper">
@@ -52,8 +22,8 @@ export default function Shares() {
           <img
             className="shareProfileImg"
             src={
-              user.profilePicture
-                ? "/assets/" + user.profilePicture
+              currentUser?.profilePicture
+                ? "/assets/" + currentUser?.profilePicture
                 : "/assets/" + "user/default-user-photo.png"
             }
             alt="user"
