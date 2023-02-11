@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./index.css";
+import "../index.css";
 import Axios from "axios";
 import Shares from "../../share/Shares";
-import AllPosts from "./AllPosts";
+import Post from "../../../common/Post";
 
 export default function AllFeeds() {
   const [allPosts, setAllPosts] = useState([]);
@@ -27,7 +27,7 @@ export default function AllFeeds() {
       <div className="feedWrapper">
         <Shares />
         {allPosts && allPosts.length > 0 ? (
-          allPosts.map((post) => <AllPosts key={post._id} post={post} />)
+          allPosts.map((post) => <Post key={post._id} post={post} />)
         ) : (
           <p className="empty">Be the first to make a post!</p>
         )}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./index.css";
+import "../index.css";
 import Post from "../../../common/Post";
 import Shares from "../../share/Shares";
 import Axios from "axios";

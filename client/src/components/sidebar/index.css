@@ -16,8 +16,40 @@
     background-color: rgb(179, 179, 179);
 }
 
-.sidebarWrapper {
-    padding: 20px;
+.sidebarButton {
+    width: 150px;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.sidebarFriend {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+  
+.sidebarFriendImg {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.sidebarFriendList {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.sidebarHr {
+    margin: 20px 0;
+}
+
+.sidebarIcon {
+    margin-right: 15px;
 }
 
 .sidebarList {
@@ -32,25 +64,6 @@
     margin-bottom: 20px;
 }
 
-.sidebarIcon {
-    margin-right: 15px;
+.sidebarWrapper {
+    padding: 20px;
 }
-
-.sidebarButton {
-    width: 150px;
-    border: none;
-    padding: 10px;
-    border-radius: 5px;
-    font-weight: 500;
-}
-
-.sidebarHr {
-    margin: 20px 0;
-}
-  
-.sidebarFriendList {
-    padding: 0;
-    margin: 0;
-    list-style: none;
-}
-  

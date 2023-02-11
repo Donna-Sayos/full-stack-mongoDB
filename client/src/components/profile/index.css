@@ -1,3 +1,18 @@
+.empty {
+    color: gray;
+    text-align: center;
+    margin-top: 20px;
+    font-size: large;
+}
+
+.feed{
+    flex:5.5
+}
+
+.feedWrapper{
+    padding: 20px;
+}
+
 .profile{
     display: flex;
 }

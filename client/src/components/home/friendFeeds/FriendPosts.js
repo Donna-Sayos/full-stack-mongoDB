@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.css";
+import "../index.css";
 import Post from "../../../common/Post";
 
 export default function FriendPosts({ userId, currentUser, posts }) {

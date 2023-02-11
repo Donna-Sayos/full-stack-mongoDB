@@ -1,11 +1,3 @@
-.rightSidebar {
-    flex: 3.5;
-}
-  
-.rightSidebarWrapper {
-    padding: 20px 20px 0 0;
-}
-  
 .birthdayContainer {
     display: flex;
     align-items: center;
@@ -20,6 +12,14 @@
 .birthdayText {
     font-weight: 300;
     font-size: 15px;
+}
+
+.rightSidebar {
+    flex: 3.5;
+}
+  
+.rightSidebarWrapper {
+    padding: 20px 20px 0 0;
 }
   
 .rightSidebarAd {
@@ -105,4 +105,37 @@
   
 .rightSidebarFollowButton:focus{
     outline: none;
+}
+
+.rightSidebarFriend {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.rightSidebarProfileImgContainer {
+  margin-right: 10px;
+  position: relative;
+}
+  
+.rightSidebarProfileImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+  
+.rightSidebarOnline{
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: limegreen;
+  position: absolute;
+  top: -2px;
+  right: 0;
+  border: 2px solid white;
+}
+
+.rightSidebarUsername{
+    font-weight: 500;
 }
