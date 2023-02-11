@@ -14,6 +14,7 @@ export default function Shares({
   setFile,
   currentUser,
   desc,
+  error,
 }) {
   return (
     <div className="share">
@@ -33,6 +34,7 @@ export default function Shares({
             className="shareInput"
             ref={desc}
           />
+          {error && <p className="error">{error}</p>}
         </div>
         <hr className="shareHr" />
         {file && (

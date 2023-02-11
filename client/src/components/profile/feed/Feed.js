@@ -3,13 +3,11 @@ import "../index.css";
 import Post from "../../../common/post/Post";
 import Shares from "../../../common/share/Shares";
 import Axios from "axios";
-// import { useAuthContext } from "../../../context/AuthProvider";
 
 export default function Feed({ username, currentUser }) {
   const [posts, setPosts] = useState([]);
   const [file, setFile] = useState(null);
   const desc = useRef();
-  // const { user } = useAuthContext();
 
   const submitHandler = async (e) => {
     e.preventDefault();
