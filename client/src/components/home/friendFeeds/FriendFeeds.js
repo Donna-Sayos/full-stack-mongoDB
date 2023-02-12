@@ -93,7 +93,6 @@ export default function FriendFeeds({ currentUser }) {
     fetchPosts();
   }, []);
 
-  console.log("Posts from FriendFeeds: ", posts);
   return (
     <div className="feed">
       <div className="feedWrapper">

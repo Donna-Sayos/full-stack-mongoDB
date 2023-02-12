@@ -1,0 +1,36 @@
+.cancel {
+    border-radius: 50%;
+    border: 0;
+    background-color: white;
+    color: gray;
+}
+
+.cancel:hover {
+    color: black;
+}
+
+.dotModal {
+    width: 8%;
+
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    z-index: 100024;
+}
+
+.head {
+    margin: 0;
+}
+
+.options {
+    border: 0;
+    background-color: white;
+}
+
+.options:hover {
+    color: burlywood;
+}
+
+.share-Hr {
+    margin: 0;
+}

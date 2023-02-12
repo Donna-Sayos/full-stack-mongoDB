@@ -5,6 +5,7 @@ import Axios from "axios";
 import { MdMoreVert } from "react-icons/md";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
+import DotsModal from "../modal/dots/DotsModal";
 
 export default function Post({ post }) {
   const [like, setLike] = useState(post.likes.length);
@@ -56,8 +57,14 @@ export default function Post({ post }) {
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             <div className="postTopRight">
-              <MdMoreVert size={24} />{" "}
-              {/* TODO: needs to add some functionality */}
+              <button
+                className="dots"
+                data-toggle="modal"
+                data-target=".dotModal"
+              >
+                <MdMoreVert size={24} />
+              </button>
+              <DotsModal />
             </div>
           </div>
           <div className="postCenter">
