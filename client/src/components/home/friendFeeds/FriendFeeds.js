@@ -94,7 +94,6 @@ export default function FriendFeeds({ currentUser }) {
   }, []);
 
   console.log("Posts from FriendFeeds: ", posts);
-
   return (
     <div className="feed">
       <div className="feedWrapper">
@@ -106,34 +105,26 @@ export default function FriendFeeds({ currentUser }) {
           currentUser={currentUser}
           error={error}
         />
-        {currentUser ? (
-          currentUser.followings.length > 0 ? (
-            currentUser.followings
-              .map((uid, i) => (
-                <FriendPosts
-                  key={i}
-                  userId={uid}
-                  currentUser={currentUser}
-                  posts={posts}
-                />
-              ))
-              .filter((p) => p)
-          ) : (
-            <FriendPosts
-              userId={currentUser._id}
-              currentUser={currentUser}
-              posts={posts}
-            />
-          )
-        ) : null}
         {currentUser &&
-          posts.filter(
-            (p) =>
-              p.userId === currentUser._id ||
-              currentUser.followings.includes(p.userId)
-          ).length === 0 && (
-            <p className="empty">Be the first to make a post!</p>
-          )}
+        posts.filter(
+          (p) =>
+            p.userId === currentUser._id ||
+            (currentUser.followings &&
+              currentUser.followings.includes(p.userId))
+        ).length > 0 ? (
+          posts
+            .filter(
+              (p) =>
+                p.userId === currentUser._id ||
+                (currentUser.followings &&
+                  currentUser.followings.includes(p.userId))
+            )
+            .map((post, i) => (
+              <FriendPosts key={i} post={post} currentUser={currentUser} />
+            ))
+        ) : (
+          <p className="empty">Be the first to make a post!</p>
+        )}
       </div>
     </div>
   );
