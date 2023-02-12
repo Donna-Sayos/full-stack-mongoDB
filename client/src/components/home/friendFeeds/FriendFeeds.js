@@ -118,8 +118,8 @@ export default function FriendFeeds({ currentUser }) {
                 (currentUser.followings &&
                   currentUser.followings.includes(p.userId))
             )
-            .map((post, i) => (
-              <FriendPosts key={i} post={post} currentUser={currentUser} />
+            .map((post) => (
+              <FriendPosts key={post._id} post={post} posts={posts} setPosts={setPosts} />
             ))
         ) : (
           <p className="empty">Be the first to make a post!</p>

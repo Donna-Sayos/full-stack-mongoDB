@@ -12,7 +12,8 @@ const {
 } = require("../controllers/postController");
 
 router.route("/").get(getAllPosts).post(createPost);
-router.route("/:id").put(updatePost).delete(deletePost);
+router.route("/:id").put(updatePost);
+router.route("/:id").delete(deletePost);
 router.route("/:id/like").put(like_unlikePost);
 router.route("/:id").get(getSinglePost);
 router.route("/timeline/:userId").get(getTimelinePosts);

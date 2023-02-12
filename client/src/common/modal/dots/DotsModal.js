@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from "react";
 import "./index.css";
+import Axios from "axios";
 import { FaRegTimesCircle } from "react-icons/fa";
 
-export default function DotsModal() {
+export default function DotsModal({ deleteHandler, postId }) {
   const modalRef = useRef();
 
   useEffect(() => {
@@ -36,11 +37,9 @@ export default function DotsModal() {
             </button>
           </div>
           <div className="text-center">
-            <button className="options">delete</button>
-          </div>
-          <hr className="share-Hr" />
-          <div className="text-center">
-            <button className="options">update</button>
+            <button className="options" onClick={() => deleteHandler(postId)}>
+              delete
+            </button>
           </div>
         </div>
       </div>

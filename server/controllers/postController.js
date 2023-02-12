@@ -47,6 +47,7 @@ const updatePost = async (req, res) => {
       res.status(403).json("you can update only your post");
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -54,6 +55,7 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+
     if (post.userId === req.body.userId) {
       await post.deleteOne();
       res.status(200).json("the post has been deleted");
@@ -61,6 +63,7 @@ const deletePost = async (req, res) => {
       res.status(403).json("you can delete only your post");
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -84,6 +87,7 @@ const like_unlikePost = async (req, res) => {
       res.status(200).json("Post has been unliked");
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -93,6 +97,7 @@ const getSinglePost = async (req, res) => {
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -108,6 +113,7 @@ const getTimelinePosts = async (req, res) => {
     );
     res.status(200).json(userPosts.concat(...friendPosts));
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -120,6 +126,7 @@ const getUserPosts = async (req, res) => {
     const posts = await Post.find({ userId: user._id });
     res.status(200).json(posts);
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
