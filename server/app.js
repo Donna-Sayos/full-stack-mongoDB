@@ -65,13 +65,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (file.size <= 10 * 1024 * 1024) {
-      cb(null, true);
-    } else {
-      cb(null, false);
-      return cb(new Error("File size must be less than 10 MB"));
+  fileFilter: function (req, file, cb) {
+    if (file.size > 10 * 1024 * 1024) {
+      return cb(new Error("File size must be less than 10 MB"), false);
     }
+    cb(null, true);
   },
 });
 

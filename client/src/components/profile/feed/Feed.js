@@ -37,6 +37,7 @@ export default function Feed({ username, currentUser }) {
       } catch (err) {
         console.error("Error uploading file: ", err.message);
         setError("Error uploading file. Please try again later.");
+        return;
       }
     }
 
@@ -51,6 +52,7 @@ export default function Feed({ username, currentUser }) {
         })
       );
       desc.current.value = null;
+      setFile(null);
     } catch (err) {
       console.error("Error creating post: ", err.message);
       setError("Error creating post. Please try again later.");
