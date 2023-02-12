@@ -78,7 +78,7 @@ export default function Post({ post }) {
               <div>
                 <hr className="share-Hr" />
                 <video
-                  className="postVideo"
+                  className="postVid"
                   controls
                   src={"/assets/" + post.video}
                 />
