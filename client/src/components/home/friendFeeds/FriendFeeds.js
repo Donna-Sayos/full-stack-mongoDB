@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Axios from "axios";
+import { shortUuid } from "../../../utils/helper/helperFunctions";
 import Shares from "../../../common/share/Shares";
 import FriendPosts from "./FriendPosts";
 
@@ -20,24 +21,46 @@ export default function FriendFeeds({ currentUser }) {
     };
 
     if (file) {
-      if (file.size > 10000000) {
-        // 10 MB
-        setError("File size is too large, max 10 MB allowed");
-        return;
-      }
+      if (file.type.startsWith("image")) {
+        if (file.size > 10000000) {
+          // 10 MB
+          setError("File size is too large, max 10 MB allowed");
+          return;
+        }
 
-      const data = new FormData();
-      const fileName = Date.now() + file.name;
-      data.append("name", fileName);
-      data.append("uploadImg", file);
-      newPost.img = fileName;
+        const data = new FormData();
+        const fileName = shortUuid() + file.name;
+        data.append("name", fileName);
+        data.append("uploadFile", file);
+        newPost.img = fileName;
 
-      try {
-        await Axios.post("/api/v1/upload", data);
-      } catch (err) {
-        console.error("Error uploading file: ", err.message);
-        setError("Error uploading file. Please try again later.");
-        return;
+        try {
+          await Axios.post("/api/v1/upload", data);
+        } catch (err) {
+          console.error("Error uploading file: ", err.message);
+          setError("Error uploading file. Please try again later.");
+          return;
+        }
+      } else if (file.type.startsWith("video")) {
+        if (file.size > 10000000) {
+          // 10 MB
+          setError("File size is too large, max 10 MB allowed");
+          return;
+        }
+
+        const data = new FormData();
+        const fileName = shortUuid() + file.name;
+        data.append("name", fileName);
+        data.append("uploadFile", file);
+        newPost.video = fileName;
+
+        try {
+          await Axios.post("/api/v1/upload", data);
+        } catch (err) {
+          console.error("Error uploading file: ", err.message);
+          setError("Error uploading file. Please try again later.");
+          return;
+        }
       }
     }
 

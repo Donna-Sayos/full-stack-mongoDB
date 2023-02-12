@@ -48,6 +48,7 @@ app.use(
       ],
       frameSrc: ["https://www.google.com"],
       imgSrc: ["'self'", "data:", "blob:"],
+      mediaSrc: ["'self'", "data:", "blob:"],
     },
   })
 );
@@ -69,23 +70,41 @@ const upload = multer({
     if (file.size > 10 * 1024 * 1024) {
       return cb(new Error("File size must be less than 10 MB"), false);
     }
+
+    // Check file type
+    const allowedFileTypes = [
+      ".png",
+      ".jpeg",
+      ".jpg",
+      ".mp4",
+      ".webm",
+      ".avi",
+      ".mov",
+      ".wmv",
+      ".flv",
+      ".mkv",
+      ".3gp",
+      ".gif",
+    ];
+    const fileExtension = extname(file.originalname).toLowerCase();
+    if (!allowedFileTypes.includes(fileExtension)) {
+      return cb(new Error("File type not allowed"), false);
+    }
+
     cb(null, true);
   },
 });
 
-app.post("/api/v1/upload", upload.single("uploadImg"), (req, res) => {
+app.post("/api/v1/upload", upload.single("uploadFile"), (req, res) => {
   if (!req.file) {
     return res.status(400).send({ message: "No file included in the request" });
   }
 
   try {
-    console.log(
-      "File path:",
-      `../public/assets/${Date.now() + extname(req.file.originalname)}`
-    );
-    res.status(200).send({ message: "Image uploaded successfully" });
+    console.log("File path:", `../public/assets/${req.file.filename}`);
+    res.status(200).send({ message: "File uploaded successfully" });
   } catch (err) {
-    res.status(500).send({ message: "Error uploading image" });
+    res.status(500).send({ message: "Error uploading file" });
   }
 });
 

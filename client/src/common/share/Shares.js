@@ -33,17 +33,25 @@ export default function Shares({
             placeholder={`What's on your mind?`}
             className="shareInput"
             ref={desc}
+            maxLength="500"
           />
           {error && <p className="error">{error}</p>}
         </div>
         <hr className="shareHr" />
         {file && (
           <div className="shareImgContainer">
-            <img
-              className="shareImg"
-              src={URL.createObjectURL(file)}
-              alt="file"
-            />
+            {file.type.startsWith("image/") ? (
+              <img
+                className="shareImg"
+                src={URL.createObjectURL(file)}
+                alt="file"
+              />
+            ) : (
+              <video className="shareVideo" controls>
+                <source src={URL.createObjectURL(file)} type={file.type} />
+                Your browser does not support the video tag.
+              </video>
+            )}
             <MdOutlineCancel
               className="shareCancelImg"
               onClick={() => setFile(null)}
@@ -59,8 +67,8 @@ export default function Shares({
                 style={{ display: "none" }}
                 type="file"
                 id="file"
-                name="uploadImg"
-                accept=".png,.jpeg,.jpg"
+                name="uploadFile"
+                accept=".png, .jpeg, .jpg, .mp4, .webm, .avi, .mov, .wmv, .flv, .mkv, .3gp, .gif"
                 onChange={(e) => setFile(e.target.files[0])}
               />
             </label>

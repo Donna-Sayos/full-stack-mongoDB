@@ -74,6 +74,16 @@ export default function Post({ post }) {
                 />
               </div>
             )}
+            {post.video && (
+              <div>
+                <hr className="share-Hr" />
+                <video
+                  className="postVideo"
+                  controls
+                  src={"/assets/" + post.video}
+                />
+              </div>
+            )}
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
