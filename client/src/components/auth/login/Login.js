@@ -39,7 +39,7 @@ export default function Login({
 
       navigate("/");
     } catch (err) {
-      console;
+      console.error(err);
     }
   };
 
