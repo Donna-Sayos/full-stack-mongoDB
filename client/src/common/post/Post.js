@@ -7,24 +7,12 @@ import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import DotsModal from "../modal/dots/DotsModal";
 
-export default function Post({ post, posts, setPosts }) {
+export default function Post({ post, deleteHandler }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
-
-  const deleteHandler = async () => {
-    try {
-      await Axios.delete(`/api/v1/posts/${post._id}`, {
-        data: { userId: currentUser._id },
-      });
-
-      setPosts(posts.filter((p) => p._id !== post._id));
-    } catch (err) {
-      console.error("Error deleting post: ", err.message);
-    }
-  };
 
   const likeHandler = () => {
     try {

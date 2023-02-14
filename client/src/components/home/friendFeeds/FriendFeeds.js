@@ -80,6 +80,24 @@ export default function FriendFeeds({ currentUser }) {
     }
   };
 
+  const deleteHandler = async (postId) => {
+    try {
+      console.log("Deleting post: ", postId);
+      await Axios.delete(`/api/v1/posts/${postId}`, {
+        data: { userId: currentUser._id },
+      });
+
+      const { data } = await Axios.get("/api/v1/posts/");
+      setPosts(
+        data.posts.sort(
+          (p1, p2) => new Date(p2.createdAt) - new Date(p1.createdAt)
+        )
+      );
+    } catch (err) {
+      console.error("Error deleting post: ", err.message);
+    }
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       const { data } = await Axios.get("/api/v1/posts/");
@@ -122,8 +140,7 @@ export default function FriendFeeds({ currentUser }) {
               <Post
                 key={post._id}
                 post={post}
-                posts={posts}
-                setPosts={setPosts}
+                deleteHandler={() => deleteHandler(post._id)}
               />
             ))
         ) : (
