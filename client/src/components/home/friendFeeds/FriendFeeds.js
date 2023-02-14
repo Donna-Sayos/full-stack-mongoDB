@@ -3,7 +3,7 @@ import "../index.css";
 import Axios from "axios";
 import { shortUuid } from "../../../utils/helper/helperFunctions";
 import Shares from "../../../common/share/Shares";
-import FriendPosts from "./FriendPosts";
+import Post from "../../../common/post/Post";
 
 export default function FriendFeeds({ currentUser }) {
   const [posts, setPosts] = useState([]);
@@ -119,7 +119,12 @@ export default function FriendFeeds({ currentUser }) {
                   currentUser.followings.includes(p.userId))
             )
             .map((post) => (
-              <FriendPosts key={post._id} post={post} posts={posts} setPosts={setPosts} />
+              <Post
+                key={post._id}
+                post={post}
+                posts={posts}
+                setPosts={setPosts}
+              />
             ))
         ) : (
           <p className="empty">Be the first to make a post!</p>

@@ -19,10 +19,8 @@ export default function Post({ post, posts, setPosts }) {
       await Axios.delete(`/api/v1/posts/${post._id}`, {
         data: { userId: currentUser._id },
       });
-      console.log(
-        `deleting post ${post._id} ..`
-      );
-      setPosts(posts.filter((p) => p._id !== post?._id));
+
+      setPosts(posts.filter((p) => p._id !== post._id));
     } catch (err) {
       console.error("Error deleting post: ", err.message);
     }
