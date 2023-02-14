@@ -82,20 +82,14 @@ export default function FriendFeeds({ currentUser }) {
 
   const deleteHandler = async (postId, postUserId) => {
     try {
-      if (currentUser._id === postUserId) {
-        const response = await Axios.delete(`/api/v1/posts/${postId}`, {
+      if (postUserId !== currentUser._id) {
+        return;
+      } else {
+        await Axios.delete(`/api/v1/posts/${postId}`, {
           data: { userId: postUserId },
         });
-        if (response.status === 200) {
-          const filteredPosts = posts.filter((post) => post._id !== postId);
-          setPosts(
-            filteredPosts.sort(
-              (p1, p2) => new Date(p2.createdAt) - new Date(p1.createdAt)
-            )
-          );
-        }
-      } else {
-        console.error("You are not authorized to delete this post.");
+
+        setPosts(posts.filter((p) => p._id !== postId));
       }
     } catch (err) {
       console.error("Error deleting post: ", err.message);
