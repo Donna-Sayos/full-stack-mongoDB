@@ -80,6 +80,22 @@ export default function AllFeeds({ currentUser }) {
     }
   };
 
+  const deleteHandler = async (postId, postUserId) => {
+    try {
+      if (postUserId !== currentUser._id) {
+        return;
+      } else {
+        await Axios.delete(`/api/v1/posts/${postId}`, {
+          data: { userId: postUserId },
+        });
+
+        setPosts(posts.filter((p) => p._id !== postId));
+      }
+    } catch (err) {
+      console.error("Error deleting post: ", err.message);
+    }
+  };
+
   useEffect(() => {
     const fetchPosts = async () => {
       const { data } = await Axios.get("/api/v1/posts/");
@@ -105,7 +121,13 @@ export default function AllFeeds({ currentUser }) {
           error={error}
         />
         {posts && posts.length > 0 ? (
-          posts.map((post) => <Post key={post._id} post={post} />)
+          posts.map((post) => (
+            <Post
+              key={post._id}
+              post={post}
+              deleteHandler={() => deleteHandler(post._id, post.userId)}
+            />
+          ))
         ) : (
           <p className="empty">Be the first to make a post!</p>
         )}
