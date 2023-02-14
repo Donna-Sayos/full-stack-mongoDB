@@ -80,19 +80,23 @@ export default function FriendFeeds({ currentUser }) {
     }
   };
 
-  const deleteHandler = async (postId) => {
+  const deleteHandler = async (postId, postUserId) => {
     try {
-      console.log("Deleting post: ", postId);
-      await Axios.delete(`/api/v1/posts/${postId}`, {
-        data: { userId: currentUser._id },
-      });
-
-      const { data } = await Axios.get("/api/v1/posts/");
-      setPosts(
-        data.posts.sort(
-          (p1, p2) => new Date(p2.createdAt) - new Date(p1.createdAt)
-        )
-      );
+      if (currentUser._id === postUserId) {
+        const response = await Axios.delete(`/api/v1/posts/${postId}`, {
+          data: { userId: postUserId },
+        });
+        if (response.status === 200) {
+          const filteredPosts = posts.filter((post) => post._id !== postId);
+          setPosts(
+            filteredPosts.sort(
+              (p1, p2) => new Date(p2.createdAt) - new Date(p1.createdAt)
+            )
+          );
+        }
+      } else {
+        console.error("You are not authorized to delete this post.");
+      }
     } catch (err) {
       console.error("Error deleting post: ", err.message);
     }
@@ -140,7 +144,7 @@ export default function FriendFeeds({ currentUser }) {
               <Post
                 key={post._id}
                 post={post}
-                deleteHandler={() => deleteHandler(post._id)}
+                deleteHandler={() => deleteHandler(post._id, post.userId)}
               />
             ))
         ) : (
