@@ -102,13 +102,29 @@ export default function Post({ post, deleteHandler }) {
                 alt="heart"
               />
               {like === 0 ? (
-                <span className="postLikeCounter"> likes</span>
+                <button
+                  className="postLikeCounter"
+                  onClick={() => console.log("likes clicked...")}
+                >
+                  {" "}
+                  likes
+                </button>
               ) : (
-                <span className="postLikeCounter">{like} likes</span>
+                <button
+                  className="postLikeCounter"
+                  onClick={() => console.log("likes clicked...")}
+                >
+                  {like} likes
+                </button>
               )}
             </div>
             <div className="postBottomRight">
-              <span className="postCommentText">{post.comment} comments</span>
+              <button
+                className="postCommentText"
+                onClick={() => console.log("comments clicked...")}
+              >
+                {post.comment} comments
+              </button>
             </div>
           </div>
         </div>
