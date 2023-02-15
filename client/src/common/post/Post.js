@@ -55,19 +55,18 @@ export default function Post({ post, deleteHandler }) {
               <span className="post-Username">{specificUser.username}</span>
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
-            <div className="postTopRight">
-              <button
-                className="dots"
-                data-toggle="modal"
-                data-target=".dotModal"
-                onClick={() => {
-                  console.log("deleting ID:", post._id);
-                  deleteHandler(post._id, post.userId);
-                }}
-              >
-                {/* <MdMoreVert size={24} /> */}x
-              </button>
-            </div>
+            {currentUser._id === post.userId && (
+              <div className="postTopRight">
+                <button
+                  className="dots"
+                  data-toggle="modal"
+                  data-target=".dotModal"
+                  onClick={() => deleteHandler(post._id, post.userId)}
+                >
+                  {/* <MdMoreVert size={24} /> */}x
+                </button>
+              </div>
+            )}
           </div>
           <div className="postCenter">
             <div className="postText">

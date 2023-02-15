@@ -83,13 +83,14 @@ export default function FriendFeeds({ currentUser }) {
   const deleteHandler = async (postId, postUserId) => {
     try {
       if (postUserId !== currentUser._id) {
-        throw new Error("You can only delete your own posts");
+        return;
       } else {
-        await Axios.delete("/api/v1/posts/" + postId, {
+        await Axios.delete(`/api/v1/posts/${postId}`, {
           data: { userId: postUserId },
         });
 
-        setPosts(posts.filter((p) => p._id !== postId));
+        const updatedPosts = posts.filter((p) => p._id !== postId);
+        setPosts(updatedPosts);
       }
     } catch (err) {
       console.error("Error deleting post: ", err.message);
@@ -135,11 +136,7 @@ export default function FriendFeeds({ currentUser }) {
                   currentUser.followings.includes(p.userId))
             )
             .map((post) => (
-              <Post
-                key={post._id}
-                post={post}
-                deleteHandler={() => deleteHandler(post._id, post.userId)}
-              />
+              <Post key={post._id} post={post} deleteHandler={deleteHandler} />
             ))
         ) : (
           <p className="empty">Be the first to make a post!</p>
