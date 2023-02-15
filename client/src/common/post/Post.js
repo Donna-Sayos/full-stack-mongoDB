@@ -101,7 +101,11 @@ export default function Post({ post, deleteHandler }) {
                 onClick={likeHandler}
                 alt="heart"
               />
-              <span className="postLikeCounter">{like} people like it</span>
+              {like === 0 ? (
+                <span className="postLikeCounter"> likes</span>
+              ) : (
+                <span className="postLikeCounter">{like} likes</span>
+              )}
             </div>
             <div className="postBottomRight">
               <span className="postCommentText">{post.comment} comments</span>
