@@ -3,7 +3,7 @@ import "./index.css";
 import Axios from "axios";
 import { FaRegTimesCircle } from "react-icons/fa";
 
-export default function DotsModal({ deleteHandler }) {
+export default function DotsModal(props) {
   const modalRef = useRef();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export default function DotsModal({ deleteHandler }) {
             </button>
           </div>
           <div className="text-center">
-            <button className="options" onClick={deleteHandler}>
+            <button className="options" onClick={props.deleteHandler}>
               delete
             </button>
           </div>

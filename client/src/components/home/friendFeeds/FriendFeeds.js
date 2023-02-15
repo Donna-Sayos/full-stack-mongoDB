@@ -83,9 +83,9 @@ export default function FriendFeeds({ currentUser }) {
   const deleteHandler = async (postId, postUserId) => {
     try {
       if (postUserId !== currentUser._id) {
-        return;
+        throw new Error("You can only delete your own posts");
       } else {
-        await Axios.delete(`/api/v1/posts/${postId}`, {
+        await Axios.delete("/api/v1/posts/" + postId, {
           data: { userId: postUserId },
         });
 

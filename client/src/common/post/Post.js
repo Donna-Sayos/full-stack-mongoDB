@@ -5,7 +5,6 @@ import Axios from "axios";
 import { MdMoreVert } from "react-icons/md";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
-import DotsModal from "../modal/dots/DotsModal";
 
 export default function Post({ post, deleteHandler }) {
   const [like, setLike] = useState(post.likes.length);
@@ -61,10 +60,13 @@ export default function Post({ post, deleteHandler }) {
                 className="dots"
                 data-toggle="modal"
                 data-target=".dotModal"
+                onClick={() => {
+                  console.log("deleting ID:", post._id);
+                  deleteHandler(post._id, post.userId);
+                }}
               >
-                <MdMoreVert size={24} />
+                {/* <MdMoreVert size={24} /> */}x
               </button>
-              <DotsModal deleteHandler={deleteHandler} />
             </div>
           </div>
           <div className="postCenter">

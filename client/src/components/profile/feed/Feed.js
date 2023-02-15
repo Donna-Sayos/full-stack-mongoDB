@@ -91,7 +91,8 @@ export default function Feed({ username, currentUser }) {
           data: { userId: postUserId },
         });
 
-        setPosts(posts.filter((p) => p._id !== postId));
+        const updatedPosts = posts.filter((p) => p._id !== postId);
+        setPosts(updatedPosts);
       }
     } catch (err) {
       console.error("Error deleting post: ", err.message);
@@ -128,11 +129,7 @@ export default function Feed({ username, currentUser }) {
         )}
         {posts.length > 0 ? (
           posts.map((post) => (
-            <Post
-              key={post._id}
-              post={post}
-              deleteHandler={() => deleteHandler(post._id, post.userId)}
-            />
+            <Post key={post._id} post={post} deleteHandler={deleteHandler} />
           ))
         ) : (
           <p className="empty">Don't be shy. Make a post!</p>
