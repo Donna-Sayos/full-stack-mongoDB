@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./index.css";
 import Friends from "./friends/Friends";
 import {
@@ -14,9 +14,11 @@ import {
 } from "react-icons/md";
 
 export default function Sidebar({ currentUser }) {
-  {
-    /* TODO: needs to add some functionality */
-  }
+  const [showMore, setShowMore] = useState(false);
+
+  const handleShowMore = () => {
+    setShowMore(!showMore);
+  };
 
   return (
     <div className="sidebar">
@@ -42,24 +44,30 @@ export default function Sidebar({ currentUser }) {
             <MdOutlineBookmark className="sidebarIcon" />
             <span className="sidebarListItemText">Bookmarks</span>
           </li>
-          <li className="sidebarListItem">
-            <MdOutlineLiveHelp className="sidebarIcon" />
-            <span className="sidebarListItemText">Questions</span>
-          </li>
-          <li className="sidebarListItem">
-            <MdOutlineWorkOutline className="sidebarIcon" />
-            <span className="sidebarListItemText">Jobs</span>
-          </li>
-          <li className="sidebarListItem">
-            <MdEvent className="sidebarIcon" />
-            <span className="sidebarListItemText">Events</span>
-          </li>
-          <li className="sidebarListItem">
-            <MdSchool className="sidebarIcon" />
-            <span className="sidebarListItemText">Courses</span>
-          </li>
+          {showMore && (
+            <div>
+              <li className="sidebarListItem">
+                <MdOutlineLiveHelp className="sidebarIcon" />
+                <span className="sidebarListItemText">Questions</span>
+              </li>
+              <li className="sidebarListItem">
+                <MdOutlineWorkOutline className="sidebarIcon" />
+                <span className="sidebarListItemText">Jobs</span>
+              </li>
+              <li className="sidebarListItem">
+                <MdEvent className="sidebarIcon" />
+                <span className="sidebarListItemText">Events</span>
+              </li>
+              <li className="sidebarListItem">
+                <MdSchool className="sidebarIcon" />
+                <span className="sidebarListItemText">Courses</span>
+              </li>
+            </div>
+          )}
         </ul>
-        <button className="sidebarButton">Show More</button>
+        <button className="sidebarButton" onClick={handleShowMore}>
+          Show More
+        </button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
           {currentUser && currentUser.followings.length > 0
