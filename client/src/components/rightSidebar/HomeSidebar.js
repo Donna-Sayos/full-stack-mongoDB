@@ -23,19 +23,8 @@ export default function HomeSidebar() {
 
   return (
     <div>
-      {/* <div className="birthdayContainer">
-        <div>
-          <BsFillChatRightQuoteFill className="quoteLogo" />
-          {quote && <b className="quoteText">{quote.setup}</b>}
-        </div>
-        <br />
-        <div>
-          <BsFillChatRightQuoteFill className="quoteLogo" />
-          {quote && <span className="quoteText">{quote.punchline}</span>}
-        </div>
-      </div> */}
       <div className="quoteTable">
-        <h3 className="quoteHeading">Jokes of the day!</h3>
+        <h3 className="quoteHeading">Joke of the day!</h3>
 
         <tr className="quoteContainer table-light">
           <td>
@@ -55,7 +44,7 @@ export default function HomeSidebar() {
             />
           </td>
           <td className="phrasePunchline">
-            {quote && <span className="quoteText">{quote.punchline}..</span>}
+            {quote && <span className="quoteText">{quote.punchline}...</span>}
           </td>
         </tr>
       </div>
