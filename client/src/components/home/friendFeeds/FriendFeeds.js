@@ -16,6 +16,10 @@ export default function FriendFeeds({ currentUser }) {
     e.preventDefault();
     setError(null);
 
+    if (!desc.current.value && !file) {
+      return;
+    }
+
     const newPost = {
       userId: currentUser?._id,
       desc: desc.current.value,
@@ -107,7 +111,12 @@ export default function FriendFeeds({ currentUser }) {
                   currentUser.followings.includes(p.userId))
             )
             .map((post) => (
-              <Post key={post._id} post={post} posts={posts} setPosts={setPosts} />
+              <Post
+                key={post._id}
+                post={post}
+                posts={posts}
+                setPosts={setPosts}
+              />
             ))
         ) : (
           <p className="empty">Be the first to make a post!</p>

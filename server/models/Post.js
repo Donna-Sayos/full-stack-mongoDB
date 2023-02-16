@@ -24,16 +24,5 @@ const PostSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-PostSchema.index({ userId: 1 });
-
-PostSchema.statics.nextCount = async function () {
-  const count = await this.countDocuments();
-  if (count === 0) {
-    return 1;
-  }
-  const lastUser = await this.findOne().sort({ userId: -1 });
-  return lastUser.userId + 1;
-};
-
 const Post = mongoose.model("Post", PostSchema);
 module.exports = Post;

@@ -15,6 +15,10 @@ export default function Feed({ username, currentUser }) {
     e.preventDefault();
     setError(null);
 
+    if (!desc.current.value && !file) {
+      return;
+    }
+
     const newPost = {
       userId: currentUser?._id,
       desc: desc.current.value,
