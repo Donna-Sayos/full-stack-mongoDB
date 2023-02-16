@@ -68,18 +68,44 @@ const deletePost = async (req, res) => {
   }
 };
 
+// const like_unlikePost = async (req, res) => {
+//   try {
+//     const post = await Post.findById(req.params.id);
+//     if (!post.likes.includes(req.body.userId)) {
+//       await post.updateOne({ $push: { likes: req.body.userId } });
+//       await User.updateOne(
+//         { _id: req.body.userId },
+//         { $push: { likedPosts: post._id } }
+//       );
+//       res.status(200).json("Post has been liked");
+//     } else {
+//       await post.updateOne({ $pull: { likes: req.body.userId } });
+//       await User.updateOne(
+//         { _id: req.body.userId },
+//         { $pull: { likedPosts: post._id } }
+//       );
+//       res.status(200).json("Post has been unliked");
+//     }
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//   }
+// };
+
 const like_unlikePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
-    if (!post.likes.includes(req.body.userId)) {
-      await post.updateOne({ $push: { likes: req.body.userId } });
+    const user = await User.findById(req.body.userId);
+    if (!post.likes.some((like) => like.userId === req.body.userId)) {
+      const like = { userId: user._id, firstName: user.firstName, lastName: user.lastName };
+      await post.updateOne({ $push: { likes: like } });
       await User.updateOne(
         { _id: req.body.userId },
         { $push: { likedPosts: post._id } }
       );
       res.status(200).json("Post has been liked");
     } else {
-      await post.updateOne({ $pull: { likes: req.body.userId } });
+      await post.updateOne({ $pull: { likes: { userId: req.body.userId } } });
       await User.updateOne(
         { _id: req.body.userId },
         { $pull: { likedPosts: post._id } }

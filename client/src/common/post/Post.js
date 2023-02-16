@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/auth/AuthProvider";
-import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
@@ -10,12 +9,8 @@ export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
-
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
-
-  // const allUsers = useFetchUsers();
-  // console.log("allUsers: ", allUsers);
 
   const likeHandler = () => {
     try {
@@ -133,7 +128,9 @@ export default function Post({ post, posts, setPosts }) {
               ) : (
                 <button
                   className="postLikeCounter"
-                  onClick={() => console.log("likes clicked...", post.likes)}
+                  onClick={() => {
+                    console.log("likes clicked...", post.likes);
+                  }}
                 >
                   {like} likes
                 </button>

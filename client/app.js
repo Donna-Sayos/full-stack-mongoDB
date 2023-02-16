@@ -1,13 +1,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useAuthContext } from "../client/src/context/auth/AuthProvider";
-import Login from "../client/src/components/auth/login/Login";
-import Register from "../client/src/components/auth/register/Register";
-import Home from "../client/src/components/home/Home";
-import Profile from "../client/src/components/profile/Profile";
+import { useAuthContext } from "./src/context/auth/AuthProvider";
+import Login from "./src/components/auth/login/Login";
+import Register from "./src/components/auth/register/Register";
+import Home from "./src/components/home/Home";
+import Profile from "./src/components/profile/Profile";
 
-export default function app() {
+export default function App() {
   const [isdisabled, setIsdisabled] = useState(true);
   const recaptchaRef = useRef(null);
 
