@@ -49,6 +49,7 @@ app.use(
       frameSrc: ["https://www.google.com"],
       imgSrc: ["'self'", "data:", "blob:"],
       mediaSrc: ["'self'", "data:", "blob:"],
+      connectSrc: ["'self'", "https://official-joke-api.appspot.com"],
     },
   })
 );
