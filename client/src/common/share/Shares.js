@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import Axios from "axios";
 import {
   MdPermMedia,
   MdOutlineLabel,
@@ -7,15 +8,77 @@ import {
   MdOutlineMood,
   MdOutlineCancel,
 } from "react-icons/md";
+import { shortUuid } from "../../utils/helper/helperFunctions";
 
 export default function Shares({
-  submitHandler,
+  currentUser,
+  error,
+  setError,
+  createNewPost,
+  desc,
   file,
   setFile,
-  currentUser,
-  desc,
-  error,
 }) {
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!desc.current.value && !file) {
+      return;
+    }
+
+    const newPost = {
+      userId: currentUser?._id,
+      desc: desc.current.value,
+    };
+
+    if (file) {
+      if (file.type.startsWith("image")) {
+        if (file.size > 10000000) {
+          // 10 MB
+          setError("File size is too large, max 10 MB allowed");
+          return;
+        }
+
+        const data = new FormData();
+        const fileName = shortUuid() + file.name;
+        data.append("name", fileName);
+        data.append("uploadFile", file);
+        newPost.img = fileName;
+
+        try {
+          await Axios.post("/api/v1/upload", data);
+        } catch (err) {
+          console.error("Error uploading file: ", err.message);
+          setError("Error uploading file. Please try again later.");
+          return;
+        }
+      } else if (file.type.startsWith("video")) {
+        if (file.size > 10000000) {
+          // 10 MB
+          setError("File size is too large, max 10 MB allowed");
+          return;
+        }
+
+        const data = new FormData();
+        const fileName = shortUuid() + file.name;
+        data.append("name", fileName);
+        data.append("uploadFile", file);
+        newPost.video = fileName;
+
+        try {
+          await Axios.post("/api/v1/upload", data);
+        } catch (err) {
+          console.error("Error uploading file: ", err.message);
+          setError("Error uploading file. Please try again later.");
+          return;
+        }
+      }
+    }
+
+    await createNewPost(newPost);
+  };
+
   return (
     <div className="share">
       <div className="shareWrapper">

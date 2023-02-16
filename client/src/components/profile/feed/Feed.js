@@ -1,73 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Axios from "axios";
-import { shortUuid } from "../../../utils/helper/helperFunctions";
 import Post from "../../../common/post/Post";
 import Shares from "../../../common/share/Shares";
 
 export default function Feed({ username, currentUser }) {
   const [posts, setPosts] = useState([]);
-  const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
+  const [file, setFile] = useState(null);
   const desc = useRef();
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    if (!desc.current.value && !file) {
-      return;
-    }
-
-    const newPost = {
-      userId: currentUser?._id,
-      desc: desc.current.value,
-    };
-
-    if (file) {
-      if (file.type.startsWith("image")) {
-        if (file.size > 10000000) {
-          // 10 MB
-          setError("File size is too large, max 10 MB allowed");
-          return;
-        }
-
-        const data = new FormData();
-        const fileName = shortUuid() + file.name;
-        data.append("name", fileName);
-        data.append("uploadFile", file);
-        newPost.img = fileName;
-
-        try {
-          await Axios.post("/api/v1/upload", data);
-        } catch (err) {
-          console.error("Error uploading file: ", err.message);
-          setError("Error uploading file. Please try again later.");
-          return;
-        }
-      } else if (file.type.startsWith("video")) {
-        if (file.size > 10000000) {
-          // 10 MB
-          setError("File size is too large, max 10 MB allowed");
-          return;
-        }
-
-        const data = new FormData();
-        const fileName = shortUuid() + file.name;
-        data.append("name", fileName);
-        data.append("uploadFile", file);
-        newPost.video = fileName;
-
-        try {
-          await Axios.post("/api/v1/upload", data);
-        } catch (err) {
-          console.error("Error uploading file: ", err.message);
-          setError("Error uploading file. Please try again later.");
-          return;
-        }
-      }
-    }
-
+  const createNewPost = async (newPost) => {
     try {
       await Axios.post("/api/v1/posts", newPost);
       const { data } = username
@@ -106,12 +49,13 @@ export default function Feed({ username, currentUser }) {
       <div className="feedWrapper">
         {(!username || username === currentUser?.username) && (
           <Shares
-            submitHandler={submitHandler}
-            file={file}
-            setFile={setFile}
-            desc={desc}
             currentUser={currentUser}
             error={error}
+            setError={setError}
+            createNewPost={createNewPost}
+            desc={desc}
+            file={file}
+            setFile={setFile}
           />
         )}
         {posts.length > 0 ? (

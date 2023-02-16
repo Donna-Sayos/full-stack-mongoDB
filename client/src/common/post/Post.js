@@ -10,6 +10,7 @@ export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
+
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
 
