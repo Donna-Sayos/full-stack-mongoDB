@@ -13,6 +13,7 @@ export default function ProfileSidebar({ specificUser }) {
       currentUser.followings &&
       currentUser.followings.includes(specificUser?._id)
   );
+  const [isLoading, setIsLoading] = useState(false);
 
   async function getFriends() {
     try {
@@ -30,6 +31,7 @@ export default function ProfileSidebar({ specificUser }) {
   }, [specificUser]);
 
   const handleClick = async () => {
+    setIsLoading(true);
     try {
       if (followed) {
         await Axios.put(`/api/v1/users/${specificUser._id}/unfollow`, {
@@ -46,14 +48,25 @@ export default function ProfileSidebar({ specificUser }) {
     } catch (err) {
       console.error("Error at following/unfollowing. ", err);
     }
+    setIsLoading(false);
   };
 
   return (
     <>
       {specificUser && specificUser.username !== currentUser.username && (
         <button className="rightSidebarFollowButton" onClick={handleClick}>
-          {followed ? "Unfollow" : "Follow"}
-          {followed ? <IoIosRemove /> : <IoIosAdd />}
+          {isLoading ? (
+            <span
+              className="spinner-border spinner-border-sm me-2"
+              role="status"
+              aria-hidden="true"
+            ></span>
+          ) : followed ? (
+            "Unfollow"
+          ) : (
+            "Follow"
+          )}
+          {isLoading ? null : followed ? <IoIosRemove /> : <IoIosAdd />}
         </button>
       )}
       <h4 className="rightSidebarTitle">User information</h4>
