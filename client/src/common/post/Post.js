@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import Axios from "axios";
-import { MdMoreVert } from "react-icons/md";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 
-export default function Post({ post, deleteHandler }) {
+export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
@@ -21,6 +20,23 @@ export default function Post({ post, deleteHandler }) {
     } catch (err) {}
     setLike(isLiked ? like - 1 : like + 1);
     setIsLiked(!isLiked);
+  };
+
+  const deleteHandler = async (postId, postUserId) => {
+    try {
+      if (postUserId !== currentUser._id) {
+        return;
+      } else {
+        await Axios.delete(`/api/v1/posts/${postId}`, {
+          data: { userId: postUserId },
+        });
+
+        const updatedPosts = posts.filter((p) => p._id !== postId);
+        setPosts(updatedPosts);
+      }
+    } catch (err) {
+      console.error("Error deleting post: ", err.message);
+    }
   };
 
   useEffect(() => {
@@ -63,7 +79,7 @@ export default function Post({ post, deleteHandler }) {
                   data-target=".dotModal"
                   onClick={() => deleteHandler(post._id, post.userId)}
                 >
-                  {/* <MdMoreVert size={24} /> */}x
+                  x
                 </button>
               </div>
             )}

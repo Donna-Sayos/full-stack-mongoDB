@@ -2,11 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Axios from "axios";
 import { shortUuid } from "../../../utils/helper/helperFunctions";
+import useFetchPosts from "../../../utils/customHooks/UseFetchPosts";
 import Shares from "../../../common/share/Shares";
 import Post from "../../../common/post/Post";
 
 export default function FriendFeeds({ currentUser }) {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useFetchPosts();
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const desc = useRef();
@@ -80,36 +81,6 @@ export default function FriendFeeds({ currentUser }) {
     }
   };
 
-  const deleteHandler = async (postId, postUserId) => {
-    try {
-      if (postUserId !== currentUser._id) {
-        return;
-      } else {
-        await Axios.delete(`/api/v1/posts/${postId}`, {
-          data: { userId: postUserId },
-        });
-
-        const updatedPosts = posts.filter((p) => p._id !== postId);
-        setPosts(updatedPosts);
-      }
-    } catch (err) {
-      console.error("Error deleting post: ", err.message);
-    }
-  };
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      const { data } = await Axios.get("/api/v1/posts/");
-      setPosts(
-        data.posts.sort(
-          (p1, p2) => new Date(p2.createdAt) - new Date(p1.createdAt)
-        )
-      );
-    };
-
-    fetchPosts();
-  }, []);
-
   return (
     <div className="feed">
       <div className="feedWrapper">
@@ -136,7 +107,7 @@ export default function FriendFeeds({ currentUser }) {
                   currentUser.followings.includes(p.userId))
             )
             .map((post) => (
-              <Post key={post._id} post={post} deleteHandler={deleteHandler} />
+              <Post key={post._id} post={post} posts={posts} setPosts={setPosts} />
             ))
         ) : (
           <p className="empty">Be the first to make a post!</p>

@@ -82,23 +82,6 @@ export default function Feed({ username, currentUser }) {
     }
   };
 
-  const deleteHandler = async (postId, postUserId) => {
-    try {
-      if (postUserId !== currentUser._id) {
-        return;
-      } else {
-        await Axios.delete(`/api/v1/posts/${postId}`, {
-          data: { userId: postUserId },
-        });
-
-        const updatedPosts = posts.filter((p) => p._id !== postId);
-        setPosts(updatedPosts);
-      }
-    } catch (err) {
-      console.error("Error deleting post: ", err.message);
-    }
-  };
-
   useEffect(() => {
     const fetchPosts = async () => {
       const { data } = username
@@ -129,7 +112,12 @@ export default function Feed({ username, currentUser }) {
         )}
         {posts.length > 0 ? (
           posts.map((post) => (
-            <Post key={post._id} post={post} deleteHandler={deleteHandler} />
+            <Post
+              key={post._id}
+              post={post}
+              posts={posts}
+              setPosts={setPosts}
+            />
           ))
         ) : (
           <p className="empty">Don't be shy. Make a post!</p>
