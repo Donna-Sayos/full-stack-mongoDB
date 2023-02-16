@@ -23,31 +23,31 @@ export default function HomeSidebar() {
 
   return (
     <div>
-      <div className="quoteTable">
-        <h3 className="quoteHeading">Joke of the day!</h3>
-
-        <tr className="quoteContainer table-light">
-          <td>
-            <BsFillChatRightQuoteFill className="quoteLogo" />
-          </td>
-          <td className="phraseSetup">
-            {quote && <span className="quoteText">{quote.setup}</span>}
-          </td>
-        </tr>
-        <br />
-        <tr className="quoteContainer table-light">
-          <td>
-            <img
-              className="quoteLogo"
-              src={"/assets/" + "others/laugh.png"}
-              alt="laugh emoji"
-            />
-          </td>
-          <td className="phrasePunchline">
-            {quote && <span className="quoteText">{quote.punchline}...</span>}
-          </td>
-        </tr>
-      </div>
+      <h3 className="quoteHeading">Joke of the day!</h3>
+      <table className="quoteTable">
+        <tbody>
+          <tr className="quoteContainer table-light">
+            <td>
+              <BsFillChatRightQuoteFill className="quoteLogo" />
+            </td>
+            <td className="phraseSetup">
+              {quote && <span className="quoteText">{quote.setup}</span>}
+            </td>
+          </tr>
+          <tr className="quoteContainer table-light">
+            <td>
+              <img
+                className="quoteLogo"
+                src={"/assets/" + "others/laugh.png"}
+                alt="laugh emoji"
+              />
+            </td>
+            <td className="phrasePunchline">
+              {quote && <span className="quoteText">{quote.punchline}...</span>}
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <hr className="homeRightbarHr" />
 

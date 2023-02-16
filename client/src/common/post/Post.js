@@ -104,7 +104,7 @@ export default function Post({ post, deleteHandler }) {
               {like === 0 ? (
                 <button
                   className="postLikeCounter"
-                  onClick={() => console.log("likes clicked...")}
+                  onClick={() => console.log("likes clicked...", post.likes)}
                 >
                   {" "}
                   likes
