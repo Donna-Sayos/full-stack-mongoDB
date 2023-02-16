@@ -35,7 +35,7 @@ export default function HomeSidebar() {
         </div>
       </div> */}
       <div className="quoteTable">
-        <h3 className="quoteHeading">Phrase of the day!</h3>
+        <h3 className="quoteHeading">Jokes of the day!</h3>
 
         <tr className="quoteContainer table-light">
           <td>
@@ -55,7 +55,7 @@ export default function HomeSidebar() {
             />
           </td>
           <td className="phrasePunchline">
-            {quote && <span className="quoteText">{quote.punchline}</span>}
+            {quote && <span className="quoteText">{quote.punchline}..</span>}
           </td>
         </tr>
       </div>
