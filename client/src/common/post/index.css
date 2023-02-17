@@ -20,10 +20,24 @@
     margin-right: 8px;
 }
 
-.name {
+.likesContainer {
+    background-color: #f9f9f9;
+}
+
+.likesHr {
+    margin: 15px 0;
+}
+
+.likesNum {
+    color: red;
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 400;
     margin: 0;
+}
+
+.name {
+    font-size: 1.4rem;
+    font-weight: 500;
 }
 
 .profileImg {
@@ -31,6 +45,7 @@
     height: 40px;
     border-radius: 50%;
     object-fit: cover;
+    margin-right: 10px;
 }
 
 .post {
@@ -106,6 +121,7 @@
     background-color: white;
     cursor: pointer;
     font-size: 15px;
+    color: gray;
 }
 
 .postCommentText:hover {
@@ -130,6 +146,7 @@
     background-color: white;
     cursor: pointer;
     font-size: 15px;
+    color: red;
 }
 
 .postLikeCounter:hover {

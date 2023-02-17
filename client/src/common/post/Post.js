@@ -153,9 +153,7 @@ export default function Post({ post, posts, setPosts }) {
               />
               <button className="postLikeCounter" onClick={handleShow}>
                 {likers.length > 0 ? (
-                  <span>
-                    {likers.length} likes
-                  </span>
+                  <span>{likers.length} likes</span>
                 ) : (
                   <span>Be the first to like this</span>
                 )}
@@ -181,40 +179,40 @@ export default function Post({ post, posts, setPosts }) {
                   </Modal.Footer>
                 </Modal>
               ) : (
-                <div>
-                  {likers &&
-                    likers.map((user,) => (
-                      <Modal show={show} onHide={handleClose} key={user._id}>
-                        <Modal.Header closeButton>
-                          <Modal.Title>
-                            <img
-                              className="heart"
-                              src={"/assets/" + "others/heart.png"}
-                              alt="heart"
-                            />
-                            <span className="likesNum">{likers.length}</span>
-                          </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <img
-                            className="profileImg"
-                            src={
-                              user.profilePicture
-                                ? "/assets/" + user.profilePicture
-                                : "/assets/" + "user/default-user-photo.png"
-                            }
-                            alt="user"
-                          />
-                          <span className="name">{user.username}</span>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button variant="secondary" onClick={handleClose}>
-                            Close
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
+                <Modal show={show} onHide={handleClose} key={user._id}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>
+                      <img
+                        className="heart"
+                        src={"/assets/" + "others/heart.png"}
+                        alt="heart"
+                      />
+                      <span className="likesNum">{likers.length} likes</span>
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body className="likesContainer">
+                    {likers.map((user, index) => (
+                      <div key={index}>
+                        <img
+                          className="profileImg"
+                          src={
+                            user.profilePicture
+                              ? "/assets/" + user.profilePicture
+                              : "/assets/" + "user/default-user-photo.png"
+                          }
+                          alt="user"
+                        />
+                        <span className="name">{user.username}</span>
+                        {index !== likers.length - 1 && <hr className="likesHr" />}
+                      </div>
                     ))}
-                </div>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               )}
             </div>
             <div className="postBottomRight">
