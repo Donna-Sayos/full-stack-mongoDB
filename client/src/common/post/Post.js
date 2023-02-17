@@ -68,11 +68,18 @@ export default function Post({ post, posts, setPosts }) {
   }, [currentUser._id, post.likes]);
 
   useEffect(() => {
+    let isSubscribed = true;
+
     const fetchUser = async () => {
       const { data } = await Axios.get(`/api/v1/users?userId=${post.userId}`);
-      setUser(data);
+
+      if (isSubscribed) {
+        setUser(data);
+      }
     };
     fetchUser();
+
+    return () => (isSubscribed = false);
   }, [post.userId]);
 
   return (
@@ -141,24 +148,21 @@ export default function Post({ post, posts, setPosts }) {
                 onClick={likeHandler}
                 alt="heart"
               />
-              {like === 0 ? (
-                <button
-                  className="postLikeCounter"
-                  onClick={() => console.log("likes clicked...")}
-                >
-                  {" "}
-                  likes
-                </button>
-              ) : (
-                <button
-                  className="postLikeCounter"
-                  data-toggle="modal"
-                  data-target="#likesModal"
-                >
-                  {like} likes
-                </button>
-              )}
-              <LikesModal likesArr={lu} />
+              <button
+                className="postLikeCounter"
+                data-toggle="modal"
+                data-target="#likesModal"
+              >
+                {lu.length === 1 ? (
+                  <span>{lu[0]?.username} likes this</span>
+                ) : lu.length > 1 ? (
+                  <span>
+                    {lu[0]?.username} and {lu.length - 1} others like this
+                  </span>
+                ) : (
+                  <span>Be the first to like this</span>
+                )}
+              </button>
             </div>
             <div className="postBottomRight">
               <button
@@ -169,6 +173,7 @@ export default function Post({ post, posts, setPosts }) {
               </button>
             </div>
           </div>
+          <LikesModal likesArr={lu} />
         </div>
       )}
     </div>
