@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/auth/AuthProvider";
+import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
@@ -9,17 +10,42 @@ export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
+  const [likedUsers, setLikedUsers] = useState([]);
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
 
-  const likeHandler = () => {
+  const allUsers = useFetchUsers();
+
+  const handleLikesClick = () => {
+    const users = post.likes.map((userId) =>
+      allUsers.find((user) => user._id === userId)
+    );
+    console.log("likes owners: ", users);
+  };
+
+  const likeHandler = async () => {
     try {
-      Axios.put("/api/v1/posts/" + post._id + "/like", {
+      await Axios.put("/api/v1/posts/" + post._id + "/like", {
         userId: currentUser._id,
       });
-    } catch (err) {}
-    setLike(isLiked ? like - 1 : like + 1);
-    setIsLiked(!isLiked);
+      setLike(isLiked ? like - 1 : like + 1);
+      setIsLiked(!isLiked);
+      setPosts((prevPosts) =>
+        prevPosts.map((prevPost) => {
+          if (prevPost._id === post._id) {
+            return {
+              ...prevPost,
+              likes: isLiked
+                ? prevPost.likes.filter((id) => id !== currentUser._id)
+                : [...prevPost.likes, currentUser._id],
+            };
+          }
+          return prevPost;
+        })
+      );
+    } catch (err) {
+      console.error("Error liking post: ", err.message);
+    }
   };
 
   const deleteHandler = async (postId, postUserId) => {
@@ -126,12 +152,7 @@ export default function Post({ post, posts, setPosts }) {
                   likes
                 </button>
               ) : (
-                <button
-                  className="postLikeCounter"
-                  onClick={() => {
-                    console.log("likes clicked...", post.likes);
-                  }}
-                >
+                <button className="postLikeCounter" onClick={handleLikesClick}>
                   {like} likes
                 </button>
               )}
