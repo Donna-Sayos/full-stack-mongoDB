@@ -3,12 +3,16 @@ import "../index.css";
 import Axios from "axios";
 import Post from "../../../common/post/Post";
 import Shares from "../../../common/share/Shares";
+import useFetchUsers from "../../../utils/customHooks/UseFetchUsers";
+import LikesModal from "../../../common/modal/likes/LikesModal";
 
 export default function Feed({ username, currentUser }) {
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const desc = useRef();
+  const allUsers = useFetchUsers();
 
   const createNewPost = async (newPost) => {
     try {
@@ -60,12 +64,17 @@ export default function Feed({ username, currentUser }) {
         )}
         {posts.length > 0 ? (
           posts.map((post) => (
-            <Post
-              key={post._id}
-              post={post}
-              posts={posts}
-              setPosts={setPosts}
-            />
+            <div key={post._id}>
+              <Post
+                post={post}
+                posts={posts}
+                setPosts={setPosts}
+                allUsers={allUsers}
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+              />
+              <LikesModal post={post} allUsers={allUsers} />
+            </div>
           ))
         ) : (
           <p className="empty">Don't be shy. Make a post!</p>

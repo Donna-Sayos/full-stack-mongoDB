@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/auth/AuthProvider";
-import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
-import LikesModal from "../modal/likes/LikesModal";
+// import LikesModal from "../modal/likes/LikesModal";
 
-export default function Post({ post, posts, setPosts }) {
+export default function Post({
+  post,
+  posts,
+  setPosts,
+  allUsers,
+  isModalOpen,
+  setIsModalOpen,
+}) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
-
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
-
-  const allUsers = useFetchUsers();
-
-  const lu = post.likes.map((userId) =>
-    allUsers.find((user) => user._id === userId)
+  const likers = post.likes.map(
+    (userId) => allUsers && allUsers.find((user) => user._id === userId)
   );
+
+  const handleLikesClick = (e) => {
+    e.stopPropagation();
+
+    console.log("toggle clicked!");
+    setIsModalOpen(!isModalOpen);
+  };
 
   const likeHandler = async () => {
     try {
@@ -150,19 +159,22 @@ export default function Post({ post, posts, setPosts }) {
               />
               <button
                 className="postLikeCounter"
-                data-toggle="modal"
+                data-toggle={isModalOpen ? "modal" : ""}
                 data-target="#likesModal"
+                onClick={handleLikesClick}
               >
-                {lu.length === 1 ? (
-                  <span>{lu[0]?.username} likes this</span>
-                ) : lu.length > 1 ? (
+                {likers.length === 1 ? (
+                  <span>{likers[0]?.username} likes this</span>
+                ) : likers.length > 1 ? (
                   <span>
-                    {lu[0]?.username} and {lu.length - 1} others like this
+                    {likers[0]?.username} and {likers.length - 1} others like
+                    this
                   </span>
                 ) : (
                   <span>Be the first to like this</span>
                 )}
               </button>
+              {/* <LikesModal post={post} allUsers={allUsers} /> */}
             </div>
             <div className="postBottomRight">
               <button
@@ -173,7 +185,6 @@ export default function Post({ post, posts, setPosts }) {
               </button>
             </div>
           </div>
-          <LikesModal likesArr={lu} />
         </div>
       )}
     </div>

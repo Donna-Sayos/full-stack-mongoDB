@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import { FaRegTimesCircle } from "react-icons/fa";
 
-export default function LikesModal({ likesArr = [] }) {
+export default function LikesModal({ post, allUsers }) {
+  const [likesArr, setLikesArr] = useState([]);
+
+  useEffect(() => {
+    let isSubscribed = true;
+    const fetchLikes = async () => {
+      const likes = await Promise.all(
+        post.likes.map((userId) => allUsers.find((u) => u._id === userId))
+      );
+      if (isSubscribed) setLikesArr(likes);
+    };
+
+    fetchLikes();
+
+    return () => (isSubscribed = false);
+  }, [allUsers, post.likes]);
+
   if (!likesArr || likesArr.length === 0) {
     return (
       <div
@@ -77,9 +93,7 @@ export default function LikesModal({ likesArr = [] }) {
                   }
                   alt="user"
                 />
-                <span className="name">
-                  {u?.firstName} {u?.lastName}
-                </span>
+                <span className="name">{u?.username}</span>
               </div>
             ))}
         </div>
