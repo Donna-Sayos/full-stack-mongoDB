@@ -9,12 +9,41 @@
     color: black;
 }
 
+.head {
+    margin: 0;
+}
+
+.heart{
+    width: 30px;
+    height: 30px;
+    margin-right: 8px;
+}
+
+.likers {
+    background-color: #f9f9f9;
+}
+
 #likesModal {
     position: fixed;
     top: 40%;
     z-index: 100024;
 }
 
-.head {
+.likesNum {
+    font-size: 1.2rem;
+    font-weight: 400;
     margin: 0;
+}
+
+.name {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.profileImg {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
 }

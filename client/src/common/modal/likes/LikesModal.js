@@ -16,18 +16,40 @@ export default function LikesModal({ likesArr }) {
     >
       <div className="modal-dialog modal-sm">
         <div className="modal-content">
-          <div className="head modal-header d-flex justify-content-end">
-            <button className="cancel" data-dismiss="modal">
-              <FaRegTimesCircle size={22} />
-            </button>
+          <div className="head modal-header">
+            <div className="d-flex align-items-center justify-content-start">
+              <img
+                className="heart"
+                src={"/assets/" + "others/heart.png"}
+                alt="heart"
+              />
+              {likesArr && likesArr.length > 0 ? (
+                <span className="likesNum">{likesArr.length}</span>
+              ) : null}
+            </div>
+            <div className="d-flex justify-content-end">
+              <button className="cancel" data-dismiss="modal">
+                <FaRegTimesCircle size={22} />
+              </button>
+            </div>
           </div>
-          {likesArr && likesArr.map((u) => (
-            <ul className="modal-body" key={u._id}>
-              <li className="d-flex justify-content-between">
-                {u.firstName} {u.lastName}
-              </li>
-            </ul>
-          ))}
+          {likesArr &&
+            likesArr.map((u) => (
+              <div className="likers modal-body" key={u._id}>
+                <img
+                  className="profileImg"
+                  src={
+                    u.profilePicture
+                      ? "/assets/" + u.profilePicture
+                      : "/assets/" + "user/default-user-photo.png"
+                  }
+                  alt="user"
+                />
+                <span className="name">
+                  {u.firstName} {u.lastName}
+                </span>
+              </div>
+            ))}
         </div>
       </div>
     </div>
