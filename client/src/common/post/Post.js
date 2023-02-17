@@ -11,18 +11,11 @@ export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
-  const [likedUsers, setLikedUsers] = useState([]);
+
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
 
   const allUsers = useFetchUsers();
-
-  const handleLikesClick = () => {
-    const users = post.likes.map((userId) =>
-      allUsers.find((user) => user._id === userId)
-    );
-    console.log("likes owners: ", users);
-  };
 
   const lu = post.likes.map((userId) =>
     allUsers.find((user) => user._id === userId)
