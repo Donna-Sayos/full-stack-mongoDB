@@ -5,6 +5,7 @@ import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
+import LikesModal from "../modal/likes/LikesModal";
 
 export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
@@ -22,6 +23,10 @@ export default function Post({ post, posts, setPosts }) {
     );
     console.log("likes owners: ", users);
   };
+
+  const lu = post.likes.map((userId) =>
+    allUsers.find((user) => user._id === userId)
+  );
 
   const likeHandler = async () => {
     try {
@@ -152,10 +157,11 @@ export default function Post({ post, posts, setPosts }) {
                   likes
                 </button>
               ) : (
-                <button className="postLikeCounter" onClick={handleLikesClick}>
+                <button className="postLikeCounter" data-toggle="modal" data-target="#likesModal">
                   {like} likes
                 </button>
               )}
+              <LikesModal likesArr={lu} />
             </div>
             <div className="postBottomRight">
               <button

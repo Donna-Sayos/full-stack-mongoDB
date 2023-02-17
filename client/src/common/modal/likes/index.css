@@ -1,0 +1,20 @@
+.cancel {
+    border-radius: 50%;
+    border: 0;
+    background-color: white;
+    color: gray;
+}
+
+.cancel:hover {
+    color: black;
+}
+
+#likesModal {
+    position: fixed;
+    top: 40%;
+    z-index: 100024;
+}
+
+.head {
+    margin: 0;
+}
