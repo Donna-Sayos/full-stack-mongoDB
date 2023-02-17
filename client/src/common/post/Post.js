@@ -1,34 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "./index.css";
 import { useAuthContext } from "../../context/auth/AuthProvider";
+import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
 // import LikesModal from "../modal/likes/LikesModal";
 
-export default function Post({
-  post,
-  posts,
-  setPosts,
-  allUsers,
-  isModalOpen,
-  setIsModalOpen,
-}) {
+export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
-  const likers = post.likes.map(
-    (userId) => allUsers && allUsers.find((user) => user._id === userId)
+  const allUsers = useFetchUsers();
+  const likers = post.likes.map((userId) =>
+    allUsers.find((user) => user._id === userId)
   );
+  const [show, setShow] = useState(false);
 
-  const handleLikesClick = (e) => {
-    e.stopPropagation();
-
-    console.log("toggle clicked!");
-    setIsModalOpen(!isModalOpen);
-  };
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   const likeHandler = async () => {
     try {
@@ -159,9 +153,7 @@ export default function Post({
               />
               <button
                 className="postLikeCounter"
-                data-toggle={isModalOpen ? "modal" : ""}
-                data-target="#likesModal"
-                onClick={handleLikesClick}
+                onClick={handleShow}
               >
                 {likers.length === 1 ? (
                   <span>{likers[0]?.username} likes this</span>
@@ -175,6 +167,60 @@ export default function Post({
                 )}
               </button>
               {/* <LikesModal post={post} allUsers={allUsers} /> */}
+              {likers.length === 0 ? (
+                <Modal show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>
+                      <img
+                        className="heart"
+                        src={"/assets/" + "others/heart.png"}
+                        alt="heart"
+                      />
+                      <span className="likesNum">0</span>
+                    </Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body className="text-center">No likes yet.</Modal.Body>
+                  <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
+              ) : (
+                <div>
+                  {likers && likers.map((user) => (
+                    <Modal show={show} onHide={handleClose} key={user._id}>
+                      <Modal.Header closeButton>
+                        <Modal.Title>
+                          <img
+                            className="heart"
+                            src={"/assets/" + "others/heart.png"}
+                            alt="heart"
+                          />
+                          <span className="likesNum">{likers.length}</span>
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <img
+                          className="profileImg"
+                          src={
+                            user.profilePicture
+                              ? "/assets/" + user.profilePicture
+                              : "/assets/" + "user/default-user-photo.png"
+                          }
+                          alt="user"
+                        />
+                        <span className="name">{user.username}</span>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button variant="secondary" onClick={handleClose}>
+                          Close
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  ))}
+                </div>
+              )}
             </div>
             <div className="postBottomRight">
               <button
