@@ -157,7 +157,11 @@ export default function Post({ post, posts, setPosts }) {
                   likes
                 </button>
               ) : (
-                <button className="postLikeCounter" data-toggle="modal" data-target="#likesModal">
+                <button
+                  className="postLikeCounter"
+                  data-toggle="modal"
+                  data-target="#likesModal"
+                >
                   {like} likes
                 </button>
               )}

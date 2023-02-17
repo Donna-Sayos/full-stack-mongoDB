@@ -3,8 +3,6 @@ import "./index.css";
 import { FaRegTimesCircle } from "react-icons/fa";
 
 export default function LikesModal({ likesArr }) {
-  console.log("likesArr: ", likesArr);
-
   return (
     <div
       className="modal fade"
@@ -34,19 +32,19 @@ export default function LikesModal({ likesArr }) {
             </div>
           </div>
           {likesArr &&
-            likesArr.map((u) => (
-              <div className="likers modal-body" key={u._id}>
+            likesArr.map((u, index) => (
+              <div className="likers modal-body" key={index}>
                 <img
                   className="profileImg"
                   src={
-                    u.profilePicture
+                    u?.profilePicture
                       ? "/assets/" + u.profilePicture
                       : "/assets/" + "user/default-user-photo.png"
                   }
                   alt="user"
                 />
                 <span className="name">
-                  {u.firstName} {u.lastName}
+                  {u?.firstName} {u?.lastName}
                 </span>
               </div>
             ))}
