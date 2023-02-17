@@ -151,16 +151,10 @@ export default function Post({ post, posts, setPosts }) {
                 onClick={likeHandler}
                 alt="heart"
               />
-              <button
-                className="postLikeCounter"
-                onClick={handleShow}
-              >
-                {likers.length === 1 ? (
-                  <span>{likers[0]?.username} likes this</span>
-                ) : likers.length > 1 ? (
+              <button className="postLikeCounter" onClick={handleShow}>
+                {likers.length > 0 ? (
                   <span>
-                    {likers[0]?.username} and {likers.length - 1} others like
-                    this
+                    {likers.length} likes
                   </span>
                 ) : (
                   <span>Be the first to like this</span>
@@ -188,37 +182,38 @@ export default function Post({ post, posts, setPosts }) {
                 </Modal>
               ) : (
                 <div>
-                  {likers && likers.map((user) => (
-                    <Modal show={show} onHide={handleClose} key={user._id}>
-                      <Modal.Header closeButton>
-                        <Modal.Title>
+                  {likers &&
+                    likers.map((user,) => (
+                      <Modal show={show} onHide={handleClose} key={user._id}>
+                        <Modal.Header closeButton>
+                          <Modal.Title>
+                            <img
+                              className="heart"
+                              src={"/assets/" + "others/heart.png"}
+                              alt="heart"
+                            />
+                            <span className="likesNum">{likers.length}</span>
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
                           <img
-                            className="heart"
-                            src={"/assets/" + "others/heart.png"}
-                            alt="heart"
+                            className="profileImg"
+                            src={
+                              user.profilePicture
+                                ? "/assets/" + user.profilePicture
+                                : "/assets/" + "user/default-user-photo.png"
+                            }
+                            alt="user"
                           />
-                          <span className="likesNum">{likers.length}</span>
-                        </Modal.Title>
-                      </Modal.Header>
-                      <Modal.Body>
-                        <img
-                          className="profileImg"
-                          src={
-                            user.profilePicture
-                              ? "/assets/" + user.profilePicture
-                              : "/assets/" + "user/default-user-photo.png"
-                          }
-                          alt="user"
-                        />
-                        <span className="name">{user.username}</span>
-                      </Modal.Body>
-                      <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                          Close
-                        </Button>
-                      </Modal.Footer>
-                    </Modal>
-                  ))}
+                          <span className="name">{user.username}</span>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant="secondary" onClick={handleClose}>
+                            Close
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    ))}
                 </div>
               )}
             </div>
