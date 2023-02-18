@@ -87,11 +87,9 @@
     text-decoration: underline;
 }
 
-.likeIcon{
-    width: 24px;
-    height: 24px;
-    margin-right: 5px;
-    cursor: pointer;
+.likeButton:hover {
+    border: 2px solid #ff7b7b;
+    border-radius: 50%;
 }
 
 .likesNum {

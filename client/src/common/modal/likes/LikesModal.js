@@ -3,18 +3,29 @@ import "./index.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ProfilePic from "../../pic/ProfilePic";
+import LikeButton from "../../post/LikeButton";
 
 export default function LikesModal({ likers, show, handleClose }) {
+  const profileImg = {
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    marginRight: "10px",
+  };
+
+  const heart = {
+    width: "30px",
+    height: "30px",
+    marginRight: "8px",
+  };
+
   if (likers.length === 0) {
     return (
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            <img
-              className="heart"
-              src={"/assets/" + "others/heart.png"}
-              alt="heart"
-            />
+            <LikeButton style={heart} />
             <span className="likesNum">0</span>
           </Modal.Title>
         </Modal.Header>
@@ -28,23 +39,11 @@ export default function LikesModal({ likers, show, handleClose }) {
     );
   }
 
-  const profileImg = {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    marginRight: "10px",
-  };
-
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
         <Modal.Title>
-          <img
-            className="heart"
-            src={"/assets/" + "others/heart.png"}
-            alt="heart"
-          />
+          <LikeButton style={heart} />
           <span className="likesNum">{likers.length} likes</span>
         </Modal.Title>
       </Modal.Header>

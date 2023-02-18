@@ -7,6 +7,7 @@ import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import LikesModal from "../modal/likes/LikesModal";
 import ProfilePic from "../pic/ProfilePic";
+import LikeButton from "./LikeButton";
 
 export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
@@ -92,6 +93,13 @@ export default function Post({ post, posts, setPosts }) {
     cursor: "pointer",
   };
 
+  const likeIcon = {
+    width: "30px",
+    height: "30px",
+    cursor: "pointer",
+    marginRight: "5px",
+  };
+
   return (
     <div className="post">
       {specificUser && (
@@ -144,12 +152,7 @@ export default function Post({ post, posts, setPosts }) {
           </div>
           <div className="postBottom">
             <div className="postBottomLeft">
-              <img
-                className="likeIcon"
-                src={"/assets/" + "others/heart.png"}
-                onClick={likeHandler}
-                alt="heart"
-              />
+              <LikeButton onClick={likeHandler} style={likeIcon} />
               <button className="postLikeCounter" onClick={handleShow}>
                 {likers.length > 0 ? (
                   <span>{likers.length} likes</span>
