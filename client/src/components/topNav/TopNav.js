@@ -6,16 +6,16 @@ import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import ProfilePic from "../../common/pic/ProfilePic";
 
+const topNavImg = {
+  width: "32px",
+  height: "32px",
+  objectFit: "cover",
+  borderRadius: "50%",
+  cursor: "pointer",
+};
+
 export default function TopNav({ setDisplayFeed }) {
   const { user } = useAuthContext();
-
-  const topNavImg = {
-    width: "32px",
-    height: "32px",
-    objectFit: "cover",
-    borderRadius: "50%",
-    cursor: "pointer",
-  }
 
   return (
     <div className="topNavContainer">

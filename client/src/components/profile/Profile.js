@@ -10,6 +10,19 @@ import Feed from "./feed/Feed";
 import RightSidebar from "../rightSidebar/RightSidebar";
 import ProfilePic from "../../common/pic/ProfilePic";
 
+const profileUserImg = {
+  width: "150px",
+  height: "150px",
+  objectFit: "cover",
+  borderRadius: "50%",
+  border: "3px solid #fff",
+  position: "absolute",
+  top: "150px",
+  left: "0",
+  right: "0",
+  margin: "auto",
+};
+
 export default function Profile() {
   const [user, setUser] = useState([]);
   const username = useParams().username;
@@ -31,19 +44,6 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, [username]);
-
-  const profileUserImg = {
-    width: "150px",
-    height: "150px",
-    objectFit: "cover",
-    borderRadius: "50%",
-    border: "3px solid #fff",
-    position: "absolute",
-    top: "150px",
-    left: "0",
-    right: "0",
-    margin: "auto",
-  };
 
   return (
     <>

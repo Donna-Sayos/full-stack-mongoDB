@@ -6,21 +6,21 @@ import Modal from "react-bootstrap/Modal";
 import ProfilePic from "../../pic/ProfilePic";
 import LikeButton from "../../post/LikeButton";
 
-export default function LikesModal({ likers, show, handleClose }) {
-  const profileImg = {
-    width: "40px",
-    height: "40px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    marginRight: "10px",
-  };
+const profileImg = {
+  width: "40px",
+  height: "40px",
+  borderRadius: "50%",
+  objectFit: "cover",
+  marginRight: "10px",
+};
 
-  const heart = {
-    width: "30px",
-    height: "30px",
-    marginRight: "8px",
-  };
+const heart = {
+  width: "30px",
+  height: "30px",
+  marginRight: "8px",
+};
 
+export default function LikesModal({ currentUser, likers, show, handleClose }) {
   if (likers.length === 0) {
     return (
       <Modal show={show} onHide={handleClose}>
@@ -51,9 +51,7 @@ export default function LikesModal({ likers, show, handleClose }) {
       <Modal.Body className="likesContainer">
         {likers &&
           likers.map((user, index) => (
-            <div
-              key={index}
-            >
+            <div key={index}>
               <Link to={`/profile/${user?.username}`}>
                 <ProfilePic style={profileImg} user={user} />
                 <span className="name">{user?.username}</span>

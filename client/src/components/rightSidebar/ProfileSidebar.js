@@ -6,6 +6,13 @@ import { Link } from "react-router-dom";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
 import ProfilePic from "../../common/pic/ProfilePic";
 
+const rightSidebarFollowingImg = {
+  width: "100px",
+  height: "80px",
+  objectFit: "cover",
+  borderRadius: "5px",
+};
+
 export default function ProfileSidebar({ specificUser }) {
   const [friends, setFriends] = useState([]);
   const { user: currentUser, dispatch } = useAuthContext();
@@ -51,13 +58,6 @@ export default function ProfileSidebar({ specificUser }) {
     }
     setIsLoading(false);
   };
-
-  const rightSidebarFollowingImg = {
-    width: "100px",
-    height: "80px",
-    objectFit: "cover",
-    borderRadius: "5px",
-  }
 
   return (
     <>

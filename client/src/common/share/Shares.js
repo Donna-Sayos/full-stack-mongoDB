@@ -11,6 +11,14 @@ import {
 import { shortUuid } from "../../utils/helper/helperFunctions";
 import ProfilePic from "../pic/ProfilePic";
 
+const shareProfileImg = {
+  width: "50px",
+  height: "50px",
+  borderRadius: "50%",
+  objectFit: "cover",
+  marginRight: "10px",
+};
+
 export default function Shares({
   currentUser,
   error,
@@ -78,14 +86,6 @@ export default function Shares({
     }
 
     await createNewPost(newPost);
-  };
-
-  const shareProfileImg = {
-    width: "50px",
-    height: "50px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    marginRight: "10px",
   };
 
   return (

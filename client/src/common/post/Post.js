@@ -9,6 +9,21 @@ import LikesModal from "../modal/likes/LikesModal";
 import ProfilePic from "../pic/ProfilePic";
 import LikeButton from "./LikeButton";
 
+const postProfileImg = {
+  width: "32px",
+  height: "32px",
+  borderRadius: "50%",
+  objectFit: "cover",
+  cursor: "pointer",
+};
+
+const likeIcon = {
+  width: "30px",
+  height: "30px",
+  cursor: "pointer",
+  marginRight: "5px",
+};
+
 export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
@@ -85,21 +100,6 @@ export default function Post({ post, posts, setPosts }) {
     return () => (isSubscribed = false);
   }, [post.userId]);
 
-  const postProfileImg = {
-    width: "32px",
-    height: "32px",
-    borderRadius: "50%",
-    objectFit: "cover",
-    cursor: "pointer",
-  };
-
-  const likeIcon = {
-    width: "30px",
-    height: "30px",
-    cursor: "pointer",
-    marginRight: "5px",
-  };
-
   return (
     <div className="post">
       {specificUser && (
@@ -159,6 +159,7 @@ export default function Post({ post, posts, setPosts }) {
                 )}
               </button>
               <LikesModal
+                currentUser={currentUser}
                 likers={likers}
                 show={show}
                 handleClose={handleClose}
