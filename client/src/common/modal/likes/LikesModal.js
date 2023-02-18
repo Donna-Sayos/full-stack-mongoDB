@@ -1,5 +1,6 @@
 import React from "react";
 import "./index.css";
+import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ProfilePic from "../../pic/ProfilePic";
@@ -52,10 +53,11 @@ export default function LikesModal({ likers, show, handleClose }) {
           likers.map((user, index) => (
             <div
               key={index}
-              onClick={() => console.log(`${user?.username} clicked...`)}
             >
-              <ProfilePic style={profileImg} user={user} />
-              <span className="name">{user?.username}</span>
+              <Link to={`/profile/${user?.username}`}>
+                <ProfilePic style={profileImg} user={user} />
+                <span className="name">{user?.username}</span>
+              </Link>
               {index !== likers.length - 1 && <hr className="likesHr" />}
             </div>
           ))}

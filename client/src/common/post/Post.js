@@ -115,9 +115,7 @@ export default function Post({ post, posts, setPosts }) {
             {currentUser._id === post.userId && (
               <div className="postTopRight">
                 <button
-                  className="dots"
-                  data-toggle="modal"
-                  data-target=".dotModal"
+                  className="removePost"
                   onClick={() => deleteHandler(post._id, post.userId)}
                 >
                   x
