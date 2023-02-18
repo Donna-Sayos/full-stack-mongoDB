@@ -22,8 +22,8 @@ export default function HomeSidebar() {
     };
 
     fetcher();
-    
-    return () => isSubscribed = false;
+
+    return () => (isSubscribed = false);
   }, []);
 
   return (

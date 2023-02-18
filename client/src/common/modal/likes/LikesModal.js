@@ -45,10 +45,10 @@ export default function LikesModal({ likers, show, handleClose }) {
           likers.map((user, index) => (
             <div
               key={index}
-              onClick={() => console.log(`${user.username} clicked...`)}
+              onClick={() => console.log(`${user?.username} clicked...`)}
             >
               <ProfilePic className="profileImg" user={user} />
-              <span className="name">{user.username}</span>
+              <span className="name">{user?.username}</span>
               {index !== likers.length - 1 && <hr className="likesHr" />}
             </div>
           ))}
