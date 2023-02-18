@@ -52,6 +52,13 @@ export default function ProfileSidebar({ specificUser }) {
     setIsLoading(false);
   };
 
+  const rightSidebarFollowingImg = {
+    width: "100px",
+    height: "80px",
+    objectFit: "cover",
+    borderRadius: "5px",
+  }
+
   return (
     <>
       {specificUser && specificUser.username !== currentUser.username && (
@@ -101,7 +108,7 @@ export default function ProfileSidebar({ specificUser }) {
               style={{ textDecoration: "none" }}
             >
               <div className="rightSidebarFollowing">
-                <ProfilePic className="rightSidebarFollowingImg" user={friend} />
+                <ProfilePic style={rightSidebarFollowingImg} user={friend} />
                 <span className="rightSidebarFollowingName">
                   {friend.username}
                 </span>

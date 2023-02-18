@@ -9,6 +9,14 @@ import ProfilePic from "../../common/pic/ProfilePic";
 export default function TopNav({ setDisplayFeed }) {
   const { user } = useAuthContext();
 
+  const topNavImg = {
+    width: "32px",
+    height: "32px",
+    objectFit: "cover",
+    borderRadius: "50%",
+    cursor: "pointer",
+  }
+
   return (
     <div className="topNavContainer">
       <div className="topNavLeft">
@@ -54,7 +62,7 @@ export default function TopNav({ setDisplayFeed }) {
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>
-          <ProfilePic className="topNavImg" user={user} />
+          <ProfilePic style={topNavImg} user={user} />
         </Link>
       </div>
     </div>

@@ -28,6 +28,14 @@ export default function LikesModal({ likers, show, handleClose }) {
     );
   }
 
+  const profileImg = {
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    marginRight: "10px",
+  };
+
   return (
     <Modal show={show} onHide={handleClose}>
       <Modal.Header closeButton>
@@ -47,7 +55,7 @@ export default function LikesModal({ likers, show, handleClose }) {
               key={index}
               onClick={() => console.log(`${user?.username} clicked...`)}
             >
-              <ProfilePic className="profileImg" user={user} />
+              <ProfilePic style={profileImg} user={user} />
               <span className="name">{user?.username}</span>
               {index !== likers.length - 1 && <hr className="likesHr" />}
             </div>

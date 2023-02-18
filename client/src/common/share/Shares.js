@@ -80,11 +80,19 @@ export default function Shares({
     await createNewPost(newPost);
   };
 
+  const shareProfileImg = {
+    width: "50px",
+    height: "50px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    marginRight: "10px",
+  };
+
   return (
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
-          <ProfilePic className="shareProfileImg" user={currentUser} />
+          <ProfilePic style={shareProfileImg} user={currentUser} />
           <input
             placeholder={`What's on your mind?`}
             className="shareInput"

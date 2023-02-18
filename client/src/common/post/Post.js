@@ -84,6 +84,14 @@ export default function Post({ post, posts, setPosts }) {
     return () => (isSubscribed = false);
   }, [post.userId]);
 
+  const postProfileImg = {
+    width: "32px",
+    height: "32px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    cursor: "pointer",
+  };
+
   return (
     <div className="post">
       {specificUser && (
@@ -91,7 +99,7 @@ export default function Post({ post, posts, setPosts }) {
           <div className="postTop">
             <div className="postTopLeft">
               <Link to={`/profile/${specificUser.username}`}>
-                <ProfilePic className="postProfileImg" user={specificUser} />
+                <ProfilePic style={postProfileImg} user={specificUser} />
               </Link>
               <span className="post-Username">{specificUser.username}</span>
               <span className="postDate">{format(post.createdAt)}</span>
@@ -149,7 +157,11 @@ export default function Post({ post, posts, setPosts }) {
                   <span>Be the first to like this</span>
                 )}
               </button>
-              <LikesModal likers={likers} show={show} handleClose={handleClose} />
+              <LikesModal
+                likers={likers}
+                show={show}
+                handleClose={handleClose}
+              />
             </div>
             <div className="postBottomRight">
               <button

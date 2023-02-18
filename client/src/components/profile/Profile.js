@@ -8,6 +8,7 @@ import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import Feed from "./feed/Feed";
 import RightSidebar from "../rightSidebar/RightSidebar";
+import ProfilePic from "../../common/pic/ProfilePic";
 
 export default function Profile() {
   const [user, setUser] = useState([]);
@@ -30,6 +31,19 @@ export default function Profile() {
   useEffect(() => {
     getUser();
   }, [username]);
+
+  const profileUserImg = {
+    width: "150px",
+    height: "150px",
+    objectFit: "cover",
+    borderRadius: "50%",
+    border: "3px solid #fff",
+    position: "absolute",
+    top: "150px",
+    left: "0",
+    right: "0",
+    margin: "auto",
+  };
 
   return (
     <>
@@ -54,15 +68,7 @@ export default function Profile() {
                     <button onClick={handleLogout}>Logout</button>
                   </div>
                 )}
-                <img
-                  className="profileUserImg"
-                  src={
-                    specificUser.profilePicture
-                      ? "/assets/" + specificUser.profilePicture
-                      : "/assets/" + "user/default-user-photo.png"
-                  } 
-                  alt="user"
-                />
+                <ProfilePic user={specificUser} style={profileUserImg} />
               </div>
               <div className="profileInfo">
                 <h4 className="profileInfoName">{specificUser.username}</h4>

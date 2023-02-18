@@ -7,12 +7,20 @@ export default function Friends({ userId }) {
   const allUsers = useFetchUsers();
   const friends = allUsers.filter((u) => u._id === userId);
 
+  const sidebarFriendImg = {
+    width: "32px",
+    height: "32px",
+    borderRadius: "50%",
+    objectFit: "cover",
+    marginRight: "10px",
+  };
+
   return (
     <div className="sidebarFriend">
       {friends && friends.length > 0
         ? friends.map((f) => (
             <li className="sidebarFriend" key={f._id}>
-              <ProfilePic className="sidebarFriendImg" user={f} />
+              <ProfilePic style={sidebarFriendImg} user={f} />
               <div className="sidebarFriendName">
                 {f.username}{" "}
                 <span style={{ color: "gray" }}>({f.pronouns})</span>

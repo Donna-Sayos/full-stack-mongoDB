@@ -11,12 +11,19 @@ export default function Online({ userId }) {
     (u) => u._id === userId && u._id !== currentUser._id
   );
 
+  const rightSidebarProfileImg = {
+    width: "40px",
+    height: "40px",
+    borderRadius: "50%",
+    objectFit: "cover",
+  };
+
   return (
     <>
       {onlineUser && (
         <li className="rightSidebarFriend">
           <div className="rightSidebarProfileImgContainer">
-            <ProfilePic className="rightSidebarProfileImg" user={onlineUser} />
+            <ProfilePic style={rightSidebarProfileImg} user={onlineUser} />
             <span className="rightSidebarOnline"></span>
           </div>
           <div className="rightSidebarUsername">

@@ -27,16 +27,3 @@
 .name:hover {
     font-weight: 600;
 }
-
-.profileImg {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 10px;
-}
-
-.profileImg:hover {
-    border: 1px solid #fce9db;
-    zoom: 5px;
-}

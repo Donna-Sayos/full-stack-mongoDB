@@ -41,13 +41,6 @@
     align-items: center;
 }
 
-.postProfileImg {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
 .post-Username {
     font-size: 15px;
     font-weight: bold;
