@@ -9,16 +9,21 @@ export default function HomeSidebar() {
   const { user: currentUser } = useAuthContext();
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetcher = async () => {
       const res = await fetch(
         "https://official-joke-api.appspot.com/jokes/random"
       );
       const data = await res.json();
 
-      setQuote(data);
+      if (isSubscribed) {
+        setQuote(data);
+      }
     };
 
     fetcher();
+    
+    return () => isSubscribed = false;
   }, []);
 
   return (

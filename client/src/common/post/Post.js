@@ -6,6 +6,7 @@ import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import LikesModal from "../modal/likes/LikesModal";
+import ProfilePic from "../pic/ProfilePic";
 
 export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
@@ -90,15 +91,7 @@ export default function Post({ post, posts, setPosts }) {
           <div className="postTop">
             <div className="postTopLeft">
               <Link to={`/profile/${specificUser.username}`}>
-                <img
-                  className="postProfileImg"
-                  src={
-                    specificUser.profilePicture
-                      ? "/assets/" + specificUser.profilePicture
-                      : "/assets/" + "user/default-user-photo.png"
-                  }
-                  alt="user"
-                />
+                <ProfilePic className="postProfileImg" user={specificUser} />
               </Link>
               <span className="post-Username">{specificUser.username}</span>
               <span className="postDate">{format(post.createdAt)}</span>

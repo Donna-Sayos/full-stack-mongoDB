@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../index.css";
 import Axios from "axios";
+import ProfilePic from "../../../common/pic/ProfilePic";
 
 export default function Friends({ user }) {
   const [otherUsers, setOtherUsers] = useState([]);
@@ -20,15 +21,7 @@ export default function Friends({ user }) {
       {friends && friends.length > 0
         ? friends.map((f) => (
             <li className="sidebarFriend" key={f._id}>
-              <img
-                className="sidebarFriendImg"
-                src={
-                  user.profilePicture
-                    ? "/assets/" + user.profilePicture
-                    : "/assets/" + "user/default-user-photo.png"
-                }
-                alt="friend"
-              />
+              <ProfilePic className="sidebarFriendImg" user={f} />
               <div className="sidebarFriendName">
                 {f.username}{" "}
                 <span style={{ color: "gray" }}>({f.pronouns})</span>

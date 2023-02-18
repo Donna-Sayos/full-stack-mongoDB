@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../index.css";
 import Axios from "axios";
 import { useAuthContext } from "../../../context/auth/AuthProvider";
+import ProfilePic from "../../../common/pic/ProfilePic";
 
 export default function Online({ userId }) {
   const [otherUsers, setOtherUsers] = useState([]);
@@ -23,15 +24,7 @@ export default function Online({ userId }) {
       {onlineUser && (
         <li className="rightSidebarFriend">
           <div className="rightSidebarProfileImgContainer">
-            <img
-              className="rightSidebarProfileImg"
-              src={
-                onlineUser.profilePicture
-                  ? "/assets/" + onlineUser.profilePicture
-                  : "/assets/" + "user/default-user-photo.png"
-              }
-              alt="user"
-            />
+            <ProfilePic className="rightSidebarProfileImg" user={onlineUser} />
             <span className="rightSidebarOnline"></span>
           </div>
           <div className="rightSidebarUsername">

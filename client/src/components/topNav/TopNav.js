@@ -4,6 +4,7 @@ import "./index.css";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
+import ProfilePic from "../../common/pic/ProfilePic";
 
 export default function TopNav({ setDisplayFeed }) {
   const { user } = useAuthContext();
@@ -53,15 +54,7 @@ export default function TopNav({ setDisplayFeed }) {
           </div>
         </div>
         <Link to={`/profile/${user.username}`}>
-          <img
-            src={
-              user.profilePicture
-                ? "/assets/" + user.profilePicture
-                : "/assets/" + "user/default-user-photo.png"
-            }
-            alt="user"
-            className="topNavImg"
-          />
+          <ProfilePic className="topNavImg" user={user} />
         </Link>
       </div>
     </div>

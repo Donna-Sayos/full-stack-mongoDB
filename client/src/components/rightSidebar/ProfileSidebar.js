@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { Link } from "react-router-dom";
 import { IoIosAdd, IoIosRemove } from "react-icons/io";
+import ProfilePic from "../../common/pic/ProfilePic";
 
 export default function ProfileSidebar({ specificUser }) {
   const [friends, setFriends] = useState([]);
@@ -90,7 +91,7 @@ export default function ProfileSidebar({ specificUser }) {
           </div>
         </div>
       )}
-      <h4 className="rightSidebarTitle">User friends</h4>
+      <h4 className="rightSidebarTitle text-center mt-5">User friends</h4>
       <div className="rightSidebarFollowings">
         {friends && Array.isArray(friends) && friends.length > 0 ? (
           friends.map((friend) => (
@@ -100,15 +101,7 @@ export default function ProfileSidebar({ specificUser }) {
               style={{ textDecoration: "none" }}
             >
               <div className="rightSidebarFollowing">
-                <img
-                  src={
-                    friend.profilePicture
-                      ? "/assets/" + friend.profilePicture
-                      : "/assets/" + "user/default-user-photo.png"
-                  }
-                  alt="friend"
-                  className="rightSidebarFollowingImg"
-                />
+                <ProfilePic className="rightSidebarFollowingImg" user={friend} />
                 <span className="rightSidebarFollowingName">
                   {friend.username}
                 </span>

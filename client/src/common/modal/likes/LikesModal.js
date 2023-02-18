@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import ProfilePic from "../../pic/ProfilePic";
 
 export default function LikesModal({ likers, show, handleClose }) {
   if (likers.length === 0) {
@@ -46,15 +47,7 @@ export default function LikesModal({ likers, show, handleClose }) {
               key={index}
               onClick={() => console.log(`${user.username} clicked...`)}
             >
-              <img
-                className="profileImg"
-                src={
-                  user.profilePicture
-                    ? "/assets/" + user.profilePicture
-                    : "/assets/" + "user/default-user-photo.png"
-                }
-                alt="user"
-              />
+              <ProfilePic className="profileImg" user={user} />
               <span className="name">{user.username}</span>
               {index !== likers.length - 1 && <hr className="likesHr" />}
             </div>

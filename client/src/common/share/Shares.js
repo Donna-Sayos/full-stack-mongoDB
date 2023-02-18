@@ -9,6 +9,7 @@ import {
   MdOutlineCancel,
 } from "react-icons/md";
 import { shortUuid } from "../../utils/helper/helperFunctions";
+import ProfilePic from "../pic/ProfilePic";
 
 export default function Shares({
   currentUser,
@@ -83,15 +84,7 @@ export default function Shares({
     <div className="share">
       <div className="shareWrapper">
         <div className="shareTop">
-          <img
-            className="shareProfileImg"
-            src={
-              currentUser?.profilePicture
-                ? "/assets/" + currentUser?.profilePicture
-                : "/assets/" + "user/default-user-photo.png"
-            }
-            alt="user"
-          />
+          <ProfilePic className="shareProfileImg" user={currentUser} />
           <input
             placeholder={`What's on your mind?`}
             className="shareInput"
