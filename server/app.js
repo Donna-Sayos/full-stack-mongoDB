@@ -45,6 +45,7 @@ app.use(
         "https://cdn.jsdelivr.net",
         "https://www.google.com",
         "https://www.gstatic.com",
+        "'unsafe-inline'",
       ],
       frameSrc: ["https://www.google.com"],
       imgSrc: ["'self'", "data:", "blob:"],
