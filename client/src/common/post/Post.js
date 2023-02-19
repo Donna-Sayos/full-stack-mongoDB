@@ -159,7 +159,6 @@ export default function Post({ post, posts, setPosts }) {
                 )}
               </button>
               <LikesModal
-                currentUser={currentUser}
                 likers={likers}
                 show={show}
                 handleClose={handleClose}
