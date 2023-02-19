@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const Comments = require("../models/Comments");
 
 const getAllPosts = async (req, res) => {
   try {
@@ -131,6 +132,32 @@ const getUserPosts = async (req, res) => {
   }
 };
 
+// Create a new comment for a post
+const createComments = async (req, res) => {
+  try {
+    const { postId, userId, text } = req.body;
+
+    // Check if the post exists
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    // Create a new comment
+    const comment = new Comment({ postId, userId, text });
+    await comment.save();
+
+    // Add the comment to the post's comments array
+    post.comments.push(comment);
+    await post.save();
+
+    res.status(201).json(comment);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error at comments controller" });
+  }
+};
+
 module.exports = {
   getAllPosts,
   createPost,
@@ -140,4 +167,5 @@ module.exports = {
   getSinglePost,
   getTimelinePosts,
   getUserPosts,
+  createComments,
 };
