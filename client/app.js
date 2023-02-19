@@ -20,7 +20,6 @@ export default function App() {
 
   const resetRecaptcha = () => {
     recaptchaRef.current.reset();
-    console.log("recaptcha reset");
     setIsdisabled(true);
   };
 
@@ -49,7 +48,7 @@ export default function App() {
         {user && (
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/profile/:username" element={<Profile recaptchaRef={recaptchaRef} resetRecaptcha={resetRecaptcha} />} />
           </Routes>
         )}
       </BrowserRouter>

@@ -23,7 +23,7 @@ const profileUserImg = {
   margin: "auto",
 };
 
-export default function Profile() {
+export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const [user, setUser] = useState([]);
   const username = useParams().username;
   const specificUser = user.filter((user) => user.username === username)[0];
@@ -34,6 +34,7 @@ export default function Profile() {
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
+    resetRecaptcha();
   };
 
   async function getUser() {
@@ -65,7 +66,9 @@ export default function Profile() {
                 />
                 {currentUser.username === specificUser.username && (
                   <div className="logout">
-                    <button onClick={handleLogout}>Logout</button>
+                    <button ref={recaptchaRef} onClick={handleLogout}>
+                      Logout
+                    </button>
                   </div>
                 )}
                 <ProfilePic user={specificUser} style={profileUserImg} />
