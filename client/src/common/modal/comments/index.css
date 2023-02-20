@@ -11,3 +11,7 @@
     max-height: 500px;
     object-fit: contain;
 }
+
+.modal-Hr {
+    margin: 0;
+}

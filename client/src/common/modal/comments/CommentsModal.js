@@ -2,6 +2,7 @@ import React from "react";
 import "./index.css";
 import Modal from "react-bootstrap/Modal";
 import { format } from "timeago.js";
+import Comments from "../../comments/Comments";
 
 export default function CommentsModal({
   show,
@@ -27,6 +28,8 @@ export default function CommentsModal({
             Your browser does not support the video tag.
           </video>
         )}
+        <hr className="modal-Hr" />
+        <Comments postId={post._id} />
       </Modal.Body>
       <Modal.Footer>
         <p>{likers && likers.length} likes</p>
