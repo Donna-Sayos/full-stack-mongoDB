@@ -189,6 +189,7 @@ export default function Post({ post, posts, setPosts }) {
                 show={show}
                 handleClose={handleClose}
                 post={post}
+                specificUser={specificUser}
               />
             </div>
           </div>

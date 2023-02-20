@@ -1,8 +1,15 @@
 import React from "react";
 import "./index.css";
 import Modal from "react-bootstrap/Modal";
+import { format } from "timeago.js";
 
-export default function CommentsModal({ show, handleClose, post, likers }) {
+export default function CommentsModal({
+  show,
+  handleClose,
+  post,
+  likers,
+  specificUser,
+}) {
   return (
     <Modal show={show} onHide={handleClose} id="comments-modal">
       <Modal.Header closeButton>
@@ -10,7 +17,7 @@ export default function CommentsModal({ show, handleClose, post, likers }) {
       </Modal.Header>
       <Modal.Body>
         <p>
-          Posted by {post.username} on {post.createdAt}
+          Posted by {specificUser.username} on {format(post.createdAt)}
         </p>
         {post.img && <img src={"/assets/" + post.img} alt="post" />}
         {post.video && (
