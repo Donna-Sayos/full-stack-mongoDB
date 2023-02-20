@@ -48,7 +48,7 @@ const updatePost = async (req, res) => {
       res.status(403).json("you can update only your post");
     }
   } catch (err) {
-    console.log(err);
+    console.log(`Error at updatePost: ${err}`);
     res.status(500).json(err);
   }
 };
@@ -64,7 +64,7 @@ const deletePost = async (req, res) => {
       res.status(403).json("you can delete only your post");
     }
   } catch (err) {
-    console.log(err);
+    console.log(`Error at deletePost: ${err}`);
     res.status(500).json(err);
   }
 };
@@ -88,7 +88,7 @@ const like_unlikePost = async (req, res) => {
       res.status(200).json("Post has been unliked");
     }
   } catch (err) {
-    console.log(err);
+    console.log(`Error at like_unlikePost: ${err}`);
     res.status(500).json(err);
   }
 };
@@ -98,7 +98,7 @@ const getSinglePost = async (req, res) => {
     const post = await Post.findById(req.params.id);
     res.status(200).json(post);
   } catch (err) {
-    console.log(err);
+    console.log(`Error at getSinglePost: ${err}`);
     res.status(500).json(err);
   }
 };
@@ -114,7 +114,7 @@ const getTimelinePosts = async (req, res) => {
     );
     res.status(200).json(userPosts.concat(...friendPosts));
   } catch (err) {
-    console.log(err);
+    console.log(`Error at getTimelinePosts: ${err}`);
     res.status(500).json(err);
   }
 };
@@ -127,7 +127,7 @@ const getUserPosts = async (req, res) => {
     const posts = await Post.find({ userId: user._id });
     res.status(200).json(posts);
   } catch (err) {
-    console.log(err);
+    console.log(`Error at getUserPosts: ${err}`);
     res.status(500).json(err);
   }
 };
@@ -140,7 +140,7 @@ const createComments = async (req, res) => {
     // Check if the post exists
     const post = await Post.findById(postId);
     if (!post) {
-      return res.status(404).json({ error: "Post not found" });
+      return res.status(404).json({ error: "Post not found." });
     }
 
     // Create a new comment
@@ -153,8 +153,35 @@ const createComments = async (req, res) => {
 
     res.status(201).json(comment);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error at comments controller" });
+    console.error(`Error at create comments: ${error}`);
+    res.status(500).json({ error: "Server error at create comments." });
+  }
+};
+
+const getComments = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+
+    // Find the post
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found." });
+    }
+
+    // Find the comments for the post
+    const comments = await Comment.find({ postId: postId });
+    res.status(200).json({
+      success: true,
+      message: `Comments for post ${postId}`,
+      count: comments.length,
+      comments,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Server error at getComments.",
+      error: err.message,
+    });
   }
 };
 
@@ -168,4 +195,5 @@ module.exports = {
   getTimelinePosts,
   getUserPosts,
   createComments,
+  getComments,
 };

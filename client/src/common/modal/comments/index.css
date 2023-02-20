@@ -1,3 +1,7 @@
+.modal-Hr {
+    margin: 0;
+}
+
 .postImg{
     margin-top: 20px;
     width: 100%;
@@ -12,6 +16,12 @@
     object-fit: contain;
 }
 
-.modal-Hr {
-    margin: 0;
+::-webkit-scrollbar {
+    width: 5px;
+}
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+    background-color: rgb(179, 179, 179);
 }

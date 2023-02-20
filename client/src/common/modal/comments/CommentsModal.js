@@ -3,6 +3,7 @@ import "./index.css";
 import Modal from "react-bootstrap/Modal";
 import { format } from "timeago.js";
 import Comments from "../../comments/Comments";
+import { useAuthContext } from "../../../context/auth/AuthProvider";
 
 export default function CommentsModal({
   show,
@@ -11,6 +12,8 @@ export default function CommentsModal({
   likers,
   specificUser,
 }) {
+  const { user: currentUser } = useAuthContext();
+
   return (
     <Modal show={show} onHide={handleClose} id="comments-modal">
       <Modal.Header closeButton>
@@ -29,7 +32,7 @@ export default function CommentsModal({
           </video>
         )}
         <hr className="modal-Hr" />
-        <Comments postId={post._id} />
+        <Comments postId={post._id} userId={currentUser._id} />
       </Modal.Body>
       <Modal.Footer>
         <p>{likers && likers.length} likes</p>

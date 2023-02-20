@@ -35,19 +35,13 @@ export default function Post({ post, posts, setPosts }) {
   const likers = post.likes.map((userId) =>
     allUsers.find((user) => user._id === userId)
   );
-  const [show, setShow] = useState(false);
+  const [showLikesModal, setShowLikesModal] = useState(false);
+  const [showCommentsModal, setShowCommentsModal] = useState(false);
 
-  const handleShow = (id) => {
-    setShow(true);
-    const modal = document.getElementById(id);
-    modal && modal.classList.add("show");
-  };
-
-  const handleClose = (id) => {
-    setShow(false);
-    const modal = document.getElementById(id);
-    modal && modal.classList.remove("show");
-  };
+  const handleShowLikes = () => setShowLikesModal(true);
+  const handleCloseLikes = () => setShowLikesModal(false);
+  const handleShowComments = () => setShowCommentsModal(true);
+  const handleCloseComments = () => setShowCommentsModal(false);
 
   const likeHandler = async () => {
     try {
@@ -161,10 +155,7 @@ export default function Post({ post, posts, setPosts }) {
           <div className="postBottom">
             <div className="postBottomLeft">
               <LikeButton onClick={likeHandler} style={likeIcon} />
-              <button
-                className="postLikeCounter"
-                onClick={() => handleShow("likes-modal")}
-              >
+              <button className="postLikeCounter" onClick={handleShowLikes}>
                 {likers.length > 0 ? (
                   <span>{likers.length} likes</span>
                 ) : (
@@ -172,22 +163,21 @@ export default function Post({ post, posts, setPosts }) {
                 )}
               </button>
               <LikesModal
+                id="likes-modal"
                 likers={likers}
-                show={show}
-                handleClose={handleClose}
+                show={showLikesModal}
+                handleClose={handleCloseLikes}
               />
             </div>
             <div className="postBottomRight">
-              <button
-                className="postCommentText"
-                onClick={() => handleShow("comments-modal")}
-              >
+              <button className="postCommentText" onClick={handleShowComments}>
                 {post.comment} comments
               </button>
               <CommentsModal
+                id="comments-modal"
                 likers={likers}
-                show={show}
-                handleClose={handleClose}
+                show={showCommentsModal}
+                handleClose={handleCloseComments}
                 post={post}
                 specificUser={specificUser}
               />

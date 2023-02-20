@@ -1,28 +1,24 @@
 import React, { useState } from "react";
 import "./index.css";
+import Axios from "axios";
 
-export default function Comments({ postId }) {
-  const [text, setText] = useState("");
-  const [comments, setComments] = useState([]);
+export default function Comments({ postId, userId }) {
+  const [commentText, setCommentText] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch(`/api/posts/${postId}/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      await Axios.post(`/api/posts/${postId}/comments`, {
         body: JSON.stringify({
-          postId,
-          text,
+          postId: postId,
+          text: commentText,
+          userId: userId,
         }),
       });
-      const comment = await response.json();
-      setComments([...comments, comment]);
-      setText("");
+
+      setCommentText("");
     } catch (error) {
-      console.error(error);
+      console.error(`Error at submitting comment: ${error.message}`);
     }
   };
 
@@ -30,13 +26,17 @@ export default function Comments({ postId }) {
     <div>
       <h2>Comments</h2>
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-          placeholder="Add a comment"
-        />
-        <button type="submit">Submit</button>
+        <div className="form-group">
+          <input
+            type="text"
+            value={commentText}
+            onChange={(event) => setCommentText(event.target.value)}
+            placeholder="Add a comment"
+          />
+        </div>
+        <button className="btn btn-primary" type="submit">
+          Submit
+        </button>
       </form>
       {comments.map((comment) => (
         <div key={comment._id}>
