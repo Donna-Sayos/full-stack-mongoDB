@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./index.css";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../../context/auth/AuthProvider";
@@ -27,7 +27,7 @@ export default function LikesModal({ likers, show, handleClose }) {
 
   if (likers.length === 0) {
     return (
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} id="likes-modal">
         <Modal.Header closeButton>
           <Modal.Title>
             <LikeButton style={heart} />

@@ -6,6 +6,7 @@ import Axios from "axios";
 import { format } from "timeago.js";
 import { Link } from "react-router-dom";
 import LikesModal from "../modal/likes/LikesModal";
+import CommentsModal from "../modal/comments/CommentsModal";
 import ProfilePic from "../pic/ProfilePic";
 import LikeButton from "./LikeButton";
 
@@ -36,8 +37,17 @@ export default function Post({ post, posts, setPosts }) {
   );
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  const handleShow = (id) => {
+    setShow(true);
+    const modal = document.getElementById(id);
+    modal && modal.classList.add("show");
+  };
+
+  const handleClose = (id) => {
+    setShow(false);
+    const modal = document.getElementById(id);
+    modal && modal.classList.remove("show");
+  };
 
   const likeHandler = async () => {
     try {
@@ -151,7 +161,10 @@ export default function Post({ post, posts, setPosts }) {
           <div className="postBottom">
             <div className="postBottomLeft">
               <LikeButton onClick={likeHandler} style={likeIcon} />
-              <button className="postLikeCounter" onClick={handleShow}>
+              <button
+                className="postLikeCounter"
+                onClick={() => handleShow("likes-modal")}
+              >
                 {likers.length > 0 ? (
                   <span>{likers.length} likes</span>
                 ) : (
@@ -167,10 +180,16 @@ export default function Post({ post, posts, setPosts }) {
             <div className="postBottomRight">
               <button
                 className="postCommentText"
-                onClick={() => console.log("comments clicked...")}
+                onClick={() => handleShow("comments-modal")}
               >
                 {post.comment} comments
               </button>
+              <CommentsModal
+                likers={likers}
+                show={show}
+                handleClose={handleClose}
+                post={post}
+              />
             </div>
           </div>
         </div>
