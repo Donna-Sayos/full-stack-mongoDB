@@ -13,15 +13,17 @@ export default function CommentsModal({
   return (
     <Modal show={show} onHide={handleClose} id="comments-modal">
       <Modal.Header closeButton>
-        <Modal.Title>{post.desc}</Modal.Title>
+        <Modal.Title>
+          Posted by <b>{specificUser.username}</b> {format(post.createdAt)}
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          Posted by {specificUser.username} on {format(post.createdAt)}
-        </p>
-        {post.img && <img src={"/assets/" + post.img} alt="post" />}
+        <p>{post.desc}</p>
+        {post.img && (
+          <img className="postImg" src={"/assets/" + post.img} alt="post" />
+        )}
         {post.video && (
-          <video controls src={"/assets/" + post.video}>
+          <video className="postVid" controls src={"/assets/" + post.video}>
             Your browser does not support the video tag.
           </video>
         )}
