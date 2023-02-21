@@ -66,12 +66,14 @@ export default function Sidebar({ currentUser }) {
           )}
         </ul>
         <button className="sidebarButton" onClick={handleShowMore}>
-          Show More
+          {showMore ? "Show Less" : "Show More"}
         </button>
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
           {currentUser && currentUser.followings.length > 0
-            ? currentUser.followings.map((u, i) => <Friends key={i} userId={u} />)
+            ? currentUser.followings.map((u, i) => (
+                <Friends key={i} userId={u} />
+              ))
             : null}
         </ul>
       </div>
