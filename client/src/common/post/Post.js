@@ -171,7 +171,7 @@ export default function Post({ post, posts, setPosts }) {
             </div>
             <div className="postBottomRight">
               <button className="postCommentText" onClick={handleShowComments}>
-                {post.comment} comments
+                {post.comments.length} comments
               </button>
               <CommentsModal
                 id="comments-modal"

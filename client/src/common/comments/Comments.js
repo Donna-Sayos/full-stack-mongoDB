@@ -3,6 +3,15 @@ import "./index.css";
 import Axios from "axios";
 import { format } from "timeago.js";
 import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
+import ProfilePic from "../pic/ProfilePic";
+
+const commentsProfileImg = {
+  width: "26px",
+  height: "26px",
+  borderRadius: "50%",
+  objectFit: "cover",
+  cursor: "pointer",
+};
 
 export default function Comments({ postId, userId }) {
   const [commentText, setCommentText] = useState("");
@@ -31,8 +40,6 @@ export default function Comments({ postId, userId }) {
     const fetchComments = async () => {
       try {
         const response = await Axios.get(`/api/v1/posts/${postId}/comments`);
-
-        if (response.data.comments.length < 1) console.log("No comments");
         setComments(response.data.comments);
       } catch (error) {
         console.error(`Error at fetching comments: ${error.message}`);
@@ -43,34 +50,49 @@ export default function Comments({ postId, userId }) {
   }, [postId, numComments]);
 
   return (
-    <div>
-      <h2>Comments</h2>
+    <div className="mt-3">
+      <h4 className="mb-3">{comments.length} Comments</h4>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
+        <div className="input-group">
           <input
             type="text"
             value={commentText}
             onChange={(event) => setCommentText(event.target.value)}
             placeholder="Add a comment"
+            className="form-control"
           />
+          <div className="input-group-append">
+            <button className="btn btn-primary" type="submit">
+              Submit
+            </button>
+          </div>
         </div>
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
       </form>
-      {comments &&
-        comments.map((comment) => {
-          const specificUser = allUsers.find(
-            (user) => user._id === comment.userId
-          );
-          return (
-            <div key={comment._id}>
-              <p>{comment.text}</p>
-              <p>By: {specificUser.username}</p>
-              <p>{format(comment.createdAt)}</p>
-            </div>
-          );
-        })}
+      <div className="comments-container mt-3">
+        {comments &&
+          comments.map((comment, i) => {
+            const specificUser = allUsers.find(
+              (user) => user._id === comment.userId
+            );
+            return (
+              <div key={i} className="d-flex align-items-center mb-3">
+                <ProfilePic
+                  user={specificUser}
+                  style={{ ...commentsProfileImg, marginRight: "10px" }}
+                />
+                <div>
+                  <p className="mb-0">
+                    <b>{specificUser.username}</b>
+                  </p>
+                  <p className="mb-0">{comment.text}</p>
+                  <small className="text-muted">
+                    {format(comment.createdAt)}
+                  </small>
+                </div>
+              </div>
+            );
+          })}
+      </div>
     </div>
   );
 }

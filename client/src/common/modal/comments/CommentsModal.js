@@ -4,6 +4,13 @@ import Modal from "react-bootstrap/Modal";
 import { format } from "timeago.js";
 import Comments from "../../comments/Comments";
 import { useAuthContext } from "../../../context/auth/AuthProvider";
+import LikeButton from "../../post/LikeButton";
+
+const heart = {
+  width: "26px",
+  height: "26px",
+  marginRight: "8px",
+};
 
 export default function CommentsModal({
   show,
@@ -35,8 +42,15 @@ export default function CommentsModal({
         <Comments postId={post._id} userId={currentUser._id} />
       </Modal.Body>
       <Modal.Footer>
-        <p>{likers && likers.length} likes</p>
-        <p>{post.comment} comments</p>
+        <div className="d-flex justify-content-between align-items-center w-100">
+          <div className="d-flex flex-row justify-content-start align-items-center">
+            <LikeButton style={heart} />
+            <span className="likes m-0">{likers && likers.length} likes</span>
+          </div>
+          <div className="d-flex justify-content-end">
+            <span className="m-0">{post.comments.length} comments</span>
+          </div>
+        </div>
       </Modal.Footer>
     </Modal>
   );
