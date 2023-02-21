@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import Axios from "axios";
+import { format } from "timeago.js";
 
 export default function Comments({ postId, userId }) {
   const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await Axios.post(`/api/posts/${postId}/comments`, {
-        body: JSON.stringify({
-          postId: postId,
-          text: commentText,
-          userId: userId,
-        }),
+      await Axios.post(`/api/v1/posts/${postId}/comments`, {
+        postId: postId,
+        text: commentText,
+        userId: userId,
       });
 
       setCommentText("");
@@ -21,6 +21,21 @@ export default function Comments({ postId, userId }) {
       console.error(`Error at submitting comment: ${error.message}`);
     }
   };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const response = await Axios.get(`/api/v1/posts/${postId}/comments`);
+
+        if (response.data.comments.length < 1) console.log("No comments");
+        setComments(response.data.comments);
+      } catch (error) {
+        console.error(`Error at fetching comments: ${error.message}`);
+      }
+    };
+
+    fetchComments();
+  }, [postId]);
 
   return (
     <div>
@@ -38,13 +53,14 @@ export default function Comments({ postId, userId }) {
           Submit
         </button>
       </form>
-      {comments.map((comment) => (
-        <div key={comment._id}>
-          <p>{comment.text}</p>
-          <p>By: {comment.userId}</p>
-          <p>At: {comment.createdAt}</p>
-        </div>
-      ))}
+      {comments &&
+        comments.map((comment) => (
+          <div key={comment._id}>
+            <p>{comment.text}</p>
+            <p>By: {comment.userId}</p>
+            <p>{format(comment.createdAt)}</p>
+          </div>
+        ))}
     </div>
   );
 }

@@ -144,7 +144,7 @@ const createComments = async (req, res) => {
     }
 
     // Create a new comment
-    const comment = new Comment({ postId, userId, text });
+    const comment = new Comments({ postId, userId, text });
     await comment.save();
 
     // Add the comment to the post's comments array
@@ -160,7 +160,7 @@ const createComments = async (req, res) => {
 
 const getComments = async (req, res) => {
   try {
-    const postId = req.params.postId;
+    const postId = req.params.id;
 
     // Find the post
     const post = await Post.findById(postId);
@@ -169,7 +169,7 @@ const getComments = async (req, res) => {
     }
 
     // Find the comments for the post
-    const comments = await Comment.find({ postId: postId });
+    const comments = await Comments.find({ postId: postId });
     res.status(200).json({
       success: true,
       message: `Comments for post ${postId}`,
