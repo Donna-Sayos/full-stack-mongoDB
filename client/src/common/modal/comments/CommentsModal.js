@@ -31,10 +31,10 @@ export default function CommentsModal({
       <Modal.Body>
         <p>{post.desc}</p>
         {post.img && (
-          <img className="postImg" src={"/assets/" + post.img} alt="post" />
+          <img className="commentsImg" src={"/assets/" + post.img} alt="post" />
         )}
         {post.video && (
-          <video className="postVid" controls src={"/assets/" + post.video}>
+          <video className="commentsVid" controls src={"/assets/" + post.video}>
             Your browser does not support the video tag.
           </video>
         )}

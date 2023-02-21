@@ -6,17 +6,17 @@
     margin: 0;
 }
 
-.postImg{
+.commentsImg{
     margin-top: 20px;
     width: 100%;
-    max-height: 500px;
+    max-height: 350px;
     object-fit: contain;
 }
 
-.postVid{
+.commentsVid{
     margin-top: 20px;
     width: 100%;
-    max-height: 500px;
+    max-height: 350px;
     object-fit: contain;
 }
 
