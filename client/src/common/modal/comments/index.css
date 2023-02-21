@@ -9,14 +9,14 @@
 .commentsImg{
     margin-top: 20px;
     width: 100%;
-    max-height: 350px;
+    max-height: 275px;
     object-fit: contain;
 }
 
 .commentsVid{
     margin-top: 20px;
     width: 100%;
-    max-height: 350px;
+    max-height: 275px;
     object-fit: contain;
 }
 

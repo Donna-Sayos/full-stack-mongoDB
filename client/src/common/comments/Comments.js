@@ -17,6 +17,7 @@ export default function Comments({ postId, userId }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [numComments, setNumComments] = useState(0);
+  const [showAllComments, setShowAllComments] = useState(false);
 
   const allUsers = useFetchUsers();
 
@@ -49,6 +50,8 @@ export default function Comments({ postId, userId }) {
     fetchComments();
   }, [postId, numComments]);
 
+  const displayComments = showAllComments ? comments : comments.slice(0, 2);
+
   return (
     <div className="mt-3">
       <h4 className="mb-3">{comments.length} Comments</h4>
@@ -69,8 +72,8 @@ export default function Comments({ postId, userId }) {
         </div>
       </form>
       <div className="comments-container mt-3">
-        {comments &&
-          comments.map((comment, i) => {
+        {displayComments &&
+          displayComments.map((comment, i) => {
             const specificUser = allUsers.find(
               (user) => user._id === comment.userId
             );
@@ -92,6 +95,16 @@ export default function Comments({ postId, userId }) {
               </div>
             );
           })}
+        {comments.length > 3 && !showAllComments && (
+          <div className="d-flex justify-content-center mt-3">
+            <button
+              className="btn btn-outline-secondary"
+              onClick={() => setShowAllComments(true)}
+            >
+              Show more comments
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
