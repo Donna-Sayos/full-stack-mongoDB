@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import Axios from "axios";
 import { format } from "timeago.js";
+import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 
 export default function Comments({ postId, userId }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const [numComments, setNumComments] = useState(0);
+
+  const allUsers = useFetchUsers();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,6 +21,7 @@ export default function Comments({ postId, userId }) {
       });
 
       setCommentText("");
+      setNumComments(numComments + 1);
     } catch (error) {
       console.error(`Error at submitting comment: ${error.message}`);
     }
@@ -35,7 +40,7 @@ export default function Comments({ postId, userId }) {
     };
 
     fetchComments();
-  }, [postId]);
+  }, [postId, numComments]);
 
   return (
     <div>
@@ -54,13 +59,18 @@ export default function Comments({ postId, userId }) {
         </button>
       </form>
       {comments &&
-        comments.map((comment) => (
-          <div key={comment._id}>
-            <p>{comment.text}</p>
-            <p>By: {comment.userId}</p>
-            <p>{format(comment.createdAt)}</p>
-          </div>
-        ))}
+        comments.map((comment) => {
+          const specificUser = allUsers.find(
+            (user) => user._id === comment.userId
+          );
+          return (
+            <div key={comment._id}>
+              <p>{comment.text}</p>
+              <p>By: {specificUser.username}</p>
+              <p>{format(comment.createdAt)}</p>
+            </div>
+          );
+        })}
     </div>
   );
 }
