@@ -1,3 +1,41 @@
+.coverEdit {
+    position: absolute;
+    left: 95%;
+    top: 75%;
+    cursor: pointer;
+
+    border: 1px solid #fff0db;
+    border-radius: 50%;
+    background-color: #fff0db;
+    padding: 3px;
+    height: 26px;
+    width: 26px;
+}
+
+.coverEdit:hover {
+    color: #666547;
+}
+
+.profileEdit {
+    position: absolute;
+    left: 55%;
+    top: 82%;
+    cursor: pointer;
+
+    border: 1px solid #fff0db;
+    border-radius: 50%;
+    background-color: #fff0db;
+    padding: 3px;
+    height: 26px;
+    width: 26px;
+}
+
+.profileEdit:hover {
+    color: #666547;
+}
+
+
+
 .empty {
     color: gray;
     text-align: center;
@@ -62,6 +100,8 @@
     cursor: pointer;
     font-size: 16px;
     margin: 10px;
+    margin-top: 20px;
+    margin-right: 45px;
 }
 
 button {

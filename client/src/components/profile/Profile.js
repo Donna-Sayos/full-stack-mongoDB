@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/auth/AuthProvider";
+import { AiOutlineEdit } from "react-icons/ai";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import Feed from "./feed/Feed";
@@ -64,6 +65,11 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
                   }
                   alt="user cover"
                 />
+                <AiOutlineEdit
+                  className="coverEdit"
+                  size={20}
+                  onClick={() => console.log("update cover")}
+                />
                 {currentUser.username === specificUser.username && (
                   <div className="logout">
                     <button ref={recaptchaRef} onClick={handleLogout}>
@@ -72,6 +78,11 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
                   </div>
                 )}
                 <ProfilePic user={specificUser} style={profileUserImg} />
+                <AiOutlineEdit
+                  className="profileEdit"
+                  size={20}
+                  onClick={() => console.log("update profile")}
+                />
               </div>
               <div className="profileInfo">
                 <h4 className="profileInfoName">{specificUser.username}</h4>
