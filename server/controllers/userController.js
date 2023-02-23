@@ -150,9 +150,22 @@ const deleteUser = async (req, res, next) => {
 
 const updateUserCoverPhoto = async (req, res, next) => {
   try {
+    const user = await User.findOne({ _id: req.params.userId });
+    if (!user) {
+      console.log(`User with ID ${req.params.userId} not found`);
+      return res.sendStatus(404);
+    }
+
+    const { coverPicture } = req.body;
+    console.log("coverPicture: ", coverPicture);
+    if (!coverPicture) {
+      console.log(`Missing coverPicture in request body`);
+      return res.status(400).json({ message: "Missing coverPicture field" });
+    }
+
     const result = await User.updateOne(
       { _id: req.params.userId },
-      { coverPicture: req.body.coverPicture }
+      { coverPicture }
     );
     console.log("Update result: ", result);
     if (result.nModified !== 1) {

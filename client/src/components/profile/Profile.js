@@ -62,13 +62,21 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
       // Get the file path from the response and update the user's profile picture
       const { filename } = uploadResponse.data;
 
-      const userId = specificUser._id;
+      const userId =
+        specificUser._id === currentUser._id
+          ? specificUser._id
+          : console.log("Not authorized to update cover picture");
       console.log("userId", userId);
 
       const updateResponse = await Axios.put(
         "/api/v1/users/" + userId + "/coverPicture",
         {
           coverPicture: filename,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
       console.log("Update response: ", updateResponse);
@@ -115,11 +123,13 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
                   }
                   alt="user cover"
                 />
-                <AiOutlineEdit
-                  className="coverEdit"
-                  size={20}
-                  onClick={handleClick}
-                />
+                {currentUser.username === specificUser.username && (
+                  <AiOutlineEdit
+                    className="coverEdit"
+                    size={20}
+                    onClick={handleClick}
+                  />
+                )}
 
                 <input
                   type="file"
@@ -135,11 +145,13 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
                   </div>
                 )}
                 <ProfilePic user={specificUser} style={profileUserImg} />
-                <AiOutlineEdit
-                  className="profileEdit"
-                  size={20}
-                  onClick={() => console.log("update profile")}
-                />
+                {currentUser.username === specificUser.username && (
+                  <AiOutlineEdit
+                    className="profileEdit"
+                    size={20}
+                    onClick={() => console.log("update profile")}
+                  />
+                )}
               </div>
               <div className="profileInfo">
                 <h4 className="profileInfoName">{specificUser.username}</h4>
