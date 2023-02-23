@@ -59,11 +59,9 @@ const UserSchema = new Schema(
     },
     profilePicture: {
       type: String,
-      default: "",
     },
     coverPicture: {
       type: String,
-      default: "",
     },
     followers: {
       type: Array,

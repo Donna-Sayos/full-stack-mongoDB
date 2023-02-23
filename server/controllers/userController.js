@@ -110,7 +110,9 @@ const createUser = async (req, res, next) => {
     const token = user.getSignedJwtToken();
 
     const options = {
-      expires: new Date(Date.now() + process.env.COOKIE_EXPIRE * 1000 * 1000 * 60), // 1000 = 1 second, 60 = 1 minute;
+      expires: new Date(
+        Date.now() + process.env.COOKIE_EXPIRE * 1000 * 1000 * 60
+      ), // 1000 = 1 second, 60 = 1 minute;
     };
 
     res
@@ -146,15 +148,25 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const updateUser = async (req, res, next) => {
+const updateUserCoverPhoto = async (req, res, next) => {
   try {
     const result = await User.updateOne(
-      { userId: req.params.userId },
-      req.body
+      { _id: req.params.userId },
+      { coverPicture: req.body.coverPicture }
     );
-    res.status(200).setHeader("Content-Type", "application/json").json(result);
+    console.log("Update result: ", result);
+    if (result.nModified !== 1) {
+      console.log(
+        `Failed to update cover picture for user with ID ${req.params.userId}`
+      );
+      return res.sendStatus(500);
+    }
+    res.status(200).json(result);
   } catch (err) {
-    throw new Error(`Error at updating single user: ${err.message}`);
+    console.log(
+      `Error updating cover picture for user with ID ${req.params.userId}: ${err}`
+    );
+    next(err);
   }
 };
 
@@ -166,5 +178,5 @@ module.exports = {
   createUser,
   getSingleUser,
   deleteUser,
-  updateUser,
+  updateUserCoverPhoto,
 };

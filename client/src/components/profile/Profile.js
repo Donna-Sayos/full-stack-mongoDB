@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { AiOutlineEdit } from "react-icons/ai";
+import { shortUuid } from "../../utils/helper/helperFunctions";
 import TopNav from "../topNav/TopNav";
 import Sidebar from "../sidebar/Sidebar";
 import Feed from "./feed/Feed";
@@ -38,6 +39,55 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
     resetRecaptcha();
   };
 
+  const handleClick = async () => {
+    const fileInput = document.getElementById("fileInput");
+    fileInput.click();
+  };
+
+  const handleFileUpload = async (event) => {
+    const file = event.target.files[0];
+
+    const formData = new FormData();
+    const fileName = shortUuid() + file.name;
+    formData.append("name", fileName);
+    formData.append("uploadFile", file);
+
+    try {
+      const uploadResponse = await Axios.post("/api/v1/upload", formData);
+
+      if (uploadResponse.status !== 200) {
+        throw new Error("File upload failed");
+      }
+
+      // Get the file path from the response and update the user's profile picture
+      const { filename } = uploadResponse.data;
+
+      const userId = specificUser._id;
+      console.log("userId", userId);
+
+      const updateResponse = await Axios.put(
+        "/api/v1/users/" + userId + "/coverPicture",
+        {
+          coverPicture: filename,
+        }
+      );
+      console.log("Update response: ", updateResponse);
+
+      if (updateResponse.status !== 200) {
+        throw new Error("Cover picture update failed");
+      }
+
+      const updatedUser = { ...specificUser, coverPicture: filename };
+      console.log("updatedUser", updatedUser);
+
+      setUser(user.map((u) => (u._id === specificUser._id ? updatedUser : u)));
+
+      // window.location.reload();
+    } catch (err) {
+      console.log("Error updating cover picture", err);
+    }
+  };
+
   async function getUser() {
     const { data } = await Axios.get(`/api/v1/users?username=${username}`);
     setUser(data);
@@ -68,7 +118,14 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
                 <AiOutlineEdit
                   className="coverEdit"
                   size={20}
-                  onClick={() => console.log("update cover")}
+                  onClick={handleClick}
+                />
+
+                <input
+                  type="file"
+                  id="fileInput"
+                  style={{ display: "none" }}
+                  onChange={handleFileUpload}
                 />
                 {currentUser.username === specificUser.username && (
                   <div className="logout">
