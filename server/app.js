@@ -104,7 +104,12 @@ app.post("/api/v1/upload", upload.single("uploadFile"), (req, res) => {
 
   try {
     console.log("File path:", `../public/assets/${req.file.filename}`);
-    res.status(200).send({ message: "File uploaded successfully" });
+    res
+      .status(200)
+      .send({
+        message: "File uploaded successfully",
+        filename: req.file.filename,
+      });
   } catch (err) {
     res.status(500).send({ message: "Error uploading file" });
   }

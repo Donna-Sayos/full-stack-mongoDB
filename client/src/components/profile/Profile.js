@@ -54,6 +54,7 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
 
     try {
       const uploadResponse = await Axios.post("/api/v1/upload", formData);
+      console.log("Upload response data: ", uploadResponse.data);
 
       if (uploadResponse.status !== 200) {
         throw new Error("File upload failed");
@@ -61,21 +62,17 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
 
       // Get the file path from the response and update the user's profile picture
       const { filename } = uploadResponse.data;
+      console.log("filename: ", filename);
 
       const userId =
-        specificUser._id === currentUser._id
-          ? specificUser._id
-          : console.log("Not authorized to update cover picture");
-      console.log("userId", userId);
+        specificUser._id === currentUser._id ? specificUser._id : null;
 
       const updateResponse = await Axios.put(
         "/api/v1/users/" + userId + "/coverPicture",
-        {
-          coverPicture: filename,
-        },
+        { _id: userId, coverPicture: filename },
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );
