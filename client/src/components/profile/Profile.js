@@ -66,6 +66,7 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
 
       const userId =
         specificUser._id === currentUser._id ? specificUser._id : null;
+      console.log("client-side ID", userId);
 
       const updateResponse = await Axios.put(
         "/api/v1/users/" + userId + "/coverPicture",
@@ -87,7 +88,7 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
 
       setUser(user.map((u) => (u._id === specificUser._id ? updatedUser : u)));
 
-      // window.location.reload();
+      window.location.reload();
     } catch (err) {
       console.log("Error updating cover picture", err);
     }

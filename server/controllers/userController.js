@@ -150,9 +150,12 @@ const deleteUser = async (req, res, next) => {
 
 const updateUserCoverPhoto = async (req, res, next) => {
   try {
-    const user = await User.findOne({ _id: req.params.userId });
+    const userId = req.params.userId;
+    console.log("server-side ID", userId);
+
+    const user = await User.findOne({ _id: userId });
     if (!user) {
-      console.log(`User with ID ${req.params.userId} not found`);
+      console.log(`User with ID ${userId} not found`);
       return res.sendStatus(404);
     }
 
@@ -163,20 +166,22 @@ const updateUserCoverPhoto = async (req, res, next) => {
       return res.status(400).json({ message: "Missing coverPicture field" });
     }
 
-    const result = await User.updateOne(
-      { _id: req.params.userId },
-      { coverPicture }
-    );
+    const result = await User.updateOne({ _id: userId }, { coverPicture });
     console.log("Update result: ", result);
     if (result.nModified !== 1) {
-      console.log(
-        `Failed to update cover picture for user with ID ${req.params.userId}`
-      );
+      console.log(`Failed to update cover picture for user with ID ${userId}`);
       return res.sendStatus(500);
     }
+
+    res.set({
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      Pragma: "no-cache",
+      Expires: "0",
+    });
+
     res.status(200).json(result);
   } catch (err) {
-    console.log(
+    console.error(
       `Error updating cover picture for user with ID ${req.params.userId}: ${err}`
     );
     next(err);
