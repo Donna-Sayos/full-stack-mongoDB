@@ -160,13 +160,16 @@ const updateUserCoverPhoto = async (req, res, next) => {
     }
 
     const { coverPicture } = req.body;
-    console.log("coverPicture: ", coverPicture);
+    console.log("server-side coverPicture: ", coverPicture);
     if (!coverPicture) {
       console.log(`Missing coverPicture in request body`);
       return res.status(400).json({ message: "Missing coverPicture field" });
     }
 
-    const result = await User.updateOne({ _id: userId }, { coverPicture });
+    const result = await User.updateOne(
+      { _id: req.params.userId },
+      { $set: { coverPicture } }
+    );
     console.log("Update result: ", result);
     if (result.nModified !== 1) {
       console.log(`Failed to update cover picture for user with ID ${userId}`);
@@ -184,7 +187,7 @@ const updateUserCoverPhoto = async (req, res, next) => {
     console.error(
       `Error updating cover picture for user with ID ${req.params.userId}: ${err}`
     );
-    next(err);
+    res.sendStatus(500);
   }
 };
 

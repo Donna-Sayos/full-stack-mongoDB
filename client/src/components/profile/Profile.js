@@ -11,6 +11,7 @@ import Sidebar from "../sidebar/Sidebar";
 import Feed from "./feed/Feed";
 import RightSidebar from "../rightSidebar/RightSidebar";
 import ProfilePic from "../../common/pic/ProfilePic";
+import { updateUserCoverPicture } from "../../utils/helper/helperCoverPicture";
 
 const profileUserImg = {
   width: "150px",
@@ -27,8 +28,8 @@ const profileUserImg = {
 
 export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const [user, setUser] = useState([]);
-  const username = useParams().username;
-  const specificUser = user.filter((user) => user.username === username)[0];
+  const { username } = useParams();
+  const [specificUser, setSpecificUser] = useState(null); // initialize as null
 
   const { user: currentUser, dispatch } = useAuthContext();
   const navigate = useNavigate();
@@ -45,14 +46,13 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   };
 
   const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-
-    const formData = new FormData();
-    const fileName = shortUuid() + file.name;
-    formData.append("name", fileName);
-    formData.append("uploadFile", file);
-
     try {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      const fileName = shortUuid() + file.name;
+      formData.append("name", fileName);
+      formData.append("uploadFile", file);
+
       const uploadResponse = await Axios.post("/api/v1/upload", formData);
       console.log("Upload response data: ", uploadResponse.data);
 
@@ -60,46 +60,38 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
         throw new Error("File upload failed");
       }
 
-      // Get the file path from the response and update the user's profile picture
       const { filename } = uploadResponse.data;
       console.log("filename: ", filename);
 
       const userId =
-        specificUser._id === currentUser._id ? specificUser._id : null;
+        specificUser?._id === currentUser._id ? specificUser._id : null;
       console.log("client-side ID", userId);
 
-      const updateResponse = await Axios.put(
-        "/api/v1/users/" + userId + "/coverPicture",
-        { _id: userId, coverPicture: filename },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("Update response: ", updateResponse);
-
-      if (updateResponse.status !== 200) {
-        throw new Error("Cover picture update failed");
-      }
+      await updateUserCoverPicture(userId, filename);
 
       const updatedUser = { ...specificUser, coverPicture: filename };
       console.log("updatedUser", updatedUser);
 
-      setUser(user.map((u) => (u._id === specificUser._id ? updatedUser : u)));
+      setSpecificUser(updatedUser); // update the state of specificUser with the updated user data
 
-      window.location.reload();
+      setUser(user.map((u) => (u._id === specificUser._id ? updatedUser : u))); // update the user state with the updated user data
     } catch (err) {
-      console.log("Error updating cover picture", err);
+      console.log("Error updating cover picture", err.message);
     }
   };
 
   async function getUser() {
-    const { data } = await Axios.get(`/api/v1/users?username=${username}`);
-    setUser(data);
+    try {
+      const { data } = await Axios.get(`/api/v1/users?username=${username}`);
+      const user = data.find((u) => u.username === username);
+      setSpecificUser(user); // update the state of specificUser with fetched data
+    } catch (err) {
+      console.log("Error fetching user data", err.message);
+    }
   }
 
   useEffect(() => {
+    // Only fetch the user data when the `username` prop changes
     getUser();
   }, [username]);
 
