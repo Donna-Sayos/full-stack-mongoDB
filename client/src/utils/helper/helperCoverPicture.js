@@ -3,14 +3,12 @@ import Axios from "axios";
 export const updateUserCoverPicture = async (userId, coverPicture) => {
   try {
     const response = await Axios.put(
-      "/api/v1/users/" + userId + "/coverPicture",
+      "/api/v1/users/" + userId + "/userPicture",
       {
         _id: userId,
         coverPicture,
       }
     );
-    console.log("response: ", response);
-    console.log("Update response : ", response.data);
 
     if (response.status !== 200) {
       throw new Error("Cover picture update failed");

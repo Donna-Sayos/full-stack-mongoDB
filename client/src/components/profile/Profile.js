@@ -12,6 +12,7 @@ import Feed from "./feed/Feed";
 import RightSidebar from "../rightSidebar/RightSidebar";
 import ProfilePic from "../../common/pic/ProfilePic";
 import { updateUserCoverPicture } from "../../utils/helper/helperCoverPicture";
+import { updateUserProfilePicture } from "../../utils/helper/helperProfilePicture";
 
 const profileUserImg = {
   width: "150px",
@@ -30,8 +31,8 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const [user, setUser] = useState([]);
   const { username } = useParams();
   const [specificUser, setSpecificUser] = useState(null); // initialize as null
-
   const { user: currentUser, dispatch } = useAuthContext();
+  const isCurrentUser = currentUser.username === specificUser?.username;
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -40,12 +41,17 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
     resetRecaptcha();
   };
 
-  const handleClick = async () => {
-    const fileInput = document.getElementById("fileInput");
+  const handleClickCover = async () => {
+    const fileInput = document.getElementById("fileInputCoverPic");
     fileInput.click();
   };
 
-  const handleFileUpload = async (event) => {
+  const handleClickProfile = async () => {
+    const fileInput = document.getElementById("fileInputProfilePic");
+    fileInput.click();
+  };
+
+  const handlePictureUpload = async (event, pictureType) => {
     try {
       const file = event.target.files[0];
       const formData = new FormData();
@@ -54,29 +60,32 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
       formData.append("uploadFile", file);
 
       const uploadResponse = await Axios.post("/api/v1/upload", formData);
-      console.log("Upload response data: ", uploadResponse.data);
 
       if (uploadResponse.status !== 200) {
         throw new Error("File upload failed");
       }
 
       const { filename } = uploadResponse.data;
-      console.log("filename: ", filename);
-
       const userId =
         specificUser?._id === currentUser._id ? specificUser._id : null;
-      console.log("client-side ID", userId);
 
-      await updateUserCoverPicture(userId, filename);
-
-      const updatedUser = { ...specificUser, coverPicture: filename };
-      console.log("updatedUser", updatedUser);
-
-      setSpecificUser(updatedUser); // update the state of specificUser with the updated user data
-
-      setUser(user.map((u) => (u._id === specificUser._id ? updatedUser : u))); // update the user state with the updated user data
+      if (pictureType === "coverPicture") {
+        await updateUserCoverPicture(userId, filename);
+        const updatedUser = { ...specificUser, coverPicture: filename };
+        setSpecificUser(updatedUser);
+        setUser(
+          user.map((u) => (u._id === specificUser._id ? updatedUser : u))
+        );
+      } else if (pictureType === "profilePicture") {
+        await updateUserProfilePicture(userId, filename);
+        const updatedUser = { ...specificUser, profilePicture: filename };
+        setSpecificUser(updatedUser);
+        setUser(
+          user.map((u) => (u._id === specificUser._id ? updatedUser : u))
+        );
+      }
     } catch (err) {
-      console.log("Error updating cover picture", err.message);
+      console.log(`Error updating ${pictureType}`, err.message);
     }
   };
 
@@ -103,45 +112,60 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
         {specificUser && (
           <div className="profileRight">
             <div className="profileRightTop">
-              <div className="profileCover">
-                <img
-                  className="profileCoverImg"
-                  src={
-                    specificUser.coverPicture
-                      ? "/assets/" + specificUser.coverPicture
-                      : "/assets/" + "user/default-cover.png"
-                  }
-                  alt="user cover"
-                />
-                {currentUser.username === specificUser.username && (
-                  <AiOutlineEdit
-                    className="coverEdit"
-                    size={20}
-                    onClick={handleClick}
+              <div className="profileTopImgs">
+                <div>
+                  <img
+                    className="profileCoverImg"
+                    src={
+                      specificUser.coverPicture
+                        ? "/assets/" + specificUser.coverPicture
+                        : "/assets/" + "user/default-cover.png"
+                    }
+                    alt="user cover"
                   />
-                )}
+                  {isCurrentUser && (
+                    <AiOutlineEdit
+                      className="coverEdit"
+                      size={20}
+                      onClick={handleClickCover}
+                    />
+                  )}
+                  <input
+                    type="file"
+                    id="fileInputCoverPic"
+                    style={{ display: "none" }}
+                    onChange={(event) =>
+                      handlePictureUpload(event, "coverPicture")
+                    }
+                  />
+                </div>
 
-                <input
-                  type="file"
-                  id="fileInput"
-                  style={{ display: "none" }}
-                  onChange={handleFileUpload}
-                />
-                {currentUser.username === specificUser.username && (
+                {isCurrentUser && (
                   <div className="logout">
                     <button ref={recaptchaRef} onClick={handleLogout}>
                       Logout
                     </button>
                   </div>
                 )}
-                <ProfilePic user={specificUser} style={profileUserImg} />
-                {currentUser.username === specificUser.username && (
-                  <AiOutlineEdit
-                    className="profileEdit"
-                    size={20}
-                    onClick={() => console.log("update profile")}
+
+                <div>
+                  <ProfilePic user={specificUser} style={profileUserImg} />
+                  {isCurrentUser && (
+                    <AiOutlineEdit
+                      className="profileEdit"
+                      size={20}
+                      onClick={handleClickProfile}
+                    />
+                  )}
+                  <input
+                    type="file"
+                    id="fileInputProfilePic"
+                    style={{ display: "none" }}
+                    onChange={(event) =>
+                      handlePictureUpload(event, "profilePicture")
+                    }
                   />
-                )}
+                </div>
               </div>
               <div className="profileInfo">
                 <h4 className="profileInfoName">{specificUser.username}</h4>

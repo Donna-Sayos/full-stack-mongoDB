@@ -148,7 +148,40 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const updateUserCoverPhoto = async (req, res, next) => {
+// const updateUserCoverPhoto = async (req, res, next) => {
+//   try {
+//     const userId = req.params.userId;
+//     console.log("server-side ID", userId);
+
+//     const user = await User.findOne({ _id: userId });
+//     if (!user) {
+//       console.log(`User with ID ${userId} not found`);
+//       return res.sendStatus(404);
+//     }
+
+//     const { coverPicture } = req.body;
+//     console.log("server-side coverPicture: ", coverPicture);
+//     if (!coverPicture) {
+//       console.log(`Missing coverPicture in request body`);
+//       return res.status(400).json({ message: "Missing coverPicture field" });
+//     }
+
+//     const result = await User.updateOne(
+//       { _id: req.params.userId },
+//       { coverPicture: coverPicture }
+//     );
+//     console.log("Server-side Update result: ", result);
+
+//     res.status(200).json(result);
+//   } catch (err) {
+//     console.error(
+//       `Server-side Error updating cover picture for user with ID ${req.params.userId}: ${err}`
+//     );
+//     res.sendStatus(500);
+//   }
+// };
+
+const updateUserPhoto = async (req, res, next) => {
   try {
     const userId = req.params.userId;
     console.log("server-side ID", userId);
@@ -159,23 +192,33 @@ const updateUserCoverPhoto = async (req, res, next) => {
       return res.sendStatus(404);
     }
 
-    const { coverPicture } = req.body;
-    console.log("server-side coverPicture: ", coverPicture);
-    if (!coverPicture) {
-      console.log(`Missing coverPicture in request body`);
-      return res.status(400).json({ message: "Missing coverPicture field" });
+    const { coverPicture, profilePicture } = req.body;
+
+    if (!coverPicture && !profilePicture) {
+      console.log(`Missing coverPicture and profilePicture in request body`);
+      return res
+        .status(400)
+        .json({ message: "Missing coverPicture or profilePicture field" });
+    }
+
+    let updateFields = {};
+    if (coverPicture) {
+      updateFields.coverPicture = coverPicture;
+    }
+    if (profilePicture) {
+      updateFields.profilePicture = profilePicture;
     }
 
     const result = await User.updateOne(
       { _id: req.params.userId },
-      { coverPicture: coverPicture }
+      updateFields
     );
     console.log("Server-side Update result: ", result);
 
     res.status(200).json(result);
   } catch (err) {
     console.error(
-      `Server-side Error updating cover picture for user with ID ${req.params.userId}: ${err}`
+      `Server-side Error updating photo for user with ID ${req.params.userId}: ${err}`
     );
     res.sendStatus(500);
   }
@@ -189,5 +232,5 @@ module.exports = {
   createUser,
   getSingleUser,
   deleteUser,
-  updateUserCoverPhoto,
+  updateUserPhoto,
 };
