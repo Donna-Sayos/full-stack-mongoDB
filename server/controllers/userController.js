@@ -168,24 +168,14 @@ const updateUserCoverPhoto = async (req, res, next) => {
 
     const result = await User.updateOne(
       { _id: req.params.userId },
-      { $set: { coverPicture } }
+      { coverPicture: coverPicture }
     );
-    console.log("Update result: ", result);
-    if (result.nModified !== 1) {
-      console.log(`Failed to update cover picture for user with ID ${userId}`);
-      return res.sendStatus(500);
-    }
-
-    res.set({
-      "Cache-Control": "no-cache, no-store, must-revalidate",
-      Pragma: "no-cache",
-      Expires: "0",
-    });
+    console.log("Server-side Update result: ", result);
 
     res.status(200).json(result);
   } catch (err) {
     console.error(
-      `Error updating cover picture for user with ID ${req.params.userId}: ${err}`
+      `Server-side Error updating cover picture for user with ID ${req.params.userId}: ${err}`
     );
     res.sendStatus(500);
   }
