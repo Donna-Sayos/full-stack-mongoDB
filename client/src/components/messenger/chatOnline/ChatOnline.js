@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
-import ProfilePic from "../../common/pic/ProfilePic";
+import ProfilePic from "../../../common/pic/ProfilePic";
 
 const chatOnlineImg = {
   width: "40px",
