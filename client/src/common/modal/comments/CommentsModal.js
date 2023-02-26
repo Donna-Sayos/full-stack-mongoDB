@@ -15,6 +15,8 @@ const heart = {
 export default function CommentsModal({
   show,
   handleClose,
+  handleCommentAdded,
+  commentsLength,
   post,
   likers,
   specificUser,
@@ -39,7 +41,11 @@ export default function CommentsModal({
           </video>
         )}
         <hr className="modal-Hr" />
-        <Comments postId={post._id} userId={currentUser._id} />
+        <Comments
+          postId={post._id}
+          userId={currentUser._id}
+          handleCommentAdded={handleCommentAdded}
+        />
       </Modal.Body>
       <Modal.Footer>
         <div className="d-flex justify-content-between align-items-center w-100">
@@ -48,7 +54,11 @@ export default function CommentsModal({
             <span className="likes m-0">{likers && likers.length} likes</span>
           </div>
           <div className="d-flex justify-content-end">
-            <span className="m-0">{post.comments.length} comments</span>
+            {commentsLength > 0 ? (
+              <span className="m-0">{commentsLength} comments</span>
+            ) : (
+              <span className="m-0">0 comments</span>
+            )}
           </div>
         </div>
       </Modal.Footer>

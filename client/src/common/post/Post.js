@@ -29,6 +29,7 @@ export default function Post({ post, posts, setPosts }) {
   const [like, setLike] = useState(post.likes.length);
   const [isLiked, setIsLiked] = useState(false);
   const [user, setUser] = useState(null);
+  const [commentsLength, setCommentsLength] = useState(post.comments.length);
   const specificUser = user ? user.find((u) => u._id === post.userId) : null;
   const { user: currentUser } = useAuthContext();
   const allUsers = useFetchUsers();
@@ -83,6 +84,10 @@ export default function Post({ post, posts, setPosts }) {
     } catch (err) {
       console.error("Error deleting post: ", err.message);
     }
+  };
+
+  const handleCommentAdded = () => {
+    setCommentsLength((prevLength) => prevLength + 1);
   };
 
   useEffect(() => {
@@ -171,13 +176,15 @@ export default function Post({ post, posts, setPosts }) {
             </div>
             <div className="postBottomRight">
               <button className="postCommentText" onClick={handleShowComments}>
-                {post.comments.length} comments
+                {commentsLength} comments
               </button>
               <CommentsModal
                 id="comments-modal"
                 likers={likers}
                 show={showCommentsModal}
                 handleClose={handleCloseComments}
+                handleCommentAdded={handleCommentAdded}
+                commentsLength={commentsLength}
                 post={post}
                 specificUser={specificUser}
               />

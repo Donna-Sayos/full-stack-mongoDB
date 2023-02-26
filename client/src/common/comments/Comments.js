@@ -13,7 +13,7 @@ const commentsProfileImg = {
   cursor: "pointer",
 };
 
-export default function Comments({ postId, userId }) {
+export default function Comments({ postId, userId, handleCommentAdded }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [numComments, setNumComments] = useState(0);
@@ -24,7 +24,7 @@ export default function Comments({ postId, userId }) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await Axios.post(`/api/v1/posts/${postId}/comments`, {
+      const response = await Axios.post(`/api/v1/posts/${postId}/comments`, {
         postId: postId,
         text: commentText,
         userId: userId,
@@ -32,6 +32,8 @@ export default function Comments({ postId, userId }) {
 
       setCommentText("");
       setNumComments(numComments + 1);
+      setComments([...comments, response.data.comment]);
+      handleCommentAdded();
     } catch (error) {
       console.error(`Error at submitting comment: ${error.message}`);
     }
@@ -42,6 +44,7 @@ export default function Comments({ postId, userId }) {
       try {
         const response = await Axios.get(`/api/v1/posts/${postId}/comments`);
         setComments(response.data.comments);
+        setNumComments(response.data.comments.length);
       } catch (error) {
         console.error(`Error at fetching comments: ${error.message}`);
       }
@@ -85,7 +88,7 @@ export default function Comments({ postId, userId }) {
                 />
                 <div>
                   <p className="mb-0">
-                    <b>{specificUser.username}</b>
+                    <b>{specificUser?.username}</b>
                   </p>
                   <p className="mb-0">{comment.text}</p>
                   <small className="text-muted">
@@ -95,7 +98,7 @@ export default function Comments({ postId, userId }) {
               </div>
             );
           })}
-        {comments.length > 3 && !showAllComments && (
+        {comments.length > 2 && !showAllComments && (
           <div className="d-flex justify-content-center mt-3">
             <button
               className="btn btn-outline-secondary"
