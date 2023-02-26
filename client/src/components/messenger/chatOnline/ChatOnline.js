@@ -22,6 +22,7 @@ export default function ChatOnline({
   useEffect(() => {
     const getFriends = async () => {
       const res = await Axios.get("/api/v1/users/friends/" + currentUserId);
+      console.log("ChatOnline: getFriends: res.data: ", res.data);
       setFriends(res.data);
     };
 
