@@ -53,8 +53,10 @@ export default function TopNav({ setDisplayFeed }) {
             {/* <span className="topNavIconBadge">1</span> */}
           </div>
           <div className="topNavIconItem">
-            <BsFillChatLeftTextFill size={18} />
-            {/* <span className="topNavIconBadge">2</span> */}
+            <Link to="/messenger">
+              <BsFillChatLeftTextFill size={18} color="white" />
+              {/* <span className="topNavIconBadge">2</span> */}
+            </Link>
           </div>
           <div className="topNavIconItem">
             <BsFillBellFill size={18} />

@@ -1,4 +1,3 @@
-const dotenv = require("dotenv");
 require("dotenv").config({ path: "./server/config/config.env" });
 const chalk = require("chalk");
 const { app } = require("./app");

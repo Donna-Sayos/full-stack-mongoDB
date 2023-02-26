@@ -29,7 +29,11 @@ export default function ChatOnline({
   }, [currentUserId]);
 
   useEffect(() => {
-    setOnlineFriends(friends.filter((f) => onlineUsers.includes(f._id)));
+    if (!friends) return;
+    setOnlineFriends(
+      Array.isArray(friends) &&
+        friends.filter((f) => onlineUsers.includes(f._id))
+    );
   }, [friends, onlineUsers]);
 
   const handleClick = async (user) => {
@@ -45,15 +49,16 @@ export default function ChatOnline({
 
   return (
     <div className="chatOnline">
-      {onlineFriends.map((online) => (
-        <div className="chatOnlineFriend" onClick={() => handleClick(online)}>
-          <div className="chatOnlineImgContainer">
-            <ProfilePic user={online} style={chatOnlineImg} />
-            <div className="chatOnlineBadge"></div>
+      {onlineFriends &&
+        onlineFriends.map((online) => (
+          <div className="chatOnlineFriend" onClick={() => handleClick(online)}>
+            <div className="chatOnlineImgContainer">
+              <ProfilePic user={online} style={chatOnlineImg} />
+              <div className="chatOnlineBadge"></div>
+            </div>
+            <span className="chatOnlineName">{online?.username}</span>
           </div>
-          <span className="chatOnlineName">{online?.username}</span>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }

@@ -50,7 +50,11 @@ app.use(
       frameSrc: ["https://www.google.com"],
       imgSrc: ["'self'", "data:", "blob:"],
       mediaSrc: ["'self'", "data:", "blob:"],
-      connectSrc: ["'self'", "https://official-joke-api.appspot.com"],
+      connectSrc: [
+        "'self'",
+        "https://official-joke-api.appspot.com",
+        "http://localhost:5001/socket.io/",
+      ],
     },
   })
 );
@@ -104,12 +108,10 @@ app.post("/api/v1/upload", upload.single("uploadFile"), (req, res) => {
 
   try {
     console.log("File path:", `../public/assets/${req.file.filename}`);
-    res
-      .status(200)
-      .json({
-        message: "File uploaded successfully",
-        filename: req.file.filename,
-      });
+    res.status(200).json({
+      message: "File uploaded successfully",
+      filename: req.file.filename,
+    });
   } catch (err) {
     res.status(500).send({ message: "Error uploading file" });
   }
