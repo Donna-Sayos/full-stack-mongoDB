@@ -6,6 +6,7 @@ import Login from "./src/components/auth/login/Login";
 import Register from "./src/components/auth/register/Register";
 import Home from "./src/components/home/Home";
 import Profile from "./src/components/profile/Profile";
+import Messenger from "./src/components/messenger/Messenger";
 
 export default function App() {
   const [isdisabled, setIsdisabled] = useState(true);
@@ -48,7 +49,16 @@ export default function App() {
         {user && (
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route path="/profile/:username" element={<Profile recaptchaRef={recaptchaRef} resetRecaptcha={resetRecaptcha} />} />
+            <Route path="/messenger" element={<Messenger />} />
+            <Route
+              path="/profile/:username"
+              element={
+                <Profile
+                  recaptchaRef={recaptchaRef}
+                  resetRecaptcha={resetRecaptcha}
+                />
+              }
+            />
           </Routes>
         )}
       </BrowserRouter>
