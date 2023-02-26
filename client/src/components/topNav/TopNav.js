@@ -15,7 +15,7 @@ const topNavImg = {
 };
 
 export default function TopNav({ setDisplayFeed }) {
-  const { user } = useAuthContext();
+  const { user: currentUser } = useAuthContext();
 
   return (
     <div className="topNavContainer">
@@ -63,8 +63,8 @@ export default function TopNav({ setDisplayFeed }) {
             {/* <span className="topNavIconBadge">1</span> */}
           </div>
         </div>
-        <Link to={`/profile/${user.username}`}>
-          <ProfilePic style={topNavImg} user={user} />
+        <Link to={`/profile/${currentUser.username}`}>
+          <ProfilePic user={currentUser} style={topNavImg} />
         </Link>
       </div>
     </div>

@@ -21,7 +21,11 @@ export default function Home() {
       <TopNav setDisplayFeed={setDisplayFeed} />
       <div className="homeContainer">
         <Sidebar currentUser={currentUser} />
-        {displayFeed === "allFeeds" ? <AllFeeds currentUser={currentUser} /> : <FriendFeeds currentUser={currentUser} />}
+        {displayFeed === "allFeeds" ? (
+          <AllFeeds currentUser={currentUser} />
+        ) : (
+          <FriendFeeds currentUser={currentUser} />
+        )}
         <RightSidebar />
       </div>
     </>
