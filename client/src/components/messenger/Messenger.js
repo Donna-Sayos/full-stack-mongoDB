@@ -69,9 +69,6 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
-  // console.log("user followings: ", user.followings);
-  // console.log("onlineUsers: ", onlineUsers);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const message = {

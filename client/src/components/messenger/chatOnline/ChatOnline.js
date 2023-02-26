@@ -22,8 +22,7 @@ export default function ChatOnline({
   useEffect(() => {
     const getFriends = async () => {
       const res = await Axios.get("/api/v1/users/friends/" + currentUserId);
-      console.log("ChatOnline: getFriends: res.data: ", res.data);
-      setFriends(res.data);
+      setFriends(res.data.friends);
     };
 
     getFriends();
@@ -52,7 +51,11 @@ export default function ChatOnline({
     <div className="chatOnline">
       {onlineFriends &&
         onlineFriends.map((online) => (
-          <div className="chatOnlineFriend" onClick={() => handleClick(online)}>
+          <div
+            key={online._id}
+            className="chatOnlineFriend"
+            onClick={() => handleClick(online)}
+          >
             <div className="chatOnlineImgContainer">
               <ProfilePic user={online} style={chatOnlineImg} />
               <div className="chatOnlineBadge"></div>
