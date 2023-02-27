@@ -44,6 +44,7 @@ export default function CommentsModal({
         <Comments
           postId={post._id}
           userId={currentUser._id}
+          commentsLength={commentsLength}
           handleCommentAdded={handleCommentAdded}
         />
       </Modal.Body>

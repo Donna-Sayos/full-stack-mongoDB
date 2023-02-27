@@ -13,7 +13,12 @@ const commentsProfileImg = {
   cursor: "pointer",
 };
 
-export default function Comments({ postId, userId, handleCommentAdded }) {
+export default function Comments({
+  postId,
+  userId,
+  commentsLength,
+  handleCommentAdded,
+}) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
   const [numComments, setNumComments] = useState(0);
@@ -56,7 +61,7 @@ export default function Comments({ postId, userId, handleCommentAdded }) {
 
   return (
     <div className="mt-3">
-      <h4 className="mb-3">{comments.length} Comments</h4>
+      <h4 className="mb-3">{commentsLength} Comments</h4>
       <form onSubmit={handleSubmit}>
         <div className="input-group">
           <input
@@ -96,7 +101,7 @@ export default function Comments({ postId, userId, handleCommentAdded }) {
               </div>
             );
           })}
-        {comments.length >= 3 && !showAllComments && (
+        {commentsLength >= 3 && !showAllComments && (
           <div className="d-flex justify-content-center mt-3">
             <button
               className="btn btn-outline-secondary"
