@@ -40,7 +40,7 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.postId);
     if (post.userId === req.body.userId) {
       await post.updateOne({ $set: req.body });
       res.status(200).json("the post has been updated");
@@ -55,7 +55,7 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.postId);
 
     if (post.userId === req.body.userId) {
       await post.deleteOne();
@@ -71,7 +71,7 @@ const deletePost = async (req, res) => {
 
 const like_unlikePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.postId);
     if (!post.likes.includes(req.body.userId)) {
       await post.updateOne({ $push: { likes: req.body.userId } });
       await User.updateOne(
@@ -95,7 +95,7 @@ const like_unlikePost = async (req, res) => {
 
 const getSinglePost = async (req, res) => {
   try {
-    const post = await Post.findById(req.params.id);
+    const post = await Post.findById(req.params.postId);
     res.status(200).json(post);
   } catch (err) {
     console.log(`Error at getSinglePost: ${err}`);
@@ -160,7 +160,7 @@ const createComments = async (req, res) => {
 
 const getComments = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const postId = req.params.postId;
 
     // Find the post
     const post = await Post.findById(postId);
@@ -185,26 +185,27 @@ const getComments = async (req, res) => {
   }
 };
 
-const deleteComments = async (req, res) => {
+const deleteComment = async (req, res) => {
   try {
-    const commentId = req.params.id;
+    const commentId = req.params.commentId;
 
     // Find the comment
-    const comment = await Comments.findById(commentId);
+    const comment = await Comment.findById(commentId);
     if (!comment) {
       return res.status(404).json({ error: "Comment not found." });
     }
 
-    // Find the post
+    // Check if the user is authorized to delete the comment
+    if (comment.userId.toString() !== req.user.id) {
+      return res.status(401).json({ error: "Unauthorized." });
+    }
+
+    // Remove the comment from the post's comments array
     const post = await Post.findById(comment.postId);
     if (!post) {
       return res.status(404).json({ error: "Post not found." });
     }
-
-    // Remove the comment from the post's comments array
-    post.comments = post.comments.filter(
-      (comment) => comment.toString() !== commentId
-    );
+    post.comments = post.comments.filter((c) => c.toString() !== commentId);
     await post.save();
 
     // Remove the comment
@@ -212,8 +213,8 @@ const deleteComments = async (req, res) => {
 
     res.status(200).json({ success: true, message: "Comment deleted." });
   } catch (error) {
-    console.error(`Error at delete comments: ${error}`);
-    res.status(500).json({ error: "Server error at delete comments." });
+    console.error(`Error at delete comment: ${error}`);
+    res.status(500).json({ error: "Server error at delete comment." });
   }
 };
 
@@ -228,5 +229,5 @@ module.exports = {
   getUserPosts,
   createComments,
   getComments,
-  deleteComments,
+  deleteComment,
 };

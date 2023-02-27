@@ -11,17 +11,14 @@ const {
   getUserPosts,
   createComments,
   getComments,
-  deleteComments,
+  deleteComment,
 } = require("../controllers/postController");
 
 router.route("/").get(getAllPosts).post(createPost);
-router.route("/:id").get(getSinglePost).put(updatePost).delete(deletePost);
-router
-  .route("/:id/comments")
-  .get(getComments)
-  .post(createComments)
-  .delete(deleteComments);
-router.route("/:id/like").put(like_unlikePost);
+router.route("/:postId").get(getSinglePost).put(updatePost).delete(deletePost);
+router.route("/:postId/comments").get(getComments).post(createComments);
+router.route("/:postId/comments/:commentId").delete(deleteComment);
+router.route("/:postId/like").put(like_unlikePost);
 router.route("/timeline/:userId").get(getTimelinePosts);
 router.route("/profile/:username").get(getUserPosts);
 

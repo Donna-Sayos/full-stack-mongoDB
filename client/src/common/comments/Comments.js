@@ -43,6 +43,18 @@ export default function Comments({
     }
   };
 
+  const handleCommentDelete = async (commentId) => {
+    try {
+      const response = await Axios.delete(`/api/v1/posts/${postId}/comments`);
+      if (response.data.success) {
+        setComments(comments.filter((comment) => comment._id !== commentId));
+        setNumComments(numComments - 1);
+      }
+    } catch (error) {
+      console.error(`Error at deleting comment: ${error.message}`);
+    }
+  };
+
   useEffect(() => {
     const fetchComments = async () => {
       try {
