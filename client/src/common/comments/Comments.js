@@ -18,7 +18,6 @@ export default function Comments({ postId, userId, handleCommentAdded }) {
   const [comments, setComments] = useState([]);
   const [numComments, setNumComments] = useState(0);
   const [showAllComments, setShowAllComments] = useState(false);
-
   const allUsers = useFetchUsers();
 
   const handleSubmit = async (event) => {
@@ -26,8 +25,8 @@ export default function Comments({ postId, userId, handleCommentAdded }) {
     try {
       const response = await Axios.post(`/api/v1/posts/${postId}/comments`, {
         postId: postId,
-        text: commentText,
         userId: userId,
+        text: commentText,
       });
 
       setCommentText("");
@@ -77,28 +76,27 @@ export default function Comments({ postId, userId, handleCommentAdded }) {
       <div className="comments-container mt-3">
         {displayComments &&
           displayComments.map((comment, i) => {
-            const specificUser = allUsers.find(
-              (user) => user._id === comment.userId
-            );
+            const specificUser =
+              comment?.userId &&
+              allUsers.find((user) => user._id === comment.userId);
             return (
               <div key={i} className="d-flex align-items-center mb-3">
-                <ProfilePic
-                  user={specificUser}
-                  style={{ ...commentsProfileImg, marginRight: "10px" }}
-                />
+                {specificUser?.profilePic && (
+                  <ProfilePic user={specificUser} style={commentsProfileImg} />
+                )}
                 <div>
                   <p className="mb-0">
                     <b>{specificUser?.username}</b>
                   </p>
-                  <p className="mb-0">{comment.text}</p>
+                  <p className="mb-0">{comment?.text}</p>
                   <small className="text-muted">
-                    {format(comment.createdAt)}
+                    {format(comment?.createdAt)}
                   </small>
                 </div>
               </div>
             );
           })}
-        {comments.length > 2 && !showAllComments && (
+        {comments.length >= 3 && !showAllComments && (
           <div className="d-flex justify-content-center mt-3">
             <button
               className="btn btn-outline-secondary"
