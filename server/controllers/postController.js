@@ -185,6 +185,38 @@ const getComments = async (req, res) => {
   }
 };
 
+const deleteComments = async (req, res) => {
+  try {
+    const commentId = req.params.id;
+
+    // Find the comment
+    const comment = await Comments.findById(commentId);
+    if (!comment) {
+      return res.status(404).json({ error: "Comment not found." });
+    }
+
+    // Find the post
+    const post = await Post.findById(comment.postId);
+    if (!post) {
+      return res.status(404).json({ error: "Post not found." });
+    }
+
+    // Remove the comment from the post's comments array
+    post.comments = post.comments.filter(
+      (comment) => comment.toString() !== commentId
+    );
+    await post.save();
+
+    // Remove the comment
+    await comment.remove();
+
+    res.status(200).json({ success: true, message: "Comment deleted." });
+  } catch (error) {
+    console.error(`Error at delete comments: ${error}`);
+    res.status(500).json({ error: "Server error at delete comments." });
+  }
+};
+
 module.exports = {
   getAllPosts,
   createPost,
@@ -196,4 +228,5 @@ module.exports = {
   getUserPosts,
   createComments,
   getComments,
+  deleteComments,
 };
