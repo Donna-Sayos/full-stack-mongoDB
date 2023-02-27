@@ -45,7 +45,9 @@ export default function Comments({
 
   const handleCommentDelete = async (commentId) => {
     try {
-      const response = await Axios.delete(`/api/v1/posts/${postId}/comments`);
+      const response = await Axios.delete(
+        `/api/v1/posts/${postId}/comments/${commentId}`
+      );
       if (response.data.success) {
         setComments(comments.filter((comment) => comment._id !== commentId));
         setNumComments(numComments - 1);
@@ -96,14 +98,23 @@ export default function Comments({
             const specificUser =
               comment?.userId &&
               allUsers.find((user) => user._id === comment.userId);
+            const isUserComment = comment?.userId && comment.userId === userId; // Check if the comment belongs to the current user
             return (
               <div key={i} className="d-flex align-items-center mb-3">
-                {specificUser?.profilePic && (
+                {specificUser?.profilePicture && (
                   <ProfilePic user={specificUser} style={commentsProfileImg} />
                 )}
                 <div>
                   <p className="mb-0">
                     <b>{specificUser?.username}</b>
+                    {isUserComment && (
+                      <button
+                        className="removeComment ms-2"
+                        onClick={() => handleCommentDelete(comment._id)}
+                      >
+                        X
+                      </button>
+                    )}
                   </p>
                   <p className="mb-0">{comment?.text}</p>
                   <small className="text-muted">

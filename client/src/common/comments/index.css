@@ -2,3 +2,15 @@
     max-height: 200px;
     overflow: auto;
 }
+
+.removeComment {
+    background-color: white;
+    color: gray;
+    border: 0;
+}
+
+.removeComment:hover {
+    background-color: white;
+    color: black;
+    font-weight: 600;
+}

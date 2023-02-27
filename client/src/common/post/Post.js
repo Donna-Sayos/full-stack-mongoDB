@@ -122,14 +122,12 @@ export default function Post({ post, posts, setPosts }) {
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             {currentUser._id === post.userId && (
-              <div className="postTopRight">
-                <button
-                  className="removePost"
-                  onClick={() => deleteHandler(post._id, post.userId)}
-                >
-                  x
-                </button>
-              </div>
+              <button
+                className="removePost"
+                onClick={() => deleteHandler(post._id, post.userId)}
+              >
+                x
+              </button>
             )}
           </div>
           <div className="postCenter">
