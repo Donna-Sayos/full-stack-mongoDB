@@ -16,6 +16,7 @@ export default function CommentsModal({
   show,
   handleClose,
   handleCommentAdded,
+  setCommentsLength,
   commentsLength,
   post,
   likers,
@@ -47,6 +48,7 @@ export default function CommentsModal({
           userId={currentUser._id}
           commentsLength={commentsLength}
           handleCommentAdded={handleCommentAdded}
+          setCommentsLength={setCommentsLength}
         />
       </Modal.Body>
       <Modal.Footer>

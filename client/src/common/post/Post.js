@@ -182,6 +182,7 @@ export default function Post({ post, posts, setPosts }) {
                 show={showCommentsModal}
                 handleClose={handleCloseComments}
                 handleCommentAdded={handleCommentAdded}
+                setCommentsLength={setCommentsLength}
                 commentsLength={commentsLength}
                 post={post}
                 specificUser={specificUser}

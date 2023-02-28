@@ -20,6 +20,7 @@ export default function Comments({
   userId,
   commentsLength,
   handleCommentAdded,
+  setCommentsLength,
 }) {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
@@ -59,6 +60,7 @@ export default function Comments({
       if (response.data.success) {
         setComments(comments.filter((comment) => comment._id !== commentId));
         setNumComments(numComments - 1);
+        setCommentsLength((prevLength) => prevLength - 1);
       }
     } catch (error) {
       console.error(`Error at deleting comment: ${error.message}`);
