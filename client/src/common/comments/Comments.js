@@ -31,6 +31,8 @@ export default function Comments({
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      if (commentText === "") return;
+
       const response = await Axios.post(`/api/v1/posts/${postId}/comments`, {
         postId: postId,
         userId: userId,
@@ -105,23 +107,19 @@ export default function Comments({
       </form>
       <div className="comments-container mt-3">
         {displayComments &&
-          displayComments.map((comment) => {
+          displayComments.map((comment, i) => {
             const specificUser =
               comment?.userId &&
               allUsers.find((user) => user._id === comment.userId);
             const isUserComment = comment?.userId && comment.userId === userId; // Check if the comment belongs to the current user
             return (
               <div
-                key={comment?._id}
+                key={i}
                 className="d-flex flex-column align-items-start mb-3"
               >
                 <div className="d-flex flex-row align-items-center">
-                  {specificUser?.profilePicture && (
-                    <ProfilePic
-                      user={specificUser}
-                      style={commentsProfileImg}
-                    />
-                  )}
+                  <ProfilePic user={specificUser} style={commentsProfileImg} />
+
                   <p className="mb-0">
                     <b>{specificUser?.username}</b>
                   </p>
@@ -131,13 +129,9 @@ export default function Comments({
                   {isUserComment && (
                     <button
                       className="removeComment"
-                      onClick={() => {
-                        console.log(
-                          "trying to delete comment ID: ",
-                          comment._id
-                        );
-                        handleCommentDelete(comment?._id, comment?.userId);
-                      }}
+                      onClick={() =>
+                        handleCommentDelete(comment?._id, comment?.userId)
+                      }
                     >
                       X
                     </button>
@@ -149,7 +143,7 @@ export default function Comments({
               </div>
             );
           })}
-        {commentsLength >= 2 && !showAllComments && (
+        {commentsLength > 2 && !showAllComments && (
           <div className="d-flex justify-content-center mt-3">
             <button
               className="btn btn-outline-secondary p-1"
