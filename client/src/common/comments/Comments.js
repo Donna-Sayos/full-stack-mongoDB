@@ -128,7 +128,7 @@ export default function Comments({
                   <p className="text mb-0">{comment?.text}</p>
                   {isUserComment && (
                     <button
-                      className="removeComment btn btn-sm-outline-secondary"
+                      className="removeComment"
                       onClick={() => {
                         console.log(
                           "trying to delete comment ID: ",
@@ -147,10 +147,10 @@ export default function Comments({
               </div>
             );
           })}
-        {commentsLength >= 3 && !showAllComments && (
+        {commentsLength >= 2 && !showAllComments && (
           <div className="d-flex justify-content-center mt-3">
             <button
-              className="btn btn-outline-secondary"
+              className="btn btn-outline-secondary p-1"
               onClick={() => setShowAllComments(true)}
             >
               Show more comments
