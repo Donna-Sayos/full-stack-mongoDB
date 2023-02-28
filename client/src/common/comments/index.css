@@ -6,11 +6,18 @@
 .removeComment {
     background-color: white;
     color: gray;
-    border: 0;
+    border: 1px solid gray;
+    font-weight: 600;
+    border-radius: 50%;
 }
 
 .removeComment:hover {
     background-color: white;
     color: black;
     font-weight: 600;
+    border: 1px dashed black;
+}
+
+.text {
+    margin-left: 8px;
 }

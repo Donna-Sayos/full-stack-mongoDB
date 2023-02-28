@@ -11,6 +11,7 @@ const commentsProfileImg = {
   borderRadius: "50%",
   objectFit: "cover",
   cursor: "pointer",
+  margin: "0 4px 4px 0", // top right bottom left
 };
 
 export default function Comments({
@@ -94,33 +95,41 @@ export default function Comments({
       </form>
       <div className="comments-container mt-3">
         {displayComments &&
-          displayComments.map((comment, i) => {
+          displayComments.map((comment) => {
             const specificUser =
               comment?.userId &&
               allUsers.find((user) => user._id === comment.userId);
             const isUserComment = comment?.userId && comment.userId === userId; // Check if the comment belongs to the current user
             return (
-              <div key={i} className="d-flex align-items-center mb-3">
-                {specificUser?.profilePicture && (
-                  <ProfilePic user={specificUser} style={commentsProfileImg} />
-                )}
-                <div>
+              <div
+                key={comment?._id}
+                className="d-flex flex-column align-items-start mb-3"
+              >
+                <div className="d-flex flex-row align-items-center">
+                  {specificUser?.profilePicture && (
+                    <ProfilePic
+                      user={specificUser}
+                      style={commentsProfileImg}
+                    />
+                  )}
                   <p className="mb-0">
                     <b>{specificUser?.username}</b>
-                    {isUserComment && (
-                      <button
-                        className="removeComment ms-2"
-                        onClick={() => handleCommentDelete(comment._id)}
-                      >
-                        X
-                      </button>
-                    )}
                   </p>
-                  <p className="mb-0">{comment?.text}</p>
-                  <small className="text-muted">
-                    {format(comment?.createdAt)}
-                  </small>
                 </div>
+                <div className="d-flex justify-content-between w-100">
+                  <p className="text mb-0">{comment?.text}</p>
+                  {isUserComment && (
+                    <button
+                      className="removeComment btn btn-sm-outline-secondary"
+                      onClick={() => handleCommentDelete(comment._id)}
+                    >
+                      X
+                    </button>
+                  )}
+                </div>
+                <small className="text-muted">
+                  {format(comment?.createdAt)}
+                </small>
               </div>
             );
           })}
