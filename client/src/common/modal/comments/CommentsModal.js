@@ -42,6 +42,7 @@ export default function CommentsModal({
         )}
         <hr className="modal-Hr" />
         <Comments
+          currentUser={currentUser}
           postId={post._id}
           userId={currentUser._id}
           commentsLength={commentsLength}

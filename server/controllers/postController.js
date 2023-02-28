@@ -196,7 +196,7 @@ const deleteComment = async (req, res) => {
     }
 
     // Check if the user is authorized to delete the comment
-    if (comment.userId.toString() !== req.user.id) {
+    if (comment.userId.toString() !== req.body.userId) {
       return res.status(401).json({ error: "Unauthorized." });
     }
 
@@ -209,9 +209,14 @@ const deleteComment = async (req, res) => {
     await post.save();
 
     // Remove the comment
-    await comment.remove();
+    await comment.delete();
 
-    res.status(200).json({ success: true, message: "Comment deleted." });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: `Comment deleted with ID: ${commentId}.`,
+      });
   } catch (error) {
     console.error(`Error at delete comment: ${error}`);
     res.status(500).json({ error: "Server error at delete comment." });

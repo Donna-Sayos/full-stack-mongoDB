@@ -15,6 +15,7 @@ const commentsProfileImg = {
 };
 
 export default function Comments({
+  currentUser,
   postId,
   userId,
   commentsLength,
@@ -44,10 +45,15 @@ export default function Comments({
     }
   };
 
-  const handleCommentDelete = async (commentId) => {
+  const handleCommentDelete = async (commentId, commentUserId) => {
     try {
+      if (commentUserId !== currentUser?._id) return;
+
       const response = await Axios.delete(
-        `/api/v1/posts/${postId}/comments/${commentId}`
+        `/api/v1/posts/${postId}/comments/${commentId}`,
+        {
+          data: { userId: commentUserId },
+        }
       );
 
       if (response.data.success) {
@@ -128,7 +134,7 @@ export default function Comments({
                           "trying to delete comment ID: ",
                           comment._id
                         );
-                        handleCommentDelete(comment?._id);
+                        handleCommentDelete(comment?._id, comment?.userId);
                       }}
                     >
                       X
