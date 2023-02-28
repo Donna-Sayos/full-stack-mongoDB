@@ -14,8 +14,11 @@ const conversationImg = {
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
 
+  console.log("Conversation.js: conversation: ", conversation);
+
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
+    console.log("Conversation.js: friendId: ", friendId);
 
     const getUser = async () => {
       try {
@@ -29,6 +32,9 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
+  console.log("Conversation.js: user: ", user)
+  console.log("Conversation.js: currentUser: ", currentUser)
+
   return (
     <div className="conversation">
       <ProfilePic user={user} style={conversationImg} />
@@ -36,3 +42,4 @@ export default function Conversation({ conversation, currentUser }) {
     </div>
   );
 }
+

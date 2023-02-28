@@ -49,11 +49,13 @@ export default function Messenger() {
     const getConversations = async () => {
       try {
         const res = await Axios.get("/api/v1/conversations/" + user._id);
+        console.log("get conversations response", res.data);
         setConversations(res.data);
       } catch (err) {
         console.log(err);
       }
     };
+
     getConversations();
   }, [user._id]);
 
@@ -100,18 +102,23 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  console.log("conversations", conversations);
+
   return (
     <>
       <TopNav />
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input placeholder="Search for friends" className="chatMenuInput" />
-            {conversations.map((c) => (
-              <div onClick={() => setCurrentChat(c)}>
-                <Conversation conversation={c} currentUser={user} />
-              </div>
-            ))}
+            <input placeholder="Search" className="chatMenuInput" />
+            {conversations && conversations.map((c) => {
+              console.log("c", c);
+              return (
+                <div key={c._id} onClick={() => setCurrentChat(c)}>
+                  <Conversation conversation={c} currentUser={user} />
+                </div>
+              );
+            })}
           </div>
         </div>
         <div className="chatBox">

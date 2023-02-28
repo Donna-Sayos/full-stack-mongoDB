@@ -17,3 +17,4 @@ export default function Message({ message, own }) {
     </div>
   );
 }
+

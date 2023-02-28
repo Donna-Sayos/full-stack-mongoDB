@@ -47,8 +47,6 @@ export default function ChatOnline({
     }
   };
 
-  console.log("ChatOnline: currentUserId: ", currentUserId);
-
   return (
     <div className="chatOnline">
       {onlineFriends &&
@@ -68,3 +66,4 @@ export default function ChatOnline({
     </div>
   );
 }
+
