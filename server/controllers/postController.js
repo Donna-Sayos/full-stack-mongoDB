@@ -190,7 +190,7 @@ const deleteComment = async (req, res) => {
     const commentId = req.params.commentId;
 
     // Find the comment
-    const comment = await Comment.findById(commentId);
+    const comment = await Comments.findById(commentId);
     if (!comment) {
       return res.status(404).json({ error: "Comment not found." });
     }

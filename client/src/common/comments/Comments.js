@@ -49,12 +49,14 @@ export default function Comments({
       const response = await Axios.delete(
         `/api/v1/posts/${postId}/comments/${commentId}`
       );
+
       if (response.data.success) {
         setComments(comments.filter((comment) => comment._id !== commentId));
         setNumComments(numComments - 1);
       }
     } catch (error) {
       console.error(`Error at deleting comment: ${error.message}`);
+      console.error(error);
     }
   };
 
@@ -121,7 +123,13 @@ export default function Comments({
                   {isUserComment && (
                     <button
                       className="removeComment btn btn-sm-outline-secondary"
-                      onClick={() => handleCommentDelete(comment._id)}
+                      onClick={() => {
+                        console.log(
+                          "trying to delete comment ID: ",
+                          comment._id
+                        );
+                        handleCommentDelete(comment?._id);
+                      }}
                     >
                       X
                     </button>
