@@ -68,7 +68,7 @@ export default function Feed({ username, currentUser }) {
             />
           ))
         ) : (
-          <p className="empty">Don't be shy. Make a post!</p>
+          <p className="empty">No Post.</p>
         )}
       </div>
     </div>

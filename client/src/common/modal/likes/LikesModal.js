@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import ProfilePic from "../../pic/ProfilePic";
 import LikeButton from "../../post/LikeButton";
-import FollowButton from "./FollowButton";
+import FollowMessageButton from "./FollowMessageButton";
 
 const profileImg = {
   width: "40px",
@@ -82,7 +82,7 @@ export default function LikesModal({ likers, show, handleClose }) {
                     </Link>
                   </div>
                   <div className="col text-end">
-                    <FollowButton
+                    <FollowMessageButton
                       user={user}
                       currentUser={currentUser}
                       dispatch={dispatch}
