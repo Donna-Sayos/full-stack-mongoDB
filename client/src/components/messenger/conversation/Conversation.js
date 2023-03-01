@@ -14,15 +14,14 @@ const conversationImg = {
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
 
-  console.log("Conversation.js: conversation: ", conversation);
-
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
-    console.log("Conversation.js: friendId: ", friendId);
+    console.log("friendId: ", friendId);
 
     const getUser = async () => {
       try {
-        const res = await Axios("/api/v1/users?userId=" + friendId);
+        const res = await Axios(`/api/v1/users/${friendId}`);
+        console.log("getUser response:", res.data);
         setUser(res.data);
       } catch (err) {
         console.log(err);
@@ -39,4 +38,3 @@ export default function Conversation({ conversation, currentUser }) {
     </div>
   );
 }
-
