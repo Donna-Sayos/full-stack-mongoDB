@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./index.css";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 
 export default function FollowButton({
@@ -30,12 +31,6 @@ export default function FollowButton({
     setIsLoading(false);
   };
 
-  //   const handleMessage = () => {
-  //     if (messageHandler) {
-  //         messageHandler();
-  //     }
-  //   }
-
   return (
     <>
       {!followed ? (
@@ -49,12 +44,9 @@ export default function FollowButton({
           )}
         </Button>
       ) : (
-        <Button
-          variant="info"
-          onClick={() => console.log("you messaged ", user?.username)}
-        >
-          message
-        </Button>
+        <Link to="/messenger">
+          <Button variant="info">message</Button>
+        </Link>
       )}
     </>
   );
