@@ -6,7 +6,7 @@ export default function ProfilePic({ user, style }) {
     <img
       className="prof"
       src={
-        user.profilePicture
+        user?.profilePicture
           ? "/assets/" + user?.profilePicture
           : "/assets/" + "user/default-user-photo.png"
       }

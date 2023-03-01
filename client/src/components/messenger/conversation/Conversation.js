@@ -32,9 +32,6 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
-  console.log("Conversation.js: user: ", user)
-  console.log("Conversation.js: currentUser: ", currentUser)
-
   return (
     <div className="conversation">
       <ProfilePic user={user} style={conversationImg} />

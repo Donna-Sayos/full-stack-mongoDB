@@ -36,12 +36,22 @@ export default function ChatOnline({
     );
   }, [friends, onlineUsers]);
 
-  const handleClick = async (user) => {
+  const handleClick = async (friendId) => {
     try {
       const res = await Axios.get(
-        `/api/v1/conversations/find/${currentUserId}/${user._id}`
+        `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );
-      setCurrentChat(res.data);
+      if (res.data) {
+        // If conversation already exists, set it as current chat
+        setCurrentChat(res.data);
+      } else {
+        // If conversation doesn't exist, create a new conversation
+        const newConversation = await Axios.post("/api/v1/conversations", {
+          senderId: currentUserId,
+          receiverId: friendId,
+        });
+        setCurrentChat(newConversation.data);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -54,7 +64,7 @@ export default function ChatOnline({
           <div
             key={online._id}
             className="chatOnlineFriend"
-            onClick={() => handleClick(online)}
+            onClick={() => handleClick(online._id)}
           >
             <div className="chatOnlineImgContainer">
               <ProfilePic user={online} style={chatOnlineImg} />
@@ -66,4 +76,3 @@ export default function ChatOnline({
     </div>
   );
 }
-

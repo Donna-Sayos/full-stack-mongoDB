@@ -102,8 +102,6 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  console.log("conversations", conversations);
-
   return (
     <>
       <TopNav />
@@ -111,7 +109,7 @@ export default function Messenger() {
         <div className="chatMenu">
           <div className="chatMenuWrapper">
             <input placeholder="Search" className="chatMenuInput" />
-            {conversations && conversations.map((c) => {
+            {conversations.map((c) => {
               console.log("c", c);
               return (
                 <div key={c._id} onClick={() => setCurrentChat(c)}>
@@ -126,8 +124,8 @@ export default function Messenger() {
             {currentChat ? (
               <>
                 <div className="chatBoxTop">
-                  {messages.map((m) => (
-                    <div ref={scrollRef}>
+                  {messages.map((m, index) => (
+                    <div key={index} ref={scrollRef}>
                       <Message message={m} own={m.sender === user._id} />
                     </div>
                   ))}
