@@ -110,7 +110,7 @@ export default function Messenger() {
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input placeholder="Search" className="chatMenuInput" />
+            <input placeholder="Search" className="form-control chatMenuInput mb-2" />
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <Conversation conversation={c} currentUser={user} />
@@ -123,18 +123,19 @@ export default function Messenger() {
             {currentChat ? (
               <>
                 <div className="chatBoxTop">
-                  {messages.map((m, index) => (
-                    <div key={index} ref={scrollRef}>
+                  {messages.map((m) => (
+                    <div key={m._id} ref={scrollRef}>
                       <Message message={m} own={m.sender === user._id} />
                     </div>
                   ))}
                 </div>
                 <div className="chatBoxBottom">
                   <textarea
-                    className="chatMessageInput"
+                    className="chatMessageInput form-control"
                     placeholder="write something..."
                     onChange={(e) => setNewMessage(e.target.value)}
                     value={newMessage}
+                    rows={3}
                   ></textarea>
                   <button className="chatSubmitButton" onClick={handleSubmit}>
                     Send
