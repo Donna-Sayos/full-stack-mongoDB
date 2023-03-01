@@ -20,18 +20,16 @@ export default function Online({ userId }) {
 
   return (
     <>
-      {onlineUser && (
-        <li className="rightSidebarFriend">
-          <div className="rightSidebarProfileImgContainer">
-            <ProfilePic style={rightSidebarProfileImg} user={onlineUser} />
-            <span className="rightSidebarOnline"></span>
-          </div>
-          <div className="rightSidebarUsername">
-            {onlineUser.username}{" "}
-            <span style={{ color: "gray" }}>({onlineUser.pronouns})</span>
-          </div>
-        </li>
-      )}
+      <li className="rightSidebarFriend">
+        <div className="rightSidebarProfileImgContainer">
+          <ProfilePic style={rightSidebarProfileImg} user={onlineUser} />
+          <span className="rightSidebarOnline"></span>
+        </div>
+        <div className="rightSidebarUsername">
+          {onlineUser?.username}{" "}
+          <span style={{ color: "gray" }}>({onlineUser?.pronouns})</span>
+        </div>
+      </li>
     </>
   );
 }

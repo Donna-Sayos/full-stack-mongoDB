@@ -118,12 +118,8 @@ export default function Comments({
                 className="d-flex flex-column align-items-start mb-3"
               >
                 <div className="d-flex flex-row align-items-center">
-                  {specificUser && (
-                    <ProfilePic
-                      user={specificUser}
-                      style={commentsProfileImg}
-                    />
-                  )}
+                  <ProfilePic user={specificUser} style={commentsProfileImg} />
+
                   <p className="mb-0">
                     <b>{specificUser?.username}</b>
                   </p>
