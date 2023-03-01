@@ -24,6 +24,7 @@ export default function Messenger() {
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
+        profilePicture: data.profilePicture,
         text: data.text,
         createdAt: Date.now(),
       });
@@ -74,6 +75,7 @@ export default function Messenger() {
     e.preventDefault();
     const message = {
       sender: user._id,
+      profilePicture: user.profilePicture,
       text: newMessage,
       conversationId: currentChat._id,
     };
@@ -86,6 +88,7 @@ export default function Messenger() {
       senderId: user._id,
       receiverId,
       text: newMessage,
+      profilePicture: user.profilePicture,
     });
 
     try {

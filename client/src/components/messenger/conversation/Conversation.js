@@ -16,12 +16,10 @@ export default function Conversation({ conversation, currentUser }) {
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
-    console.log("friendId: ", friendId);
 
     const getUser = async () => {
       try {
         const res = await Axios(`/api/v1/users/${friendId}`);
-        console.log("getUser response:", res.data);
         setUser(res.data);
       } catch (err) {
         console.log(err);
