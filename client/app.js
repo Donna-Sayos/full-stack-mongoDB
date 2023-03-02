@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useRef } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import OnlineContextProvider from "./src/context/online/OnlineContextProvider";
 import { useAuthContext } from "./src/context/auth/AuthProvider";
 import Login from "./src/components/auth/login/Login";
 import Register from "./src/components/auth/register/Register";
@@ -47,19 +48,21 @@ export default function App() {
           </Routes>
         )}
         {user && (
-          <Routes>
-            <Route exact path="/" element={<Home />} />
-            <Route path="/messenger" element={<Messenger />} />
-            <Route
-              path="/profile/:username"
-              element={
-                <Profile
-                  recaptchaRef={recaptchaRef}
-                  resetRecaptcha={resetRecaptcha}
-                />
-              }
-            />
-          </Routes>
+          <OnlineContextProvider currentUser={user} >
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route path="/messenger" element={<Messenger />} />
+              <Route
+                path="/profile/:username"
+                element={
+                  <Profile
+                    recaptchaRef={recaptchaRef}
+                    resetRecaptcha={resetRecaptcha}
+                  />
+                }
+              />
+            </Routes>
+          </OnlineContextProvider>
         )}
       </BrowserRouter>
     </>
