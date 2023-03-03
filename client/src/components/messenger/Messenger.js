@@ -73,6 +73,11 @@ export default function Messenger() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const receiverId = currentChat.members.find(
+      (member) => member !== user._id
+    );
+
     const message = {
       sender: user._id,
       profilePicture: user.profilePicture,
@@ -80,21 +85,26 @@ export default function Messenger() {
       conversationId: currentChat._id,
     };
 
-    const receiverId = currentChat.members.find(
-      (member) => member !== user._id
-    );
-
-    socket.current.emit("sendMessage", {
-      senderId: user._id,
-      receiverId,
-      text: newMessage,
-      profilePicture: user.profilePicture,
-    });
+    if (onlineUsers.includes(receiverId)) {
+      socket.current.emit("sendMessages", {
+        senderId: user._id,
+        receiverId,
+        text: newMessage,
+        profilePicture: user.profilePicture,
+      });
+    }
 
     try {
       const res = await Axios.post("/api/v1/messages", message);
       setMessages([...messages, res.data]);
       setNewMessage("");
+
+      if (!onlineUsers.includes(receiverId)) {
+        // Display a notification to the user that the recipient is offline
+        console.log(
+          "Recipient is offline. Message will be delivered once they come online."
+        );
+      }
     } catch (err) {
       console.log(err);
     }
@@ -110,7 +120,10 @@ export default function Messenger() {
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input placeholder="Search" className="form-control chatMenuInput mb-2" />
+            <input
+              placeholder="Search"
+              className="form-control chatMenuInput mb-2"
+            />
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <Conversation conversation={c} currentUser={user} />
