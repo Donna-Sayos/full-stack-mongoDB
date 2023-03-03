@@ -86,7 +86,7 @@ export default function Messenger() {
     };
 
     if (onlineUsers.includes(receiverId)) {
-      socket.current.emit("sendMessages", {
+      socket.current.emit("sendMessage", {
         senderId: user._id,
         receiverId,
         text: newMessage,
