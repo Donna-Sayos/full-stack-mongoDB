@@ -5,6 +5,7 @@ const OnlineContext = createContext();
 
 export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [notifications, setNotifications] = useState({});
 
   useEffect(() => {
     const socket = io("http://localhost:5001");
@@ -19,13 +20,21 @@ export default function OnlineContextProvider({ children, currentUser }) {
       setOnlineUsers(users.map((user) => user.userId));
     });
 
+    // Listen to the "getNotification" event to update the notifications of the current user.
+    socket.on("getNotification", ({ senderId, notifications }) => {
+      setNotifications((prevNotifications) => ({
+        ...prevNotifications,
+        [senderId]: notifications,
+      }));
+    });
+
     return () => {
       socket.disconnect();
     };
   }, [currentUser._id]);
 
   return (
-    <OnlineContext.Provider value={{ onlineUsers }}>
+    <OnlineContext.Provider value={{ onlineUsers, notifications }}>
       {children}
     </OnlineContext.Provider>
   );
