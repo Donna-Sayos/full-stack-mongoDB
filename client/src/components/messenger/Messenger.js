@@ -101,6 +101,13 @@ export default function Messenger() {
         console.log(
           "Recipient is offline. Message will be delivered once they come online."
         );
+      } else {
+        // Send a notification to the recipient
+        socket.current.emit("sendNotification", {
+          senderId: user._id,
+          receiverId,
+          text: newMessage,
+        });
       }
     } catch (err) {
       console.log(err);

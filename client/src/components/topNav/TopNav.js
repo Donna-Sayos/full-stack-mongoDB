@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
+import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import ProfilePic from "../../common/pic/ProfilePic";
 
 const topNavImg = {
@@ -16,6 +17,11 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
+  const { notifications, setNotifications } = useOnlineContext();
+
+  const handleNotificationsClick = () => {
+    setNotifications({ count: 0 });
+  };
 
   return (
     <div className="topNavContainer">
@@ -52,10 +58,15 @@ export default function TopNav({ setDisplayFeed }) {
             <BiUserPin size={25} />
             {/* <span className="topNavIconBadge">1</span> */}
           </div>
-          <div className="topNavIconItem">
+          <div
+            className="topNavIconItem"
+            onClick={handleNotificationsClick}
+          >
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
-              {/* <span className="topNavIconBadge">2</span> */}
+              {notifications.count > 0 && (
+                <span className="topNavIconBadge">{notifications.count}</span>
+              )}
             </Link>
           </div>
           <div className="topNavIconItem">
