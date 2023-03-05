@@ -17,11 +17,7 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { notifications, setNotifications } = useOnlineContext();
-
-  const handleNotificationsClick = () => {
-    setNotifications({ count: 0 });
-  };
+  const { notifications } = useOnlineContext();
 
   return (
     <div className="topNavContainer">
@@ -58,10 +54,7 @@ export default function TopNav({ setDisplayFeed }) {
             <BiUserPin size={25} />
             {/* <span className="topNavIconBadge">1</span> */}
           </div>
-          <div
-            className="topNavIconItem"
-            // onClick={handleNotificationsClick}
-          >
+          <div className="topNavIconItem">
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
               {notifications.count > 0 && (

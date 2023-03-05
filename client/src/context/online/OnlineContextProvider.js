@@ -21,13 +21,17 @@ export default function OnlineContextProvider({ children, currentUser }) {
     });
 
     // Listen to the "getNotification" event to update the notifications of the current user.
-    socket.on("getNotification", ({ senderId, notifications }) => {
-      setNotifications((prevNotifications) => ({
-        ...prevNotifications,
-        senderId: [senderId],
-        count: notifications,
-      }));
-    });
+    socket.on(
+      "getNotification",
+      ({ senderId, notifications, conversationId }) => {
+        setNotifications((prevNotifications) => ({
+          ...prevNotifications,
+          senderId,
+          count: notifications,
+          conversationId,
+        }));
+      }
+    );
 
     return () => {
       socket.disconnect();

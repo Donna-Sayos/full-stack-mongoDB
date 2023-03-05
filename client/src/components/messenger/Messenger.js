@@ -107,6 +107,7 @@ export default function Messenger() {
           senderId: user._id,
           receiverId,
           text: newMessage,
+          conversationId: currentChat._id,
         });
       }
     } catch (err) {
