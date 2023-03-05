@@ -67,6 +67,10 @@
     height: 100%;
 }
 
+.convoHr {
+    margin: 0;
+}
+
 .noConversationText {
     position: absolute;
     top: 10%;

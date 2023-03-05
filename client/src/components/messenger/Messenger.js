@@ -124,13 +124,18 @@ export default function Messenger() {
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
-            <input
-              placeholder="Search"
-              className="form-control chatMenuInput mb-2"
-            />
+            <div className="container mb-4">
+              <input
+                placeholder="Search"
+                className="form-control chatMenuInput mb-2 mx-auto"
+                style={{ maxWidth: 400 }}
+              />
+            </div>
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
+                <hr className="convoHr" />
                 <Conversation conversation={c} currentUser={user} />
+                <hr className="convoHr" />
               </div>
             ))}
           </div>
