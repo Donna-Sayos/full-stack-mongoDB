@@ -60,7 +60,7 @@ export default function TopNav({ setDisplayFeed }) {
           </div>
           <div
             className="topNavIconItem"
-            onClick={handleNotificationsClick}
+            // onClick={handleNotificationsClick}
           >
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />

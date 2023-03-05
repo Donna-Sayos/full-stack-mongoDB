@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
+import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
 
 const conversationImg = {
   width: "40px",
@@ -13,6 +14,7 @@ const conversationImg = {
 
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
+  const { notifications, setNotifications } = useOnlineContext();
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
@@ -29,10 +31,19 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
+  const notificationCount = notifications?.senderId?.includes(user?._id)
+    ? notifications.count
+    : null;
+
   return (
-    <div className="conversation">
-      <ProfilePic user={user} style={conversationImg} />
-      <span className="conversationName">{user?.username}</span>
+    <div className="conversation d-flex justify-content-between">
+      <div>
+        <ProfilePic user={user} style={conversationImg} />
+        <span className="conversationName">{user?.username}</span>
+      </div>
+      {notificationCount > 0 && (
+        <span className="badge bg-primary">{notifications.count}</span>
+      )}
     </div>
   );
 }

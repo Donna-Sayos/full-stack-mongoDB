@@ -21,10 +21,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
     });
 
     // Listen to the "getNotification" event to update the notifications of the current user.
-    socket.on("getNotification", ({ notifications }) => {
+    socket.on("getNotification", ({ senderId, notifications }) => {
       setNotifications((prevNotifications) => ({
         ...prevNotifications,
-        // [senderId]: notifications,
+        senderId: [senderId],
         count: notifications,
       }));
     });
@@ -35,7 +35,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
   }, [currentUser._id]);
 
   return (
-    <OnlineContext.Provider value={{ onlineUsers, notifications, setNotifications }}>
+    <OnlineContext.Provider
+      value={{ onlineUsers, notifications, setNotifications }}
+    >
       {children}
     </OnlineContext.Provider>
   );
