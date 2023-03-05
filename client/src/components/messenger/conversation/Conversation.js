@@ -16,6 +16,8 @@ export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
   const { notifications, setNotifications } = useOnlineContext();
 
+  console.log("notifications", notifications);
+
   const handleNotificationsClick = () => {
     setNotifications({ count: 0 });
   };
@@ -37,7 +39,7 @@ export default function Conversation({ conversation, currentUser }) {
 
   const notificationCount =
     notifications?.senderId === user?._id &&
-    notifications?.conversationId === conversation._id;
+    notifications?.conversationId === conversation?._id;
 
   return (
     <div

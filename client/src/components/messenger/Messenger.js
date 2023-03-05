@@ -105,9 +105,9 @@ export default function Messenger() {
         // Send a notification to the recipient
         socket.current.emit("sendNotification", {
           senderId: user._id,
+          conversationId: currentChat._id,
           receiverId,
           text: newMessage,
-          conversationId: currentChat._id,
         });
       }
     } catch (err) {

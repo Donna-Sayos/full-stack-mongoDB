@@ -60,11 +60,12 @@ io.on("connection", (socket) => {
   });
 
   // send and get notification
-  socket.on("sendNotification", ({ senderId, receiverId, text }) => {
+  socket.on("sendNotification", ({ senderId, receiverId, text, conversationId }) => {
     const user = getUser(receiverId);
     user.notifications++;
     io.to(user.socketId).emit("getNotification", {
       senderId,
+      conversationId,
       text,
       notifications: user.notifications,
     });
