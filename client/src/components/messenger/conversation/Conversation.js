@@ -16,10 +16,8 @@ export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
   const { notifications, setNotifications } = useOnlineContext();
 
-  console.log("notifications", notifications);
-
   const handleNotificationsClick = () => {
-    setNotifications({ count: 0 });
+    setNotifications(conversation?._id, 0);
   };
 
   useEffect(() => {
@@ -41,6 +39,9 @@ export default function Conversation({ conversation, currentUser }) {
     notifications?.senderId === user?._id &&
     notifications?.conversationId === conversation?._id;
 
+  console.log("notificationCount", notificationCount);
+  console.log("conversation: ", conversation);
+
   return (
     <div
       className="conversation d-flex justify-content-between"
@@ -54,7 +55,7 @@ export default function Conversation({ conversation, currentUser }) {
           {user?.username}
         </span>
       </div>
-      {notificationCount && (
+      {notificationCount > 0 && (
         <span className="badge bg-primary">{notifications?.count}</span>
       )}
     </div>
