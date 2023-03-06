@@ -6,6 +6,7 @@ const OnlineContext = createContext();
 export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notifications, setNotifications] = useState({});
+  const [totalConversationCount, setTotalConversationCount] = useState(0); // add state for total count
 
   useEffect(() => {
     const socket = io("http://localhost:5001");
@@ -28,6 +29,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
           ...prevNotifications,
           [conversationId]: { senderId, count: notifications, conversationId },
         }));
+        setTotalConversationCount(
+          (prevCount) => prevCount + (notifications[conversationId]?.count || 0) // will increment the totalConversationCount state variable by the count for the specific conversation, or by 0 if the count does not exist yet in the notifications state variable
+        );
       }
     );
 
@@ -36,9 +40,26 @@ export default function OnlineContextProvider({ children, currentUser }) {
     };
   }, [currentUser._id]);
 
+  const clearCount = (conversationId) => {
+    setNotifications((prevNotifications) => {
+      const updatedNotifications = { ...prevNotifications };
+      delete updatedNotifications[conversationId];
+      return updatedNotifications;
+    });
+    setTotalConversationCount(
+      (prevCount) => prevCount - (notifications[conversationId]?.count || 0)
+    );
+  };
+
   return (
     <OnlineContext.Provider
-      value={{ onlineUsers, notifications, setNotifications }}
+      value={{
+        onlineUsers,
+        notifications,
+        setNotifications,
+        totalConversationCount,
+        clearCount,
+      }}
     >
       {children}
     </OnlineContext.Provider>

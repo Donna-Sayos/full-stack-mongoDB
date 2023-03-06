@@ -17,7 +17,7 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { notifications } = useOnlineContext();
+  const { totalConversationCount } = useOnlineContext();
 
   return (
     <div className="topNavContainer">
@@ -57,8 +57,10 @@ export default function TopNav({ setDisplayFeed }) {
           <div className="topNavIconItem">
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
-              {notifications.count > 0 && (
-                <span className="topNavIconBadge">{notifications.count}</span>
+              {totalConversationCount > 0 && (
+                <span className="topNavIconBadge">
+                  {totalConversationCount}
+                </span>
               )}
             </Link>
           </div>
