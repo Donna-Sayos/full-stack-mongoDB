@@ -16,8 +16,16 @@ export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
   const { notifications, setNotifications } = useOnlineContext();
 
+  const specificNotif = notifications[conversation?._id];
+
   const handleNotificationsClick = () => {
-    setNotifications(conversation?._id, 0);
+    setNotifications((prevNotifications) => ({
+      ...prevNotifications,
+      [conversation?._id]: {
+        ...prevNotifications[conversation?._id],
+        count: 0,
+      },
+    }));
   };
 
   useEffect(() => {
@@ -36,12 +44,11 @@ export default function Conversation({ conversation, currentUser }) {
   }, [currentUser, conversation]);
 
   const notificationChecker =
-    notifications?.senderId === user?._id;
+    specificNotif && specificNotif?.senderId === user?._id;
 
-  const notificationCount = notificationChecker ? notifications?.count : 0;
+  const notificationCount = notificationChecker ? specificNotif?.count : 0;
 
-  console.log("notificationCount", notificationCount);
-  console.log("notifications", notifications);
+  console.log("specificNotif", specificNotif);
 
   return (
     <div
