@@ -35,12 +35,13 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
-  const notificationCount =
-    notifications?.senderId === user?._id &&
-    notifications?.conversationId === conversation?._id;
+  const notificationChecker =
+    notifications?.senderId === user?._id;
+
+  const notificationCount = notificationChecker ? notifications?.count : 0;
 
   console.log("notificationCount", notificationCount);
-  console.log("conversation: ", conversation);
+  console.log("notifications", notifications);
 
   return (
     <div
@@ -55,8 +56,8 @@ export default function Conversation({ conversation, currentUser }) {
           {user?.username}
         </span>
       </div>
-      {notificationCount > 0 && (
-        <span className="badge bg-primary">{notifications?.count}</span>
+      {notificationChecker && notificationCount > 0 && (
+        <span className="badge bg-primary">{notificationCount}</span>
       )}
     </div>
   );
