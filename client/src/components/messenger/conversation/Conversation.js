@@ -14,18 +14,12 @@ const conversationImg = {
 
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
-  const { notifications, setNotifications } = useOnlineContext();
+  const { notifications, clearCount } = useOnlineContext();
 
   const specificNotif = notifications[conversation?._id];
 
   const handleNotificationsClick = () => {
-    setNotifications((prevNotifications) => ({
-      ...prevNotifications,
-      [conversation?._id]: {
-        ...prevNotifications[conversation?._id],
-        count: 0,
-      },
-    }));
+    clearCount(conversation._id);
   };
 
   useEffect(() => {

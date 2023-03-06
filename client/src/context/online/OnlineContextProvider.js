@@ -56,7 +56,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       value={{
         onlineUsers,
         notifications,
-        setNotifications,
         totalConversationCount,
         clearCount,
       }}
