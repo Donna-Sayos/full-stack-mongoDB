@@ -19,6 +19,8 @@ export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
   const { totalConversationCount } = useOnlineContext();
 
+  console.log("totalConversationCount", totalConversationCount);
+
   return (
     <div className="topNavContainer">
       <div className="topNavLeft">

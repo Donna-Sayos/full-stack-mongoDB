@@ -16,10 +16,8 @@ export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
   const { notifications, clearCount } = useOnlineContext();
 
-  const specificNotif = notifications[conversation?._id];
-
   const handleNotificationsClick = () => {
-    clearCount(conversation._id);
+    clearCount(user?._id);
   };
 
   useEffect(() => {
@@ -37,12 +35,11 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
-  const notificationChecker =
-    specificNotif && specificNotif?.senderId === user?._id;
+  const specificNotif = notifications[user?._id];
 
-  const notificationCount = notificationChecker ? specificNotif?.count : 0;
+  const notificationCount = specificNotif ? specificNotif?.count : 0;
 
-  console.log("specificNotif", specificNotif);
+  console.log("notificationCount", notificationCount);
 
   return (
     <div
@@ -57,7 +54,7 @@ export default function Conversation({ conversation, currentUser }) {
           {user?.username}
         </span>
       </div>
-      {notificationChecker && notificationCount > 0 && (
+      {notificationCount > 0 && (
         <span className="badge bg-primary">{notificationCount}</span>
       )}
     </div>

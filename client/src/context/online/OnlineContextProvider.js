@@ -24,14 +24,23 @@ export default function OnlineContextProvider({ children, currentUser }) {
     // Listen to the "getNotification" event to update the notifications of the current user.
     socket.on(
       "getNotification",
-      ({ senderId, notifications, conversationId }) => {
+      ({ senderId, notifications, conversationId, receiverId }) => {
         setNotifications((prevNotifications) => ({
           ...prevNotifications,
-          [conversationId]: { senderId, count: notifications, conversationId },
+          [senderId]: {
+            receiverId,
+            count: notifications,
+            conversationId,
+          },
         }));
-        setTotalConversationCount(
-          (prevCount) => prevCount + (notifications[conversationId]?.count || 0) // will increment the totalConversationCount state variable by the count for the specific conversation, or by 0 if the count does not exist yet in the notifications state variable
-        );
+
+        if (receiverId === currentUser._id) {
+          setTotalConversationCount((prevCount) => {
+            const prevNotificationCount = notifications[senderId]?.count || 0;
+            const newNotificationCount = notifications || 0;
+            return prevCount - prevNotificationCount + newNotificationCount;
+          });
+        }
       }
     );
 
@@ -40,15 +49,17 @@ export default function OnlineContextProvider({ children, currentUser }) {
     };
   }, [currentUser._id]);
 
-  const clearCount = (conversationId) => {
+  const clearCount = (senderId) => {
     setNotifications((prevNotifications) => {
       const updatedNotifications = { ...prevNotifications };
-      delete updatedNotifications[conversationId];
+      delete updatedNotifications[senderId];
       return updatedNotifications;
     });
-    setTotalConversationCount(
-      (prevCount) => prevCount - (notifications[conversationId]?.count || 0)
-    );
+
+    setTotalConversationCount((prevCount) => {
+      const prevNotificationCount = notifications[senderId]?.count || 0;
+      return prevCount - prevNotificationCount;
+    });
   };
 
   return (

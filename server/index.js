@@ -65,6 +65,7 @@ io.on("connection", (socket) => {
     user.notifications++;
     io.to(user.socketId).emit("getNotification", {
       senderId,
+      receiverId,
       conversationId,
       text,
       notifications: user.notifications,
