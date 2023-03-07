@@ -6,59 +6,50 @@ const OnlineContext = createContext();
 export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notifications, setNotifications] = useState({});
-  const [totalConversationCount, setTotalConversationCount] = useState(0); // add state for total count
 
   useEffect(() => {
-    const socket = io("http://localhost:5001");
+    let socket;
+    try {
+      socket = io("http://localhost:5001");
 
-    // When connected to the server, emit the "addUser" event to add the current user to the "users" array on the server-side.
-    socket.on("connect", () => {
-      socket.emit("addUser", currentUser._id);
-    });
+      // When connected to the server, emit the "addUser" event to add the current user to the "users" array on the server-side.
+      socket.on("connect", () => {
+        socket.emit("addUser", currentUser?._id);
+      });
 
-    // Listen to the "getUsers" event to update the online status of the users.
-    socket.on("getUsers", (users) => {
-      setOnlineUsers(users.map((user) => user.userId));
-    });
+      // Listen to the "getUsers" event to update the online status of the users.
+      socket.on("getUsers", (users) => {
+        setOnlineUsers(users.map((user) => user.userId));
+      });
 
-    // Listen to the "getNotification" event to update the notifications of the current user.
-    socket.on(
-      "getNotification",
-      ({ senderId, notifications, conversationId, receiverId }) => {
-        setNotifications((prevNotifications) => ({
-          ...prevNotifications,
-          [senderId]: {
-            receiverId,
-            count: notifications,
-            conversationId,
-          },
-        }));
-
-        if (receiverId === currentUser._id) {
-          setTotalConversationCount((prevCount) => {
-            const prevNotificationCount = notifications[senderId]?.count || 0;
-            const newNotificationCount = notifications || 0;
-            return prevCount - prevNotificationCount + newNotificationCount;
-          });
+      // Listen to the "getNotification" event to update the notifications of the current user.
+      socket.on(
+        "getNotification",
+        ({ senderId, conversationId, receiverId, count }) => {
+          setNotifications((prevNotifications) => ({
+            ...prevNotifications,
+            [senderId]: {
+              receiverId,
+              count,
+              conversationId,
+            },
+          }));
         }
-      }
-    );
+      );
 
-    return () => {
-      socket.disconnect();
-    };
-  }, [currentUser._id]);
+      return () => {
+        socket.disconnect();
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  }, [currentUser?._id]);
 
   const clearCount = (senderId) => {
     setNotifications((prevNotifications) => {
       const updatedNotifications = { ...prevNotifications };
       delete updatedNotifications[senderId];
       return updatedNotifications;
-    });
-
-    setTotalConversationCount((prevCount) => {
-      const prevNotificationCount = notifications[senderId]?.count || 0;
-      return prevCount - prevNotificationCount;
     });
   };
 
@@ -67,7 +58,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       value={{
         onlineUsers,
         notifications,
-        totalConversationCount,
         clearCount,
       }}
     >

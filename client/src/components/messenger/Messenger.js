@@ -15,12 +15,14 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const socket = useRef();
+  const socket = useRef({ current: null });
   const scrollRef = useRef();
 
   useEffect(() => {
     socket.current = io("http://localhost:5001");
+
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
@@ -28,6 +30,10 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
+
+    return () => {
+      socket.current.off("getMessage");
+    };
   }, []);
 
   useEffect(() => {
@@ -38,11 +44,16 @@ export default function Messenger() {
 
   useEffect(() => {
     socket.current.emit("addUser", user._id);
+
     socket.current.on("getUsers", (users) => {
       setOnlineUsers(
         user.followings.filter((f) => users.some((u) => u.userId === f))
       );
     });
+
+    return () => {
+      socket.current.off("getUsers");
+    };
   }, [user]);
 
   useEffect(() => {
@@ -103,11 +114,13 @@ export default function Messenger() {
         );
       } else {
         // Send a notification to the recipient
+        setNotificationCount(notificationCount + 1);
+
         socket.current.emit("sendNotification", {
           senderId: user._id,
           conversationId: currentChat._id,
           receiverId,
-          text: newMessage,
+          count: notificationCount,
         });
       }
     } catch (err) {

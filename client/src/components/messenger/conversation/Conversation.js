@@ -36,10 +36,9 @@ export default function Conversation({ conversation, currentUser }) {
   }, [currentUser, conversation]);
 
   const specificNotif = notifications[user?._id];
-
   const notificationCount = specificNotif ? specificNotif?.count : 0;
 
-  console.log("notificationCount", notificationCount);
+  // console.log("notificationCount", notificationCount);
 
   return (
     <div
