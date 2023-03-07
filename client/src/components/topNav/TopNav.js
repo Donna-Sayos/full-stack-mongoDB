@@ -59,9 +59,15 @@ export default function TopNav({ setDisplayFeed }) {
           <div className="topNavIconItem">
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
-              {notifications.count > 0 && (
+              {Object.values(notifications).reduce(
+                (total, { count }) => total + count,
+                0
+              ) > 0 && (
                 <span className="topNavIconBadge">
-                  {notifications.count}
+                  {Object.values(notifications).reduce(
+                    (total, { count }) => total + count,
+                    0
+                  )}
                 </span>
               )}
             </Link>

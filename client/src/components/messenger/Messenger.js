@@ -15,7 +15,6 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
   const socket = useRef({ current: null });
   const scrollRef = useRef();
@@ -113,15 +112,16 @@ export default function Messenger() {
           "Recipient is offline. Message will be delivered once they come online."
         );
       } else {
-        // Send a notification to the recipient
-        setNotificationCount(notificationCount + 1);
-
-        socket.current.emit("sendNotification", {
-          senderId: user._id,
-          conversationId: currentChat._id,
-          receiverId,
-          count: notificationCount,
-        });
+        try {
+          // Send a notification to the recipient
+          socket.current.emit("sendNotification", {
+            senderId: user._id,
+            conversationId: currentChat._id,
+            receiverId,
+          });
+        } catch (err) {
+          console.log(`Error sending notification: ${err}`);
+        }
       }
     } catch (err) {
       console.log(err);
