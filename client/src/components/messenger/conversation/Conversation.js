@@ -18,14 +18,6 @@ export default function Conversation({ conversation, currentUser }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    const sender = notifications[currentUser?._id]?.senderId;
-
-    if (sender && sender === user?._id) {
-      setCount(notifications[currentUser?._id]?.userNotifications);
-    }
-  }, [notifications, currentUser, user]);
-
-  useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
 
     const getUser = async () => {
@@ -44,6 +36,8 @@ export default function Conversation({ conversation, currentUser }) {
     clearCount(user?._id);
     clearUserNotif();
   };
+
+  console.log("count", count);
 
   return (
     <div
