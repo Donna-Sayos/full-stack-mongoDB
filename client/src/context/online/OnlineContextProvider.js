@@ -41,9 +41,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 conversationId,
                 userNotifications,
               },
-              [senderId]: {
+              [conversationId]: {
                 receiverId,
-                conversationId,
+                senderId,
                 userNotifications,
               },
             };
@@ -53,8 +53,8 @@ export default function OnlineContextProvider({ children, currentUser }) {
             setUserNotif(() => {
               const totalUserNotif = Object.values({
                 ...notifications,
-                [senderId]: {
-                  receiverId,
+                [receiverId]: {
+                  senderId,
                   conversationId,
                   userNotifications,
                 },
@@ -107,3 +107,4 @@ export default function OnlineContextProvider({ children, currentUser }) {
 }
 
 export const useOnlineContext = () => useContext(OnlineContext);
+
