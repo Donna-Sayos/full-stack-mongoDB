@@ -27,17 +27,24 @@ export default function OnlineContextProvider({ children, currentUser }) {
       socket.on(
         "getNotification",
         ({ senderId, conversationId, receiverId, userNotifications }) => {
-          setNotifications((prevNotifications) => ({
-            ...prevNotifications,
-            [receiverId]: {
-              senderId,
-              conversationId,
-              userNotifications,
-            },
-          }));
-          if (receiverId === currentUser?._id) {
-            setUserNotif((prevUserNotif) => prevUserNotif + userNotifications);
-          }
+          setNotifications((prevNotifications) => {
+            const updatedNotifications = {
+              ...prevNotifications,
+              [receiverId]: {
+                senderId,
+                conversationId,
+                userNotifications,
+              },
+            };
+            if (receiverId === currentUser?._id) {
+              const totalUserNotif = Object.values(updatedNotifications).reduce(
+                (acc, { userNotifications }) => acc + userNotifications,
+                userNotif
+              );
+              setUserNotif(totalUserNotif);
+            }
+            return updatedNotifications;
+          });
         }
       );
 
