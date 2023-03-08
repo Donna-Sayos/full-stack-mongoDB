@@ -76,10 +76,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, []);
 
-  const clearCount = (senderId) => {
+  const clearCount = (conversationId) => {
     setNotifications((prevNotifications) => {
       const updatedNotifications = { ...prevNotifications };
-      delete updatedNotifications[senderId];
+      delete updatedNotifications[conversationId];
       return updatedNotifications;
     });
   };
@@ -107,4 +107,3 @@ export default function OnlineContextProvider({ children, currentUser }) {
 }
 
 export const useOnlineContext = () => useContext(OnlineContext);
-
