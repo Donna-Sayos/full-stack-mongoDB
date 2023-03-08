@@ -6,6 +6,7 @@ const OnlineContext = createContext();
 export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notifications, setNotifications] = useState({});
+  const [userNotif, setUserNotif] = useState(0);
 
   useEffect(() => {
     let socket;
@@ -25,15 +26,19 @@ export default function OnlineContextProvider({ children, currentUser }) {
       // Listen to the "getNotification" event to update the notifications of the current user.
       socket.on(
         "getNotification",
-        ({ senderId, conversationId, receiverId, count }) => {
+        ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => ({
             ...prevNotifications,
             [senderId]: {
               receiverId,
               count,
               conversationId,
+              userNotifications,
             },
           }));
+          if (notifications[senderId]?.receiverId === currentUser?._id) {
+            setUserNotif((prevUserNotif) => prevUserNotif + userNotifications);
+          }
         }
       );
 
@@ -53,12 +58,18 @@ export default function OnlineContextProvider({ children, currentUser }) {
     });
   };
 
+  const clearUserNotif = () => {
+    setUserNotif(0);
+  };
+
   return (
     <OnlineContext.Provider
       value={{
         onlineUsers,
         notifications,
         clearCount,
+        userNotif,
+        clearUserNotif,
       }}
     >
       {children}

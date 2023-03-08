@@ -25,17 +25,17 @@ let users = [];
 
 const addUser = (userId, socketId) => {
   // if the user is not in the array, add the user to the array
-  !users.some((user) => user.userId === userId) &&
+  !users.some((user) => user?.userId === userId) &&
     users.push({ userId, socketId, notificationCount: 0 });
 };
 
 const removeUser = (socketId) => {
   // if the user is in the array, remove the user from the array
-  users = users.filter((user) => user.socketId !== socketId);
+  users = users.filter((user) => user?.socketId !== socketId);
 };
 
 const getUser = (userId) => {
-  return users.find((user) => user.userId === userId);
+  return users.find((user) => user?.userId === userId);
 };
 
 io.on("connection", (socket) => {
@@ -54,7 +54,6 @@ io.on("connection", (socket) => {
     io.to(user.socketId).emit("getMessage", {
       senderId,
       text,
-      notifications: user.notifications,
     });
   });
 
@@ -70,7 +69,7 @@ io.on("connection", (socket) => {
           senderId,
           receiverId,
           conversationId,
-          notifications: user.notificationCount,
+          userNotifications: user.notificationCount,
         });
       }
     }
