@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useMemo,
+} from "react";
 import io from "socket.io-client";
 
 const OnlineContext = createContext();
@@ -35,16 +41,30 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 conversationId,
                 userNotifications,
               },
+              [senderId]: {
+                receiverId,
+                conversationId,
+                userNotifications,
+              },
             };
-            if (receiverId === currentUser?._id) {
-              const totalUserNotif = Object.values(updatedNotifications).reduce(
-                (acc, { userNotifications }) => acc + userNotifications,
-                userNotif
-              );
-              setUserNotif(totalUserNotif);
-            }
             return updatedNotifications;
           });
+          if (receiverId === currentUser?._id) {
+            setUserNotif(() => {
+              const totalUserNotif = Object.values({
+                ...notifications,
+                [senderId]: {
+                  receiverId,
+                  conversationId,
+                  userNotifications,
+                },
+              }).reduce(
+                (acc, { userNotifications }) => acc + userNotifications,
+                0
+              );
+              return totalUserNotif;
+            });
+          }
         }
       );
 
@@ -54,7 +74,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
     } catch (err) {
       console.log(err);
     }
-  }, [currentUser?._id]);
+  }, []);
 
   const clearCount = (senderId) => {
     setNotifications((prevNotifications) => {
@@ -68,16 +88,19 @@ export default function OnlineContextProvider({ children, currentUser }) {
     setUserNotif(0);
   };
 
+  const memoizedValues = useMemo(
+    () => ({
+      onlineUsers,
+      notifications,
+      clearCount,
+      userNotif,
+      clearUserNotif,
+    }),
+    [onlineUsers, notifications, userNotif, clearCount, clearUserNotif]
+  );
+
   return (
-    <OnlineContext.Provider
-      value={{
-        onlineUsers,
-        notifications,
-        clearCount,
-        userNotif,
-        clearUserNotif,
-      }}
-    >
+    <OnlineContext.Provider value={memoizedValues}>
       {children}
     </OnlineContext.Provider>
   );
