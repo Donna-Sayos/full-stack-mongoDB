@@ -29,13 +29,13 @@ export default function OnlineContextProvider({ children, currentUser }) {
         ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => ({
             ...prevNotifications,
-            [senderId]: {
-              receiverId,
+            [receiverId]: {
+              senderId,
               conversationId,
               userNotifications,
             },
           }));
-          if (notifications[senderId]?.receiverId === currentUser?._id) {
+          if (receiverId === currentUser?._id) {
             setUserNotif((prevUserNotif) => prevUserNotif + userNotifications);
           }
         }
