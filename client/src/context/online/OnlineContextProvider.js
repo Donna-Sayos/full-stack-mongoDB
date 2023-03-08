@@ -13,6 +13,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notifications, setNotifications] = useState({});
   const [userNotif, setUserNotif] = useState(0);
+  const [senderNotif, setSenderNotif] = useState(0);
 
   useEffect(() => {
     let socket;
@@ -65,6 +66,23 @@ export default function OnlineContextProvider({ children, currentUser }) {
               return totalUserNotif;
             });
           }
+
+          if (conversationId) {
+            setSenderNotif(() => {
+              const totalUserNotif = Object.values({
+                ...notifications,
+                [conversationId]: {
+                  senderId,
+                  receiverId,
+                  userNotifications,
+                },
+              }).reduce(
+                (acc, { userNotifications }) => acc + userNotifications,
+                0
+              );
+              return totalUserNotif;
+            });
+          }
         }
       );
 
@@ -95,8 +113,16 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearCount,
       userNotif,
       clearUserNotif,
+      senderNotif,
     }),
-    [onlineUsers, notifications, userNotif, clearCount, clearUserNotif]
+    [
+      onlineUsers,
+      notifications,
+      userNotif,
+      senderNotif,
+      clearCount,
+      clearUserNotif,
+    ]
   );
 
   return (

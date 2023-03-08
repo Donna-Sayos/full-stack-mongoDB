@@ -14,9 +14,7 @@ const conversationImg = {
 
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
-  const { notifications, clearCount } = useOnlineContext();
-
-  const senderNotif = notifications[conversation?._id];
+  const { senderNotif, clearCount } = useOnlineContext();
 
   const handleClear = () => {
     clearCount(conversation?._id);
@@ -37,6 +35,8 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
+  console.log("senderNotif", senderNotif);
+
   return (
     <div
       className="conversation d-flex justify-content-between"
@@ -44,18 +44,12 @@ export default function Conversation({ conversation, currentUser }) {
     >
       <div>
         <ProfilePic user={user} style={conversationImg} />
-        <span
-          className={`conversationName ${
-            senderNotif?.userNotifications ? "fw-bold" : ""
-          }`}
-        >
+        <span className={`conversationName ${senderNotif ? "fw-bold" : ""}`}>
           {user?.username}
         </span>
       </div>
-      {senderNotif?.userNotifications > 0 && (
-        <span className="badge bg-primary">
-          {senderNotif?.userNotifications}
-        </span>
+      {senderNotif > 0 && (
+        <span className="badge bg-primary">{senderNotif}</span>
       )}
     </div>
   );
