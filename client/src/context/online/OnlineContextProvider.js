@@ -31,7 +31,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
             ...prevNotifications,
             [senderId]: {
               receiverId,
-              count,
               conversationId,
               userNotifications,
             },

@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
     ({ senderId, receiverId, count, conversationId }) => {
       const user = getUser(receiverId);
       if (user) {
-        user.notificationCount + 1;
+        user.notificationCount++;
 
         io.to(user.socketId).emit("getNotification", {
           senderId,
