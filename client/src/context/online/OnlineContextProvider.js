@@ -35,27 +35,33 @@ export default function OnlineContextProvider({ children, currentUser }) {
         "getNotification",
         ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => {
+            const senderReceiverKey = `${senderId}-${receiverId}`;
+            const receiverSenderKey = `${receiverId}-${senderId}`;
             const updatedNotifications = {
               ...prevNotifications,
-              [receiverId]: {
+              [senderReceiverKey]: {
                 senderId,
+                receiverId,
                 conversationId,
                 userNotifications,
               },
-              [conversationId]: {
-                receiverId,
+              [receiverSenderKey]: {
                 senderId,
+                receiverId,
+                conversationId,
                 userNotifications,
               },
             };
             return updatedNotifications;
           });
+
           if (receiverId === currentUser?._id) {
             setUserNotif(() => {
               const totalUserNotif = Object.values({
                 ...notifications,
-                [receiverId]: {
+                [`${senderId}-${receiverId}`]: {
                   senderId,
+                  receiverId,
                   conversationId,
                   userNotifications,
                 },
@@ -69,18 +75,19 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
           if (conversationId) {
             setSenderNotif(() => {
-              const totalUserNotif = Object.values({
+              const totalSenderNotif = Object.values({
                 ...notifications,
-                [conversationId]: {
+                [`${senderId}-${receiverId}`]: {
                   senderId,
                   receiverId,
+                  conversationId,
                   userNotifications,
                 },
               }).reduce(
                 (acc, { userNotifications }) => acc + userNotifications,
                 0
               );
-              return totalUserNotif;
+              return totalSenderNotif;
             });
           }
         }
@@ -94,10 +101,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, []);
 
-  const clearCount = (conversationId) => {
+  const clearCount = (senderId, currentUser) => {
     setNotifications((prevNotifications) => {
       const updatedNotifications = { ...prevNotifications };
-      delete updatedNotifications[conversationId];
+      delete updatedNotifications[`${senderId}-${currentUser?._id}`];
       return updatedNotifications;
     });
   };

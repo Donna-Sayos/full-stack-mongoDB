@@ -17,7 +17,7 @@ export default function Conversation({ conversation, currentUser }) {
   const { senderNotif, clearCount } = useOnlineContext();
 
   const handleClear = () => {
-    clearCount(conversation?._id);
+    clearCount(user?._id, currentUser?._id);
   };
 
   useEffect(() => {
