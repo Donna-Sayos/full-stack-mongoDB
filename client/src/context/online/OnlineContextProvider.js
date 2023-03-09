@@ -116,13 +116,32 @@ export default function OnlineContextProvider({ children, currentUser }) {
     setUserNotif(0);
   };
 
-  const getSenderNotif = (senderId, conversationId, notifications) => {
+  const getSenderNotif = (
+    senderId,
+    currentUser,
+    conversationId,
+    notifications
+  ) => {
+    if (!currentUser || !senderId) {
+      return 0;
+    }
+
     const senderReceiverKey = `${senderId}-${currentUser._id}`;
+    const receiverSenderKey = `${currentUser._id}-${senderId}`;
     const senderNotifications = notifications[senderReceiverKey] || {};
-    const senderConversationNotifications =
-      senderNotifications[conversationId] || {};
+    const receiverNotifications = notifications[receiverSenderKey] || {};
+    const senderConversationNotifications = senderNotifications[conversationId]
+      ? senderNotifications[conversationId]
+      : {};
+    const receiverConversationNotifications = receiverNotifications[
+      conversationId
+    ]
+      ? receiverNotifications[conversationId]
+      : {};
     const conversationNotifications =
-      senderConversationNotifications.userNotifications || 0;
+      senderConversationNotifications.userNotifications ||
+      receiverConversationNotifications.userNotifications ||
+      0;
     return conversationNotifications;
   };
 
