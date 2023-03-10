@@ -159,7 +159,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
     () => ({
       onlineUsers,
       notifications,
-      clearCount,
+      // clearCount,
       userNotif,
       clearUserNotif,
     }),
@@ -167,7 +167,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       onlineUsers,
       notifications,
       userNotif,
-      clearCount,
+      // clearCount,
       clearUserNotif,
     ]
   );
