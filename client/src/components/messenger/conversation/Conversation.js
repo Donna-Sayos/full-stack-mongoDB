@@ -14,13 +14,12 @@ const conversationImg = {
 
 export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
-  const { getSenderNotif, clearCount, notifications } = useOnlineContext();
+  const { clearCount, notifications } = useOnlineContext();
 
-  const senderNotif = getSenderNotif(
-    user?._id,
-    conversation._id,
-    notifications
-  );
+  const converSationNotif = notifications?.[conversation._id];
+  const senderNotif = converSationNotif
+    ? converSationNotif[user?._id]?.userNotifications
+    : 0;
 
   const handleClear = () => {
     clearCount(user?._id, currentUser?._id);
@@ -40,6 +39,8 @@ export default function Conversation({ conversation, currentUser }) {
 
     getUser();
   }, [currentUser, conversation]);
+
+  console.log("senderNotif: ", senderNotif);
 
   return (
     <div

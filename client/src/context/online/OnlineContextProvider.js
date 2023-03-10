@@ -34,13 +34,15 @@ export default function OnlineContextProvider({ children, currentUser }) {
         "getNotification",
         ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => {
+            // Initialize prevNotifications object
+            let updatedPrevNotifications = { ...prevNotifications };
+
             const senderReceiverKey = `${senderId}-${receiverId}`;
             const receiverSenderKey = `${receiverId}-${senderId}`;
 
             // Update the notification count for the conversation
-            const conversationKey = conversationId;
             const conversationNotifications =
-              prevNotifications[conversationKey] || {};
+              prevNotifications[conversationId] || {};
             const updatedConversationNotifications = {
               ...conversationNotifications,
               [senderId]: {
@@ -51,6 +53,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
               },
             };
 
+            // Update the notifications object
             const updatedNotifications = {
               ...prevNotifications,
               [senderReceiverKey]: {
@@ -65,8 +68,44 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 conversationId,
                 userNotifications,
               },
-              [conversationKey]: updatedConversationNotifications,
             };
+
+            // If the conversation key does not exist yet, create a new object with the senderId
+            if (!prevNotifications[conversationId]) {
+              updatedNotifications[conversationId] = {
+                [senderId]: {
+                  senderId,
+                  receiverId,
+                  conversationId,
+                  userNotifications,
+                },
+              };
+            } else {
+              updatedNotifications[conversationId] =
+                updatedConversationNotifications;
+            }
+
+            // Loop through notifications and update prevNotifications
+            Object.values(updatedNotifications).forEach((notification) => {
+              const conversationId =
+                notification.senderId < notification.receiverId
+                  ? `${notification.senderId}-${notification.receiverId}`
+                  : `${notification.receiverId}-${notification.senderId}`;
+
+              // Check if conversation already exists in prevNotifications object
+              if (!updatedPrevNotifications[conversationId]) {
+                updatedPrevNotifications[conversationId] = {
+                  ...notification,
+                  userNotifications: 1,
+                };
+              } else {
+                // Increment userNotifications count for the specific conversation
+                updatedPrevNotifications[
+                  conversationId
+                ].userNotifications += 1;
+              }
+            });
+
             return updatedNotifications;
           });
 
@@ -116,21 +155,28 @@ export default function OnlineContextProvider({ children, currentUser }) {
     setUserNotif(0);
   };
 
-  const getSenderNotif = (senderId, conversationId, notifications) => {
-    if (!senderId || !conversationId) return 0;
-    
-    const senderReceiverKey = `${senderId}-${currentUser._id}`;
-    const receiverSenderKey = `${currentUser._id}-${senderId}`;
-    const senderNotifications = notifications[senderReceiverKey] || {};
-    const receiverNotifications = notifications[receiverSenderKey] || {};
-    const conversationNotifications =
-      senderNotifications.conversationId === conversationId
-        ? senderNotifications
-        : receiverNotifications.conversationId === conversationId
-        ? receiverNotifications
-        : {};
-    return conversationNotifications.userNotifications || 0;
-  };
+  // const getSenderNotif = (senderId, conversationId, notifications) => {
+  //   if (!senderId || !conversationId) return 0;
+
+  //   const senderReceiverKey = `${senderId}-${currentUser._id}`;
+  //   const receiverSenderKey = `${currentUser._id}-${senderId}`;
+  //   const senderNotifications = notifications[senderReceiverKey] || {};
+  //   const receiverNotifications = notifications[receiverSenderKey] || {};
+  //   const conversationNotifications = notifications[conversationId] || {};
+
+  //   const totalSenderNotif = Object.values({
+  //     ...senderNotifications,
+  //     ...receiverNotifications,
+  //     ...conversationNotifications,
+  //   }).reduce((acc, { senderId, userNotifications }) => {
+  //     if (senderId === senderId) {
+  //       return acc + userNotifications;
+  //     }
+  //     return acc;
+  //   }, 0);
+
+  //   return totalSenderNotif;
+  // };
 
   const memoizedValues = useMemo(
     () => ({
@@ -139,7 +185,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearCount,
       userNotif,
       clearUserNotif,
-      getSenderNotif,
+      // getSenderNotif,
     }),
     [
       onlineUsers,
@@ -147,7 +193,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       userNotif,
       clearCount,
       clearUserNotif,
-      getSenderNotif,
+      // getSenderNotif,
     ]
   );
 
