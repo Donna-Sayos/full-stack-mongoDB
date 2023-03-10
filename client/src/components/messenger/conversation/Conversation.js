@@ -18,7 +18,6 @@ export default function Conversation({ conversation, currentUser }) {
 
   const senderNotif = getSenderNotif(
     user?._id,
-    currentUser?._id,
     conversation._id,
     notifications
   );

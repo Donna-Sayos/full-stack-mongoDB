@@ -116,33 +116,20 @@ export default function OnlineContextProvider({ children, currentUser }) {
     setUserNotif(0);
   };
 
-  const getSenderNotif = (
-    senderId,
-    currentUser,
-    conversationId,
-    notifications
-  ) => {
-    if (!currentUser || !senderId) {
-      return 0;
-    }
-
+  const getSenderNotif = (senderId, conversationId, notifications) => {
+    if (!senderId || !conversationId) return 0;
+    
     const senderReceiverKey = `${senderId}-${currentUser._id}`;
     const receiverSenderKey = `${currentUser._id}-${senderId}`;
     const senderNotifications = notifications[senderReceiverKey] || {};
     const receiverNotifications = notifications[receiverSenderKey] || {};
-    const senderConversationNotifications = senderNotifications[conversationId]
-      ? senderNotifications[conversationId]
-      : {};
-    const receiverConversationNotifications = receiverNotifications[
-      conversationId
-    ]
-      ? receiverNotifications[conversationId]
-      : {};
     const conversationNotifications =
-      senderConversationNotifications.userNotifications ||
-      receiverConversationNotifications.userNotifications ||
-      0;
-    return conversationNotifications;
+      senderNotifications.conversationId === conversationId
+        ? senderNotifications
+        : receiverNotifications.conversationId === conversationId
+        ? receiverNotifications
+        : {};
+    return conversationNotifications.userNotifications || 0;
   };
 
   const memoizedValues = useMemo(
