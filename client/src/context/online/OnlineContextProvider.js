@@ -134,49 +134,26 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, []);
 
-  const clearCount = (senderId, currentUser, conversationId) => {
-    setNotifications((prevNotifications) => {
-      const updatedNotifications = { ...prevNotifications };
+  // const clearCount = (senderId, currentUser, conversationId) => { FIXME: Fix this function
+  //   setNotifications((prevNotifications) => {
+  //     const updatedNotifications = { ...prevNotifications };
 
-      // Clear the notification count for the conversation and sender
-      const conversationKey = conversationId;
-      const conversationNotifications =
-        updatedNotifications[conversationKey] || {};
-      const updatedConversationNotifications = { ...conversationNotifications };
-      delete updatedConversationNotifications[senderId];
-      updatedNotifications[conversationKey] = updatedConversationNotifications;
-      delete updatedNotifications[`${senderId}-${currentUser?._id}`];
+  //     // Clear the notification count for the conversation and sender
+  //     const conversationKey = conversationId;
+  //     const conversationNotifications =
+  //       updatedNotifications[conversationKey] || {};
+  //     const updatedConversationNotifications = { ...conversationNotifications };
+  //     delete updatedConversationNotifications[senderId];
+  //     updatedNotifications[conversationKey] = updatedConversationNotifications;
+  //     delete updatedNotifications[`${senderId}-${currentUser?._id}`];
 
-      return updatedNotifications;
-    });
-  };
+  //     return updatedNotifications;
+  //   });
+  // };
 
   const clearUserNotif = () => {
     setUserNotif(0);
   };
-
-  // const getSenderNotif = (senderId, conversationId, notifications) => {
-  //   if (!senderId || !conversationId) return 0;
-
-  //   const senderReceiverKey = `${senderId}-${currentUser._id}`;
-  //   const receiverSenderKey = `${currentUser._id}-${senderId}`;
-  //   const senderNotifications = notifications[senderReceiverKey] || {};
-  //   const receiverNotifications = notifications[receiverSenderKey] || {};
-  //   const conversationNotifications = notifications[conversationId] || {};
-
-  //   const totalSenderNotif = Object.values({
-  //     ...senderNotifications,
-  //     ...receiverNotifications,
-  //     ...conversationNotifications,
-  //   }).reduce((acc, { senderId, userNotifications }) => {
-  //     if (senderId === senderId) {
-  //       return acc + userNotifications;
-  //     }
-  //     return acc;
-  //   }, 0);
-
-  //   return totalSenderNotif;
-  // };
 
   const memoizedValues = useMemo(
     () => ({
@@ -185,7 +162,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearCount,
       userNotif,
       clearUserNotif,
-      // getSenderNotif,
     }),
     [
       onlineUsers,
@@ -193,7 +169,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       userNotif,
       clearCount,
       clearUserNotif,
-      // getSenderNotif,
     ]
   );
 
