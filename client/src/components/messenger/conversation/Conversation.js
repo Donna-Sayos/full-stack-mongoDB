@@ -42,8 +42,6 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
-  console.log("senderNotif", senderNotif);
-
   return (
     <div
       className="conversation d-flex justify-content-between"
