@@ -72,7 +72,6 @@ io.on("connection", (socket) => {
         receiverId,
         conversationId,
         userNotifications: user.notificationCount,
-        convoNotifications: 0,
       });
     }
   });

@@ -16,6 +16,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
   useEffect(() => {
     let socket;
+
     try {
       socket = io("http://localhost:5001");
 
@@ -32,13 +33,14 @@ export default function OnlineContextProvider({ children, currentUser }) {
       // Listen to the "getNotification" event to update the notifications of the current user.
       socket.on(
         "getNotification",
-        ({ senderId, conversationId, receiverId, userNotifications }) => {
+        ({
+          senderId,
+          conversationId,
+          receiverId,
+          userNotifications,
+          convoNotifications,
+        }) => {
           setNotifications((prevNotifications) => {
-            // Initialize prevNotifications object
-            let updatedPrevNotifications = { ...prevNotifications };
-
-            const senderReceiverKey = `${senderId}-${receiverId}`;
-            const receiverSenderKey = `${receiverId}-${senderId}`;
 
             // Update the notification count for the conversation
             const conversationNotifications =
@@ -50,63 +52,11 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 receiverId,
                 conversationId,
                 userNotifications,
+                convoNotifications,
               },
             };
 
-            // Update the notifications object
-            const updatedNotifications = {
-              ...prevNotifications,
-              [senderReceiverKey]: {
-                senderId,
-                receiverId,
-                conversationId,
-                userNotifications,
-              },
-              [receiverSenderKey]: {
-                senderId,
-                receiverId,
-                conversationId,
-                userNotifications,
-              },
-            };
-
-            // If the conversation key does not exist yet, create a new object with the senderId
-            if (!prevNotifications[conversationId]) {
-              updatedNotifications[conversationId] = {
-                [senderId]: {
-                  senderId,
-                  receiverId,
-                  conversationId,
-                  userNotifications,
-                },
-              };
-            } else {
-              updatedNotifications[conversationId] =
-                updatedConversationNotifications;
-            }
-
-            // Loop through notifications and update prevNotifications
-            Object.values(updatedNotifications).forEach((notification) => {
-              const conversationId =
-                notification.senderId < notification.receiverId
-                  ? `${notification.senderId}-${notification.receiverId}`
-                  : `${notification.receiverId}-${notification.senderId}`;
-
-              // Check if conversation already exists in prevNotifications object
-              if (!updatedPrevNotifications[conversationId]) {
-                updatedPrevNotifications[conversationId] = {
-                  ...notification,
-                  userNotifications: 1,
-                };
-              } else {
-                // Increment userNotifications count for the specific conversation
-                updatedPrevNotifications[
-                  conversationId
-                ].userNotifications += 1;
-              }
-            });
-
-            return updatedNotifications;
+            return updatedConversationNotifications;
           });
 
           // Update the user notification count
@@ -114,11 +64,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
             setUserNotif(() => {
               const totalUserNotif = Object.values({
                 ...notifications,
-                [`${senderId}-${receiverId}`]: {
+                [conversationId]: {
                   senderId,
                   receiverId,
                   conversationId,
                   userNotifications,
+                  convoNotifications,
                 },
               }).reduce(
                 (acc, { userNotifications }) => acc + userNotifications,
@@ -134,23 +85,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, []);
 
-  // const clearCount = (senderId, currentUser, conversationId) => { FIXME: Fix this function
-  //   setNotifications((prevNotifications) => {
-  //     const updatedNotifications = { ...prevNotifications };
-
-  //     // Clear the notification count for the conversation and sender
-  //     const conversationKey = conversationId;
-  //     const conversationNotifications =
-  //       updatedNotifications[conversationKey] || {};
-  //     const updatedConversationNotifications = { ...conversationNotifications };
-  //     delete updatedConversationNotifications[senderId];
-  //     updatedNotifications[conversationKey] = updatedConversationNotifications;
-  //     delete updatedNotifications[`${senderId}-${currentUser?._id}`];
-
-  //     return updatedNotifications;
-  //   });
-  // };
-
   const clearUserNotif = () => {
     setUserNotif(0);
   };
@@ -159,7 +93,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
     () => ({
       onlineUsers,
       notifications,
-      // clearCount,
       userNotif,
       clearUserNotif,
     }),
@@ -167,7 +100,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       onlineUsers,
       notifications,
       userNotif,
-      // clearCount,
       clearUserNotif,
     ]
   );
@@ -180,3 +112,4 @@ export default function OnlineContextProvider({ children, currentUser }) {
 }
 
 export const useOnlineContext = () => useContext(OnlineContext);
+

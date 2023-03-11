@@ -16,15 +16,6 @@ export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
   const { notifications } = useOnlineContext();
 
-  const converSationNotif = notifications?.[conversation._id];
-  const senderNotif = converSationNotif
-    ? converSationNotif[user?._id]?.userNotifications
-    : 0;
-
-  // const handleClear = () => {
-  //   clearCount(user?._id, currentUser?._id);
-  // };
-
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
 
@@ -40,22 +31,24 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
-  console.log("senderNotif: ", senderNotif);
+  console.log("notifications: ", notifications);
 
   return (
     <div
       className="conversation d-flex justify-content-between"
-      // onClick={handleClear}
     >
       <div>
         <ProfilePic user={user} style={conversationImg} />
-        <span className={`conversationName ${senderNotif ? "fw-bold" : ""}`}>
+        <span
+          className="conversationName"
+          // className={`conversationName ${converSationNotif ? "fw-bold" : ""}`}
+        >
           {user?.username}
         </span>
       </div>
-      {senderNotif > 0 && (
-        <span className="badge bg-primary">{senderNotif}</span>
-      )}
+      {/* {converSationNotif > 0 && (
+        <span className="badge bg-primary">{converSationNotif}</span>
+      )} */}
     </div>
   );
 }
