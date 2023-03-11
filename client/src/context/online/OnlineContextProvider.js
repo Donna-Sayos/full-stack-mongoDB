@@ -33,26 +33,15 @@ export default function OnlineContextProvider({ children, currentUser }) {
       // Listen to the "getNotification" event to update the notifications of the current user.
       socket.on(
         "getNotification",
-        ({
-          senderId,
-          conversationId,
-          receiverId,
-          userNotifications,
-          convoNotifications,
-        }) => {
+        ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => {
-
-            // Update the notification count for the conversation
-            const conversationNotifications =
-              prevNotifications[conversationId] || {};
             const updatedConversationNotifications = {
-              ...conversationNotifications,
+              ...prevNotifications,
               [senderId]: {
                 senderId,
                 receiverId,
                 conversationId,
                 userNotifications,
-                convoNotifications,
               },
             };
 
@@ -69,7 +58,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
                   receiverId,
                   conversationId,
                   userNotifications,
-                  convoNotifications,
                 },
               }).reduce(
                 (acc, { userNotifications }) => acc + userNotifications,
@@ -96,12 +84,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       userNotif,
       clearUserNotif,
     }),
-    [
-      onlineUsers,
-      notifications,
-      userNotif,
-      clearUserNotif,
-    ]
+    [onlineUsers, notifications, userNotif, clearUserNotif]
   );
 
   return (
@@ -112,4 +95,3 @@ export default function OnlineContextProvider({ children, currentUser }) {
 }
 
 export const useOnlineContext = () => useContext(OnlineContext);
-

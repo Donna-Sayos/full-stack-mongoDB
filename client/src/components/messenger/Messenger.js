@@ -11,7 +11,6 @@ import ChatOnline from "./chatOnline/ChatOnline";
 export default function Messenger() {
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
-  const [convoNotifCount, setConvoNotifCount] = useState(0);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
@@ -120,9 +119,6 @@ export default function Messenger() {
             conversationId: currentChat._id,
             receiverId,
           });
-
-          // Increment the conversation notification count in the state
-          setConvoNotifCount((prevCount) => prevCount + 1);
         } catch (err) {
           console.log(`Error sending notification: ${err}`);
         }
@@ -135,6 +131,8 @@ export default function Messenger() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  console.log("currentChat: ", currentChat);
 
   return (
     <>
@@ -155,8 +153,6 @@ export default function Messenger() {
                 <Conversation
                   conversation={c}
                   currentUser={user}
-                  convoNotifCount={convoNotifCount}
-                  setConvoNotifCount={setConvoNotifCount}
                 />
                 <hr className="convoHr" />
               </div>
