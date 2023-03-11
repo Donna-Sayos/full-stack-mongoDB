@@ -26,7 +26,11 @@ let users = [];
 const addUser = (userId, socketId) => {
   // if the user is not in the array, add the user to the array
   !users.some((user) => user?.userId === userId) &&
-    users.push({ userId, socketId, notificationCount: 0 });
+    users.push({
+      userId,
+      socketId,
+      notificationCount: 0,
+    });
 };
 
 const removeUser = (socketId) => {
@@ -58,22 +62,20 @@ io.on("connection", (socket) => {
   });
 
   // send and get notification
-  socket.on(
-    "sendNotification",
-    ({ senderId, receiverId, count, conversationId }) => {
-      const user = getUser(receiverId);
-      if (user) {
-        user.notificationCount++;
+  socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
+    const user = getUser(receiverId);
+    if (user) {
+      user.notificationCount++;
 
-        io.to(user.socketId).emit("getNotification", {
-          senderId,
-          receiverId,
-          conversationId,
-          userNotifications: user.notificationCount,
-        });
-      }
+      io.to(user.socketId).emit("getNotification", {
+        senderId,
+        receiverId,
+        conversationId,
+        userNotifications: user.notificationCount,
+        convoNotifications: 0,
+      });
     }
-  );
+  });
 
   // when a user disconnects, remove the user from the array
   socket.on("disconnect", () => {
