@@ -3,6 +3,7 @@ const Conversation = require("../models/Conversation");
 const newConvo = async (req, res) => {
   const newConversation = new Conversation({
     members: [req.body.senderId, req.body.receiverId],
+    notificationCount: req.body.notificationCount,
   });
 
   try {
@@ -18,7 +19,12 @@ const getConvo = async (req, res) => {
     const conversation = await Conversation.find({
       members: { $in: [req.params.userId] }, // $in is a MongoDB operator that selects the documents where the value of a field equals any value in the specified array.
     });
-    res.status(200).json(conversation);
+
+    const notificationCount = conversation.notificationCount;
+    
+    const response = { conversation, notificationCount };
+
+    res.status(200).json(response);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -36,7 +42,7 @@ const getTwoConvos = async (req, res) => {
 };
 
 module.exports = {
-    newConvo,
-    getConvo,
-    getTwoConvos,
-}
+  newConvo,
+  getConvo,
+  getTwoConvos,
+};
