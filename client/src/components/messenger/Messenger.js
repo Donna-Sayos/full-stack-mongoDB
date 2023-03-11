@@ -132,7 +132,7 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  console.log("currentChat: ", currentChat);
+  console.log("conversations: ", conversations);
 
   return (
     <>

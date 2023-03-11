@@ -22,9 +22,10 @@ const getConvo = async (req, res) => {
 
     const notificationCount = conversation.notificationCount;
     
-    const response = { conversation, notificationCount };
-
-    res.status(200).json(response);
+    res.status(200).json({
+      conversation: conversation,
+      notificationCount: notificationCount,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
