@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
-import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
 
 const conversationImg = {
   width: "40px",
@@ -16,8 +15,12 @@ export default function Conversation({ conversation, currentUser, messages }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
 
-  const handleClearConvo = () => {
-    setNotificationCount(0);
+  const handleClearConvo = async () => {
+    try {
+      await Axios.put(`/api/v1/conversations/${conversation._id}/notification`);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
