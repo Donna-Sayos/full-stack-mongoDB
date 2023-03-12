@@ -92,17 +92,19 @@ export default function Messenger() {
   useEffect(() => {
     async function fetchNotificationCount() {
       try {
-        const res = await Axios.get(
-          `/api/v1/conversations/${currentChat._id}/notification`
-        );
-        setNotificationCount(res.data.notificationCount);
+        if (currentChat?._id) {
+          const res = await Axios.get(
+            `/api/v1/conversations/${currentChat._id}/notification`
+          );
+          setNotificationCount(res.data.notificationCount);
+        }
       } catch (err) {
         console.log(`Error fetching notification count: ${err}`);
       }
     }
-
+  
     fetchNotificationCount();
-  }, [currentChat._id]);
+  }, [currentChat?._id]);
 
   const handleSend = async (e) => {
     e.preventDefault();
