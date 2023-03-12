@@ -12,9 +12,17 @@ const conversationImg = {
   marginRight: "20px",
 };
 
-export default function Conversation({ conversation, currentUser }) {
+export default function Conversation({
+  conversation,
+  currentUser,
+  notificationCount,
+  setNotificationCount,
+}) {
   const [user, setUser] = useState(null);
-  const { notifications } = useOnlineContext();
+
+  handleClearConvo = () => {
+    setNotificationCount(0);
+  };
 
   useEffect(() => {
     const friendId = conversation.members.find((m) => m !== currentUser._id);
@@ -31,11 +39,12 @@ export default function Conversation({ conversation, currentUser }) {
     getUser();
   }, [currentUser, conversation]);
 
-  console.log("notifications: ", notifications);
+  console.log("notificationCount: ", notificationCount);
 
   return (
     <div
       className="conversation d-flex justify-content-between"
+      onClick={handleClearConvo}
     >
       <div>
         <ProfilePic user={user} style={conversationImg} />

@@ -15,15 +15,14 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
   const socket = useRef({ current: null });
   const scrollRef = useRef();
 
   const incrementConvoNotification = async (conversationId) => {
     try {
-      await Axios.post(
-        "/api/v1/conversations/" + conversationId + "/notification"
-      );
+      await Axios.post(`/api/v1/conversations/${conversationId}/notification`);
     } catch (err) {
       console.log(`Error incrementing notification count: ${err}`);
     }
@@ -89,6 +88,21 @@ export default function Messenger() {
     };
     getMessages();
   }, [currentChat]);
+
+  useEffect(() => {
+    async function fetchNotificationCount() {
+      try {
+        const res = await Axios.get(
+          `/api/v1/conversations/${currentChat._id}/notification`
+        );
+        setNotificationCount(res.data.notificationCount);
+      } catch (err) {
+        console.log(`Error fetching notification count: ${err}`);
+      }
+    }
+
+    fetchNotificationCount();
+  }, [currentChat._id]);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -161,7 +175,12 @@ export default function Messenger() {
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <hr className="convoHr" />
-                <Conversation conversation={c} currentUser={user} />
+                <Conversation
+                  conversation={c}
+                  currentUser={user}
+                  notificationCount={notificationCount}
+                  setNotificationCount={setNotificationCount}
+                />
                 <hr className="convoHr" />
               </div>
             ))}
