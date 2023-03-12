@@ -17,7 +17,11 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { userNotif, clearUserNotif } = useOnlineContext();
+  const { userNotif, setUserNotif } = useOnlineContext();
+
+  const clearUserNotif = () => {
+    setUserNotif(0);
+  };
 
   return (
     <div className="topNavContainer">

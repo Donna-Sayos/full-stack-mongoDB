@@ -73,18 +73,14 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, []);
 
-  const clearUserNotif = () => {
-    setUserNotif(0);
-  };
-
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
       notifications,
       userNotif,
-      clearUserNotif,
+      setUserNotif,
     }),
-    [onlineUsers, notifications, userNotif, clearUserNotif]
+    [onlineUsers, notifications, userNotif, setUserNotif]
   );
 
   return (
