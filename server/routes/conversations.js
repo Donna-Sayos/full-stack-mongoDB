@@ -5,6 +5,7 @@ const {
   getTwoConvos,
   incrementNotificationCount,
   getNotificationCount,
+  resetNotificationCount,
 } = require("../controllers/conversationsController");
 
 router.route("/").post(newConvo);
@@ -13,6 +14,7 @@ router.route("/find/:firstUserId/:secondUserId").get(getTwoConvos);
 router
   .route("/:currentChatId/notification")
   .get(getNotificationCount)
-  .post(incrementNotificationCount);
+  .post(incrementNotificationCount)
+  .put(resetNotificationCount);
 
 module.exports = router;

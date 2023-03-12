@@ -38,10 +38,12 @@ export default function Conversation({ conversation, currentUser, messages }) {
   useEffect(() => {
     const fetchCount = async () => {
       try {
-        const res = await Axios(
-          `/api/v1/conversations/${conversation?._id}/notification`
-        );
-        setNotificationCount(res.data.notificationCount);
+        if (conversation) {
+          const res = await Axios(
+            `/api/v1/conversations/${conversation?._id}/notification`
+          );
+          setNotificationCount(res.data.notificationCount);
+        }
       } catch (err) {
         console.log(err);
       }

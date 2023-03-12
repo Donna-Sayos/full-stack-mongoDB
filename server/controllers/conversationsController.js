@@ -55,7 +55,6 @@ const incrementNotificationCount = async (req, res) => {
   }
 };
 
-
 const getNotificationCount = async (req, res) => {
   const currentChatId = req.params.currentChatId;
   try {
@@ -69,10 +68,31 @@ const getNotificationCount = async (req, res) => {
   }
 };
 
+const resetNotificationCount = async (req, res) => {
+  const currentChatId = req.params.currentChatId;
+
+  try {
+    const conversation = await Conversation.findByIdAndUpdate(
+      currentChatId,
+      { notificationCount: 0 },
+      { new: true }
+    );
+
+    res.status(200).json({
+      message: "Notification count reset successfully",
+      notificationCount: conversation.notificationCount,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error resetting notification count" });
+  }
+};
+
 module.exports = {
   newConvo,
   getConvo,
   getTwoConvos,
   incrementNotificationCount,
   getNotificationCount,
+  resetNotificationCount,
 };
