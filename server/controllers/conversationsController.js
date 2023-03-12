@@ -55,9 +55,24 @@ const incrementNotificationCount = async (req, res) => {
   }
 };
 
+
+const getNotificationCount = async (req, res) => {
+  const currentChatId = req.params.currentChatId;
+  try {
+    const conversation = await Conversation.findById(currentChatId);
+    res.status(200).json({
+      notificationCount: conversation.notificationCount,
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error retrieving notification count" });
+  }
+};
+
 module.exports = {
   newConvo,
   getConvo,
   getTwoConvos,
   incrementNotificationCount,
+  getNotificationCount,
 };

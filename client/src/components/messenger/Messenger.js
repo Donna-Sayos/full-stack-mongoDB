@@ -19,6 +19,16 @@ export default function Messenger() {
   const socket = useRef({ current: null });
   const scrollRef = useRef();
 
+  const incrementConvoNotification = async (conversationId) => {
+    try {
+      await Axios.post(
+        "/api/v1/conversations/" + conversationId + "/notification"
+      );
+    } catch (err) {
+      console.log(`Error incrementing notification count: ${err}`);
+    }
+  };
+
   useEffect(() => {
     socket.current = io("http://localhost:5001");
 
@@ -113,7 +123,6 @@ export default function Messenger() {
         );
       } else {
         try {
-          await Axios.post("/api/v1/conversations/" + currentChat._id);
           // Send a notification to the recipient
           socket.current.emit("sendNotification", {
             senderId: user._id,
@@ -123,6 +132,7 @@ export default function Messenger() {
         } catch (err) {
           console.log(`Error sending notification: ${err}`);
         }
+        await incrementConvoNotification(currentChat._id);
       }
     } catch (err) {
       console.log(err);
