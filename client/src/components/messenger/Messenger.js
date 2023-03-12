@@ -59,7 +59,7 @@ export default function Messenger() {
     const getConversations = async () => {
       try {
         const res = await Axios.get("/api/v1/conversations/" + user._id);
-        setConversations(res.data);
+        setConversations(res.data.conversations);
       } catch (err) {
         console.log(err);
       }
