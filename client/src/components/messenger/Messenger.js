@@ -37,10 +37,6 @@ export default function Messenger() {
         createdAt: Date.now(),
       });
     });
-
-    return () => {
-      socket.current.off("getMessage");
-    };
   }, []);
 
   useEffect(() => {
@@ -57,10 +53,6 @@ export default function Messenger() {
         user.followings.filter((f) => users.some((u) => u.userId === f))
       );
     });
-
-    return () => {
-      socket.current.off("getUsers");
-    };
   }, [user]);
 
   useEffect(() => {
@@ -102,11 +94,26 @@ export default function Messenger() {
     };
 
     if (onlineUsers.includes(receiverId)) {
-      socket.current.emit("sendMessage", {
-        senderId: user._id,
-        receiverId,
-        text: newMessage,
-      });
+      try {
+        // emit the message via Socket.io
+        socket.current.emit("sendMessage", {
+          senderId: user._id,
+          receiverId,
+          text: newMessage,
+          conversationId: currentChat._id,
+        });
+
+        // Send a notification to the recipient
+        socket.current.emit("sendNotification", {
+          senderId: user._id,
+          conversationId: currentChat._id,
+          receiverId,
+        });
+
+        await incrementConvoNotification(currentChat._id);
+      } catch (err) {
+        console.log(`Error sending message and notification: ${err}`);
+      }
     }
 
     try {
@@ -119,18 +126,6 @@ export default function Messenger() {
         console.log(
           "Recipient is offline. Message will be delivered once they come online."
         );
-      } else {
-        try {
-          // Send a notification to the recipient
-          socket.current.emit("sendNotification", {
-            senderId: user._id,
-            conversationId: currentChat._id,
-            receiverId,
-          });
-        } catch (err) {
-          console.log(`Error sending notification: ${err}`);
-        }
-        await incrementConvoNotification(currentChat._id);
       }
     } catch (err) {
       console.log(err);
@@ -157,10 +152,7 @@ export default function Messenger() {
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <hr className="convoHr" />
-                <Conversation
-                  conversation={c}
-                  currentUser={user}
-                />
+                <Conversation conversation={c} currentUser={user} />
                 <hr className="convoHr" />
               </div>
             ))}
