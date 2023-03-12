@@ -80,7 +80,7 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
-  const handleSubmit = async (e) => {
+  const handleSend = async (e) => {
     e.preventDefault();
 
     const receiverId = currentChat.members.find(
@@ -113,6 +113,7 @@ export default function Messenger() {
         );
       } else {
         try {
+          await Axios.post("/api/v1/conversations/" + currentChat._id);
           // Send a notification to the recipient
           socket.current.emit("sendNotification", {
             senderId: user._id,
@@ -150,10 +151,7 @@ export default function Messenger() {
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <hr className="convoHr" />
-                <Conversation
-                  conversation={c}
-                  currentUser={user}
-                />
+                <Conversation conversation={c} currentUser={user} />
                 <hr className="convoHr" />
               </div>
             ))}
@@ -182,7 +180,7 @@ export default function Messenger() {
                     value={newMessage}
                     rows={3}
                   ></textarea>
-                  <button className="chatSubmitButton" onClick={handleSubmit}>
+                  <button className="chatSubmitButton" onClick={handleSend}>
                     Send
                   </button>
                 </div>
