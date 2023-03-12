@@ -18,6 +18,7 @@ export default function Conversation({ conversation, currentUser, messages }) {
   const handleClearConvo = async () => {
     try {
       await Axios.put(`/api/v1/conversations/${conversation._id}/notification`);
+      setNotificationCount(0);
     } catch (err) {
       console.log(err);
     }
@@ -55,8 +56,6 @@ export default function Conversation({ conversation, currentUser, messages }) {
     fetchCount();
   }, [conversation]);
 
-  console.log("notificationCount: ", notificationCount);
-
   return (
     <div
       className="conversation d-flex justify-content-between"
@@ -65,7 +64,6 @@ export default function Conversation({ conversation, currentUser, messages }) {
       <div>
         <ProfilePic user={user} style={conversationImg} />
         <span
-          // className="conversationName"
           className={`conversationName ${notificationCount ? "fw-bold" : ""}`}
         >
           {user?.username}
