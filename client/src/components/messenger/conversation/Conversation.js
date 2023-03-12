@@ -12,15 +12,11 @@ const conversationImg = {
   marginRight: "20px",
 };
 
-export default function Conversation({
-  conversation,
-  currentUser,
-  notificationCount,
-  setNotificationCount,
-}) {
+export default function Conversation({ conversation, currentUser, messages }) {
   const [user, setUser] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(0);
 
-  handleClearConvo = () => {
+  const handleClearConvo = () => {
     setNotificationCount(0);
   };
 
@@ -39,6 +35,21 @@ export default function Conversation({
     getUser();
   }, [currentUser, conversation]);
 
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const res = await Axios(
+          `/api/v1/conversations/${conversation?._id}/notification`
+        );
+        setNotificationCount(res.data.notificationCount);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchCount();
+  }, [conversation]);
+
   console.log("notificationCount: ", notificationCount);
 
   return (
@@ -49,15 +60,15 @@ export default function Conversation({
       <div>
         <ProfilePic user={user} style={conversationImg} />
         <span
-          className="conversationName"
-          // className={`conversationName ${converSationNotif ? "fw-bold" : ""}`}
+          // className="conversationName"
+          className={`conversationName ${notificationCount ? "fw-bold" : ""}`}
         >
           {user?.username}
         </span>
       </div>
-      {/* {converSationNotif > 0 && (
-        <span className="badge bg-primary">{converSationNotif}</span>
-      )} */}
+      {notificationCount > 0 && (
+        <span className="badge bg-primary">{notificationCount}</span>
+      )}
     </div>
   );
 }

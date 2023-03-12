@@ -15,7 +15,6 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
   const socket = useRef({ current: null });
   const scrollRef = useRef();
@@ -89,23 +88,6 @@ export default function Messenger() {
     getMessages();
   }, [currentChat]);
 
-  useEffect(() => {
-    async function fetchNotificationCount() {
-      try {
-        if (currentChat?._id) {
-          const res = await Axios.get(
-            `/api/v1/conversations/${currentChat._id}/notification`
-          );
-          setNotificationCount(res.data.notificationCount);
-        }
-      } catch (err) {
-        console.log(`Error fetching notification count: ${err}`);
-      }
-    }
-  
-    fetchNotificationCount();
-  }, [currentChat?._id]);
-
   const handleSend = async (e) => {
     e.preventDefault();
 
@@ -159,8 +141,6 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  console.log("conversations: ", conversations);
-
   return (
     <>
       <TopNav />
@@ -180,8 +160,6 @@ export default function Messenger() {
                 <Conversation
                   conversation={c}
                   currentUser={user}
-                  notificationCount={notificationCount}
-                  setNotificationCount={setNotificationCount}
                 />
                 <hr className="convoHr" />
               </div>
