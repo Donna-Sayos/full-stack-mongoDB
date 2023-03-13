@@ -11,7 +11,7 @@ const conversationImg = {
   marginRight: "20px",
 };
 
-export default function Conversation({ conversation, currentUser, messages }) {
+export default function Conversation({ conversation, currentUser }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
 
