@@ -51,7 +51,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
           // Update the user notification count
           if (receiverId === currentUser?._id) {
-            if (!inChat) {
+            if (inChat === false) {
               setUserNotif(() => {
                 const totalUserNotif = Object.values({
                   ...notifications,
@@ -76,7 +76,11 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, [currentUser?._id, inChat, notifications]);
 
-  const toggleInChat = () => {
+  const activateInChat = () => {
+    setInChat(true);
+  };
+
+  const deactivateInChat = () => {
     setInChat(false);
   };
 
@@ -87,9 +91,18 @@ export default function OnlineContextProvider({ children, currentUser }) {
       userNotif,
       setUserNotif,
       inChat,
-      toggleInChat,
+      activateInChat,
+      deactivateInChat,
     }),
-    [onlineUsers, notifications, userNotif, inChat, setUserNotif, toggleInChat]
+    [
+      onlineUsers,
+      notifications,
+      userNotif,
+      inChat,
+      setUserNotif,
+      activateInChat,
+      deactivateInChat,
+    ]
   );
 
   return (
