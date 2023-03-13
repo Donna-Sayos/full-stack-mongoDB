@@ -15,6 +15,7 @@ export default function ChatOnline({
   onlineUsers,
   currentUserId,
   setCurrentChat,
+  setConversations,
 }) {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
@@ -51,7 +52,8 @@ export default function ChatOnline({
           receiverId: friendId,
         });
         setCurrentChat(newConversation.data);
-      }
+        setConversations((conversations) => [...conversations, newConversation.data]);
+      }     
     } catch (err) {
       console.log(err);
     }

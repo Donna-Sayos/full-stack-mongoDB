@@ -165,15 +165,16 @@ export default function Messenger() {
             {currentChat ? (
               <>
                 <div className="chatBoxTop">
-                  {messages.map((m, index) => (
-                    <div key={index} ref={scrollRef}>
-                      <Message
-                        message={m}
-                        own={m.sender === user._id}
-                        sender={m.sender}
-                      />
-                    </div>
-                  ))}
+                  {inChat &&
+                    messages.map((m, index) => (
+                      <div key={index} ref={scrollRef}>
+                        <Message
+                          message={m}
+                          own={m.sender === user._id}
+                          sender={m.sender}
+                        />
+                      </div>
+                    ))}
                 </div>
                 <div className="chatBoxBottom">
                   <textarea
@@ -201,6 +202,7 @@ export default function Messenger() {
               onlineUsers={onlineUsers}
               currentUserId={user._id}
               setCurrentChat={setCurrentChat}
+              setConversations={setConversations}
             />
           </div>
         </div>
