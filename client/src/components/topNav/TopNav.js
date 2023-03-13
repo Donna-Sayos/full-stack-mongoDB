@@ -30,7 +30,7 @@ export default function TopNav({ setDisplayFeed }) {
   };
 
   const handleExplore = () => {
-    setDisplayFeed("allFeeds");
+    setDisplayFeed("allFeeds"); 
     deactivateInChat();
   };
 

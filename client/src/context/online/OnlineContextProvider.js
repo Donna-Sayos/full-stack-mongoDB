@@ -67,6 +67,8 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 );
                 return totalUserNotif;
               });
+            } else {
+              setUserNotif(0);
             }
           }
         }
