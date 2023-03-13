@@ -17,15 +17,26 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { userNotif, setUserNotif } = useOnlineContext();
+  const { userNotif, clearUserNotif, deactivateInChat } = useOnlineContext();
 
-  const clearUserNotif = () => {
-    setUserNotif(0);
+  const handleUserNotif = () => {
+    clearUserNotif();
+    deactivateInChat();
+  };
+
+  const handleFeed = () => {
+    setDisplayFeed("friendFeeds");
+    deactivateInChat();
+  };
+
+  const handleExplore = () => {
+    setDisplayFeed("allFeeds");
+    deactivateInChat();
   };
 
   return (
     <div className="topNavContainer">
-      <div className="topNavLeft">
+      <div className="topNavLeft" onClick={() => deactivateInChat()}>
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
         </Link>
@@ -38,18 +49,10 @@ export default function TopNav({ setDisplayFeed }) {
       </div>
       <div className="topNavRight">
         <div className="topNavLinks">
-          <Link
-            to="/?feed"
-            className="navLink"
-            onClick={() => setDisplayFeed("friendFeeds")}
-          >
+          <Link to="/?feed" className="navLink" onClick={handleFeed}>
             <span className="topNavLink">Feed</span>
           </Link>
-          <Link
-            to="/?explore"
-            className="navLink"
-            onClick={() => setDisplayFeed("allFeeds")}
-          >
+          <Link to="/?explore" className="navLink" onClick={handleExplore}>
             <span className="topNavLink">Explore</span>
           </Link>
         </div>
@@ -58,7 +61,7 @@ export default function TopNav({ setDisplayFeed }) {
             <BiUserPin size={25} />
             {/* <span className="topNavIconBadge">1</span> */}
           </div>
-          <div className="topNavIconItem" onClick={() => clearUserNotif()}>
+          <div className="topNavIconItem" onClick={handleUserNotif}>
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
               {userNotif > 0 && (
@@ -78,4 +81,3 @@ export default function TopNav({ setDisplayFeed }) {
     </div>
   );
 }
-

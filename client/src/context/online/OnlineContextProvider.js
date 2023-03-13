@@ -13,7 +13,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notifications, setNotifications] = useState({});
   const [userNotif, setUserNotif] = useState(0);
-  const [inChat, setInChat] = useState(true);
+  const [inChat, setInChat] = useState(false);
 
   useEffect(() => {
     let socket;
@@ -76,6 +76,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, [currentUser?._id, inChat, notifications]);
 
+  const clearUserNotif = () => {
+    setUserNotif(0);
+  };
+
   const activateInChat = () => {
     setInChat(true);
   };
@@ -89,8 +93,8 @@ export default function OnlineContextProvider({ children, currentUser }) {
       onlineUsers,
       notifications,
       userNotif,
-      setUserNotif,
       inChat,
+      clearUserNotif,
       activateInChat,
       deactivateInChat,
     }),
@@ -99,7 +103,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       userNotif,
       inChat,
-      setUserNotif,
+      clearUserNotif,
       activateInChat,
       deactivateInChat,
     ]
