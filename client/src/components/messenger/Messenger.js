@@ -162,7 +162,7 @@ export default function Messenger() {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            {currentChat && inChat ? (
+            {currentChat ? (
               <>
                 <div className="chatBoxTop">
                   {messages.map((m, index) => (

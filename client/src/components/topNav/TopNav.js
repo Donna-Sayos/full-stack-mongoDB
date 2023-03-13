@@ -17,11 +17,11 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { userNotif, clearUserNotif, deactivateInChat } = useOnlineContext();
+  const { userNotif, clearUserNotif, deactivateInChat, activateInChat } = useOnlineContext();
 
   const handleUserNotif = () => {
     clearUserNotif();
-    deactivateInChat();
+    activateInChat();
   };
 
   const handleFeed = () => {
