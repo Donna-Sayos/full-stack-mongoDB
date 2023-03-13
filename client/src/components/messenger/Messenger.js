@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import { useAuthContext } from "../../context/auth/AuthProvider";
+import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import { io } from "socket.io-client";
 import TopNav from "../topNav/TopNav";
 import Conversation from "./conversation/Conversation";
@@ -16,6 +17,7 @@ export default function Messenger() {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const { user } = useAuthContext();
+  const { inChat } = useOnlineContext();
   const socket = useRef({ current: null });
   const scrollRef = useRef();
 
@@ -160,7 +162,7 @@ export default function Messenger() {
         </div>
         <div className="chatBox">
           <div className="chatBoxWrapper">
-            {currentChat ? (
+            {currentChat && inChat ? (
               <>
                 <div className="chatBoxTop">
                   {messages.map((m, index) => (
