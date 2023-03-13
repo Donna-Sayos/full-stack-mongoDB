@@ -13,6 +13,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notifications, setNotifications] = useState({});
   const [userNotif, setUserNotif] = useState(0);
+  const [inChat, setInChat] = useState(true);
 
   useEffect(() => {
     let socket;
@@ -50,28 +51,34 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
           // Update the user notification count
           if (receiverId === currentUser?._id) {
-            setUserNotif(() => {
-              const totalUserNotif = Object.values({
-                ...notifications,
-                [conversationId]: {
-                  senderId,
-                  receiverId,
-                  conversationId,
-                  userNotifications,
-                },
-              }).reduce(
-                (acc, { userNotifications }) => acc + userNotifications,
-                0
-              );
-              return totalUserNotif;
-            });
+            if (!inChat) {
+              setUserNotif(() => {
+                const totalUserNotif = Object.values({
+                  ...notifications,
+                  [conversationId]: {
+                    senderId,
+                    receiverId,
+                    conversationId,
+                    userNotifications,
+                  },
+                }).reduce(
+                  (acc, { userNotifications }) => acc + userNotifications,
+                  0
+                );
+                return totalUserNotif;
+              });
+            }
           }
         }
       );
     } catch (err) {
       console.log(`Error connecting to socket: ${err}`);
     }
-  }, []);
+  }, [currentUser?._id, inChat, notifications]);
+
+  const toggleInChat = () => {
+    setInChat(false);
+  };
 
   const memoizedValues = useMemo(
     () => ({
@@ -79,8 +86,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       userNotif,
       setUserNotif,
+      inChat,
+      toggleInChat,
     }),
-    [onlineUsers, notifications, userNotif, setUserNotif]
+    [onlineUsers, notifications, userNotif, inChat, setUserNotif, toggleInChat]
   );
 
   return (
