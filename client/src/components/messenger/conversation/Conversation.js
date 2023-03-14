@@ -12,15 +12,19 @@ const conversationImg = {
   marginRight: "20px",
 };
 
-export default function Conversation({ conversation, currentUser }) {
+export default function Conversation({
+  conversation,
+  currentUser,
+  notificationCount,
+  setNotificationCount,
+}) {
   const [user, setUser] = useState(null);
   const { activateInChat } = useOnlineContext();
-  const [notificationCount, setNotificationCount] = useState(0);
 
   const handleClearConvo = async () => {
     try {
       await Axios.put(`/api/v1/conversations/${conversation._id}/notification`);
-      setNotificationCount(0);
+      // setNotificationCount(0);
 
       activateInChat();
     } catch (err) {

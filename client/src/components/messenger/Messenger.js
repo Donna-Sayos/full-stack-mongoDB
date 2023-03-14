@@ -10,12 +10,14 @@ import Message from "./message/Message";
 import ChatOnline from "./chatOnline/ChatOnline";
 
 export default function Messenger() {
+  // TODO: Refactor this component. Make it cleaner and more readable.
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
   const { inChat } = useOnlineContext();
   const socket = useRef({ current: null });
@@ -113,6 +115,9 @@ export default function Messenger() {
         });
 
         await incrementConvoNotification(currentChat._id);
+
+        // Clear the notification count for the conversation
+        setNotificationCount(0);
       } catch (err) {
         console.log(`Error sending message and notification: ${err}`);
       }
@@ -154,7 +159,12 @@ export default function Messenger() {
             {conversations.map((c) => (
               <div key={c._id} onClick={() => setCurrentChat(c)}>
                 <hr className="convoHr" />
-                <Conversation conversation={c} currentUser={user} />
+                <Conversation
+                  conversation={c}
+                  currentUser={user}
+                  notificationCount={notificationCount}
+                  setNotificationCount={setNotificationCount}
+                />
                 <hr className="convoHr" />
               </div>
             ))}
