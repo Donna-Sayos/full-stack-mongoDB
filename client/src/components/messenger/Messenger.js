@@ -81,6 +81,7 @@ export default function Messenger() {
         console.log(err);
       }
     };
+
     getMessages();
   }, [currentChat]);
 
@@ -99,6 +100,8 @@ export default function Messenger() {
 
     if (onlineUsers.includes(receiverId)) {
       try {
+        const res = await Axios.post("/api/v1/messages", message);
+
         // emit the message via Socket.io
         socket.current.emit("sendMessage", {
           senderId: user._id,
@@ -106,6 +109,9 @@ export default function Messenger() {
           text: newMessage,
           conversationId: currentChat._id,
         });
+
+        setMessages([...messages, res.data]);
+        setNewMessage("");
 
         // Send a notification to the recipient
         socket.current.emit("sendNotification", {
@@ -123,19 +129,11 @@ export default function Messenger() {
       }
     }
 
-    try {
-      const res = await Axios.post("/api/v1/messages", message);
-      setMessages([...messages, res.data]);
-      setNewMessage("");
-
-      if (!onlineUsers.includes(receiverId)) {
-        // Display a notification to the user that the recipient is offline
-        console.log(
-          "Recipient is offline. Message will be delivered once they come online."
-        );
-      }
-    } catch (err) {
-      console.log(err);
+    if (!onlineUsers.includes(receiverId)) {
+      // Display a notification to the user that the recipient is offline
+      console.log(
+        "Recipient is offline. Message will be delivered once they come online."
+      );
     }
   };
 

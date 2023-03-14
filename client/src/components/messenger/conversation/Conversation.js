@@ -24,7 +24,7 @@ export default function Conversation({
   const handleClearConvo = async () => {
     try {
       await Axios.put(`/api/v1/conversations/${conversation._id}/notification`);
-      // setNotificationCount(0);
+      setNotificationCount(0);
 
       activateInChat();
     } catch (err) {
