@@ -10,17 +10,16 @@ import Message from "./message/Message";
 import ChatOnline from "./chatOnline/ChatOnline";
 
 export default function Messenger() {
-  // TODO: Refactor this component. Make it cleaner and more readable.
   const [conversations, setConversations] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [arrivalMessage, setArrivalMessage] = useState(null);
+  // const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { inChat, activateInChat } = useOnlineContext();
-  const socket = useRef({ current: null });
+  const { arrivalMessage, inChat } = useOnlineContext();
+  const socket = useRef(null);
   const scrollRef = useRef();
 
   const incrementConvoNotification = async (conversationId) => {
@@ -31,25 +30,20 @@ export default function Messenger() {
     }
   };
 
+  // useEffect(() => {
+  //   socket.current = io("http://localhost:5001");
+
+  //   socket.current.on("getMessage", (data) => {
+  //     setArrivalMessage({
+  //       sender: data.senderId,
+  //       text: data.text,
+  //       createdAt: Date.now(),
+  //     });
+  //   });
+  // }, []);
+
   useEffect(() => {
     socket.current = io("http://localhost:5001");
-
-    socket.current.on("getMessage", (data) => {
-      setArrivalMessage({
-        sender: data.senderId,
-        text: data.text,
-        createdAt: Date.now(),
-      });
-    });
-  }, []);
-
-  useEffect(() => {
-    arrivalMessage &&
-      currentChat?.members.includes(arrivalMessage.sender) &&
-      setMessages((prev) => [...prev, arrivalMessage]);
-  }, [arrivalMessage, currentChat]);
-
-  useEffect(() => {
     socket.current.emit("addUser", user._id);
 
     socket.current.on("getUsers", (users) => {
@@ -58,6 +52,12 @@ export default function Messenger() {
       );
     });
   }, [user]);
+
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
   useEffect(() => {
     const getConversations = async () => {
@@ -122,8 +122,6 @@ export default function Messenger() {
         await incrementConvoNotification(currentChat._id);
         // Clear the notification count for the conversation
         setNotificationCount(0);
-        // Activate the inChat state
-        activateInChat();
       } else {
         // Display a notification to the user that the recipient is offline
         console.log(

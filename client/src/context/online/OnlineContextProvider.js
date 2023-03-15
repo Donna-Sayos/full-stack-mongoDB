@@ -11,6 +11,7 @@ const OnlineContext = createContext();
 
 export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
   const [userNotif, setUserNotif] = useState(0);
   const [inChat, setInChat] = useState(false);
@@ -28,7 +29,16 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
       // Listen to the "getUsers" event to update the online status of the users.
       socket.on("getUsers", (users) => {
-        setOnlineUsers(users.map((user) => user.userId));
+        setOnlineUsers(users.map((user) => user._id === currentUser?._id));
+      });
+
+      // getMessage
+      socket.on("getMessage", (data) => {
+        setArrivalMessage({
+          sender: data.senderId,
+          text: data.text,
+          createdAt: Date.now(),
+        });
       });
 
       // Listen to the "getNotification" event to update the notifications of the current user.
@@ -76,7 +86,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
     } catch (err) {
       console.log(`Error connecting to socket: ${err}`);
     }
-  }, [currentUser?._id, inChat, notifications]);
+  }, [currentUser, inChat, notifications]);
 
   const clearUserNotif = () => {
     setUserNotif(0);
@@ -93,6 +103,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
+      arrivalMessage,
       notifications,
       userNotif,
       inChat,
@@ -102,6 +113,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }),
     [
       onlineUsers,
+      arrivalMessage,
       notifications,
       userNotif,
       inChat,
