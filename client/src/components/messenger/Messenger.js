@@ -14,7 +14,6 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  // const [arrivalMessage, setArrivalMessage] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
@@ -29,18 +28,6 @@ export default function Messenger() {
       console.log(`Error incrementing notification count: ${err}`);
     }
   };
-
-  // useEffect(() => {
-  //   socket.current = io("http://localhost:5001");
-
-  //   socket.current.on("getMessage", (data) => {
-  //     setArrivalMessage({
-  //       sender: data.senderId,
-  //       text: data.text,
-  //       createdAt: Date.now(),
-  //     });
-  //   });
-  // }, []);
 
   useEffect(() => {
     socket.current = io("http://localhost:5001");
