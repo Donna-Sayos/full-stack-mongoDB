@@ -19,7 +19,7 @@ export default function Messenger() {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { inChat } = useOnlineContext();
+  const { inChat, activateInChat } = useOnlineContext();
   const socket = useRef({ current: null });
   const scrollRef = useRef();
 
@@ -97,9 +97,8 @@ export default function Messenger() {
       text: newMessage,
       conversationId: currentChat._id,
     };
-
-    if (onlineUsers.includes(receiverId)) {
-      try {
+    try {
+      if (onlineUsers.includes(receiverId)) {
         const res = await Axios.post("/api/v1/messages", message);
 
         // emit the message via Socket.io
@@ -121,19 +120,18 @@ export default function Messenger() {
         });
 
         await incrementConvoNotification(currentChat._id);
-
         // Clear the notification count for the conversation
         setNotificationCount(0);
-      } catch (err) {
-        console.log(`Error sending message and notification: ${err}`);
+        // Activate the inChat state
+        activateInChat();
+      } else {
+        // Display a notification to the user that the recipient is offline
+        console.log(
+          "Recipient is offline. Message will be delivered once they come online."
+        );
       }
-    }
-
-    if (!onlineUsers.includes(receiverId)) {
-      // Display a notification to the user that the recipient is offline
-      console.log(
-        "Recipient is offline. Message will be delivered once they come online."
-      );
+    } catch (err) {
+      console.log(`Error sending message and notification: ${err}`);
     }
   };
 
@@ -175,7 +173,7 @@ export default function Messenger() {
                 <div className="chatBoxTop">
                   {inChat &&
                     messages.map((m, index) => (
-                      <div key={index} ref={scrollRef}>
+                      <div key={m._id || index} ref={scrollRef}>
                         <Message
                           message={m}
                           own={m.sender === user._id}
