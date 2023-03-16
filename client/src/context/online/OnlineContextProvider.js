@@ -28,8 +28,15 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // Listen to the "getUsers" event to update the online status of the users.
+      // socket.on("getUsers", (users) => {
+      //   setOnlineUsers(users.map((user) => user.userId)); // .userId is the user id of the user in the "users" array on the server-side socket.
+      // });
       socket.on("getUsers", (users) => {
-        setOnlineUsers(users.map((user) => user.userId)); // .userId is the user id of the user in the "users" array on the server-side socket.
+        setOnlineUsers(
+          currentUser?.followings.filter((f) =>
+            users.some((u) => u.userId === f)
+          )
+        );
       });
 
       // getMessage

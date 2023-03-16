@@ -17,23 +17,23 @@ export default function Online({ userId }) {
   const { user: currentUser } = useAuthContext();
   const { onlineUsers } = useOnlineContext();
   const allUsers = useFetchUsers();
-  const onlineUser = allUsers.find(
+  const following = allUsers.find(
     (u) => u._id === userId && u._id !== currentUser._id
   );
-  const isOnline = onlineUsers.includes(onlineUser?._id);
+  const isOnline = onlineUsers.includes(following?._id);
 
   return (
     <>
       <li className="rightSidebarFriend">
         <div className="rightSidebarProfileImgContainer">
-          <ProfilePic style={rightSidebarProfileImg} user={onlineUser} />
+          <ProfilePic style={rightSidebarProfileImg} user={following} />
           <span
             className={isOnline ? "rightSidebarOnline" : "rightSidebarOffline"}
           ></span>
         </div>
         <div className="rightSidebarUsername">
-          {onlineUser?.username}
-          <span style={{ color: "gray" }}>({onlineUser?.pronouns})</span>
+          {following?.username}
+          <span style={{ color: "gray" }}>({following?.pronouns})</span>
         </div>
       </li>
     </>

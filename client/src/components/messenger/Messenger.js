@@ -15,23 +15,11 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [onlineUsers, setOnlineUsers] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { arrivalMessage, inChat } = useOnlineContext();
+  const { onlineUsers, arrivalMessage, inChat } = useOnlineContext();
   const socket = useRef(null);
   const scrollRef = useRef();
-
-  useEffect(() => {
-    socket.current = io("http://localhost:5001");
-    socket.current.emit("addUser", user._id);
-
-    socket.current.on("getUsers", (users) => {
-      setOnlineUsers(
-        user.followings.filter((f) => users.some((u) => u.userId === f))
-      );
-    });
-  }, [user]);
 
   useEffect(() => {
     arrivalMessage &&
@@ -82,6 +70,8 @@ export default function Messenger() {
 
     try {
       if (onlineUsers.includes(receiverId)) {
+
+        socket.current = io("http://localhost:5001");
         // emit the message via Socket.io
         socket.current.emit("sendMessage", {
           senderId: user._id,
@@ -107,7 +97,8 @@ export default function Messenger() {
       } else {
         setMessages([...messages, res.data]);
         setNewMessage("");
-        
+
+        await incrementConvoNotification(currentChat._id);
         // Display a notification to the user that the recipient is offline
         console.log(
           "Recipient is offline. Message will be delivered once they come online."
