@@ -3,6 +3,7 @@ import "./index.css";
 import Axios from "axios";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
+import { incrementConvoNotification } from "../../utils/helper/helperFunctions";
 import { io } from "socket.io-client";
 import TopNav from "../topNav/TopNav";
 import Conversation from "./conversation/Conversation";
@@ -20,14 +21,6 @@ export default function Messenger() {
   const { arrivalMessage, inChat } = useOnlineContext();
   const socket = useRef(null);
   const scrollRef = useRef();
-
-  const incrementConvoNotification = async (conversationId) => {
-    try {
-      await Axios.post(`/api/v1/conversations/${conversationId}/notification`);
-    } catch (err) {
-      console.log(`Error incrementing notification count: ${err}`);
-    }
-  };
 
   useEffect(() => {
     socket.current = io("http://localhost:5001");
@@ -107,6 +100,7 @@ export default function Messenger() {
         });
 
         await incrementConvoNotification(currentChat._id);
+
         // Clear the notification count for the conversation
         setNotificationCount(0);
       } else {
