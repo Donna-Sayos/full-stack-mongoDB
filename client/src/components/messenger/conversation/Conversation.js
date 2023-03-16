@@ -52,7 +52,7 @@ export default function Conversation({
     const fetchCount = async () => {
       try {
         if (conversation) {
-          const res = await Axios(
+          const res = await Axios.get(
             `/api/v1/conversations/${conversation?._id}/notification`
           );
           setNotificationCount(res.data.notificationCount);

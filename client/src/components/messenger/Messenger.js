@@ -77,10 +77,11 @@ export default function Messenger() {
       text: newMessage,
       conversationId: currentChat._id,
     };
+
+    const res = await Axios.post("/api/v1/messages", message);
+
     try {
       if (onlineUsers.includes(receiverId)) {
-        const res = await Axios.post("/api/v1/messages", message);
-
         // emit the message via Socket.io
         socket.current.emit("sendMessage", {
           senderId: user._id,
@@ -89,9 +90,6 @@ export default function Messenger() {
           conversationId: currentChat._id,
         });
 
-        setMessages([...messages, res.data]);
-        setNewMessage("");
-
         // Send a notification to the recipient
         socket.current.emit("sendNotification", {
           senderId: user._id,
@@ -99,11 +97,17 @@ export default function Messenger() {
           receiverId,
         });
 
+        setMessages([...messages, res.data]);
+        setNewMessage("");
+
         await incrementConvoNotification(currentChat._id);
 
         // Clear the notification count for the conversation
         setNotificationCount(0);
       } else {
+        setMessages([...messages, res.data]);
+        setNewMessage("");
+        
         // Display a notification to the user that the recipient is offline
         console.log(
           "Recipient is offline. Message will be delivered once they come online."
