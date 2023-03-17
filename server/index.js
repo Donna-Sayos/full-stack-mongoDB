@@ -76,6 +76,17 @@ io.on("connection", (socket) => {
     }
   });
 
+  // clear notifications
+  socket.on("clearNotifications", (userId) => {
+    const user = getUser(userId);
+    if (user) {
+      user.notificationCount = 0;
+      io.to(user.socketId).emit("getNotification", {
+        userNotifications: user.notificationCount,
+      });
+    }
+  });
+
   // when a user disconnects, remove the user from the array
   socket.on("disconnect", () => {
     console.log("a user disconnected");
