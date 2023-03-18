@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
-import { useAuthContext } from "../../context/auth/AuthProvider";
+import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import Online from "./online/Online";
 import { BsFillChatRightQuoteFill } from "react-icons/bs";
 
 export default function HomeSidebar() {
   const [quote, setQuote] = useState(null);
-  const { user: currentUser } = useAuthContext();
+  const { onlineUsers } = useOnlineContext();
 
   useEffect(() => {
     let isSubscribed = true;
@@ -58,11 +58,11 @@ export default function HomeSidebar() {
 
       <h4 className="rightSidebarTitle">Online Friends</h4>
       <ul className="rightSidebarFriendList">
-        {currentUser &&
-          currentUser.followings.length > 0 &&
-          currentUser.followings.map((uid, i) => (
-            <Online key={i} userId={uid} />
-          ))}
+        {onlineUsers && onlineUsers.length > 0 ? (
+          onlineUsers.map((uid, i) => <Online key={i} userId={uid} />)
+        ) : (
+          <p className="noOnlineUsers">No online users</p>
+        )}
       </ul>
     </div>
   );

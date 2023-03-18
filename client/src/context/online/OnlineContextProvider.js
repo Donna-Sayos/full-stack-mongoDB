@@ -35,10 +35,11 @@ export default function OnlineContextProvider({ children, currentUser }) {
       newSocket.on("getUsers", (users) => {
         setOnlineUsers(
           currentUser?.followings.filter((f) =>
+            // .userId is the user id of the user in the "users" array on the server-side socket.
             users.some((u) => u.userId === f)
           )
         );
-        // setOnlineUsers(users.map((user) => user.userId)); // .userId is the user id of the user in the "users" array on the server-side socket.
+        // setOnlineUsers(users.map((user) => user.userId));
       });
 
       // getMessage
