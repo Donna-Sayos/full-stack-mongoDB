@@ -24,18 +24,22 @@ export default function Online({ userId }) {
 
   return (
     <>
-      <li className="rightSidebarFriend">
-        <div className="rightSidebarProfileImgContainer">
-          <ProfilePic style={rightSidebarProfileImg} user={following} />
-          <span
-            className={isOnline ? "rightSidebarOnline" : "rightSidebarOffline"}
-          ></span>
-        </div>
-        <div className="rightSidebarUsername">
-          {following?.username}
-          <span style={{ color: "gray" }}>({following?.pronouns})</span>
-        </div>
-      </li>
+      {isOnline && (
+        <li className="rightSidebarFriend">
+          <div className="rightSidebarProfileImgContainer">
+            <ProfilePic style={rightSidebarProfileImg} user={following} />
+            <span
+              // TODO: Clean up this code
+              // className={isOnline ? "rightSidebarOnline" : "rightSidebarOffline"}
+              className="rightSidebarOnline"
+            ></span>
+          </div>
+          <div className="rightSidebarUsername">
+            {following?.username}
+            <span style={{ color: "gray" }}>({following?.pronouns})</span>
+          </div>
+        </li>
+      )}
     </>
   );
 }

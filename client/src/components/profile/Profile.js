@@ -13,6 +13,7 @@ import RightSidebar from "../rightSidebar/RightSidebar";
 import ProfilePic from "../../common/pic/ProfilePic";
 import { updateUserCoverPicture } from "../../utils/helper/helperCoverPicture";
 import { updateUserProfilePicture } from "../../utils/helper/helperProfilePicture";
+import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 
 const profileUserImg = {
   width: "150px",
@@ -32,12 +33,14 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const { username } = useParams();
   const [specificUser, setSpecificUser] = useState(null); // initialize as null
   const { user: currentUser, dispatch } = useAuthContext();
+  const { disconnect } = useOnlineContext();
   const isCurrentUser = currentUser.username === specificUser?.username;
   const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch({ type: "LOGOUT" });
     navigate("/");
+    disconnect();
     resetRecaptcha();
   };
 
