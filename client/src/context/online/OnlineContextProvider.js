@@ -15,25 +15,29 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [notifications, setNotifications] = useState({});
   const [userNotif, setUserNotif] = useState(0);
   const [inChat, setInChat] = useState(false);
+  const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    let socket;
-
     try {
-      socket = io("http://localhost:5001");
+      if (!currentUser) {
+        return;
+      }
+
+      const newSocket = io("http://localhost:5001");
+      setSocket(newSocket);
 
       // When connected to the server, emit the "addUser" event to add the current user to the "users" array on the server-side.
-      socket.on("connect", () => {
-        socket.emit("addUser", currentUser?._id);
+      newSocket.on("connect", () => {
+        newSocket.emit("addUser", currentUser?._id);
       });
 
       // Listen to the "getUsers" event to update the online status of the users.
-      socket.on("getUsers", (users) => {
+      newSocket.on("getUsers", (users) => {
         setOnlineUsers(users.map((user) => user.userId)); // .userId is the user id of the user in the "users" array on the server-side socket.
       });
 
       // getMessage
-      socket.on("getMessage", (data) => {
+      newSocket.on("getMessage", (data) => {
         setArrivalMessage({
           sender: data.senderId,
           text: data.text,
@@ -42,7 +46,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // Listen to the "getNotification" event to update the notifications of the current user.
-      socket.on(
+      newSocket.on(
         "getNotification",
         ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => {
@@ -100,6 +104,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
     setInChat(false);
   };
 
+  const disconnect = () => {
+    if (socket) socket.disconnect();
+  };
+
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
@@ -110,6 +118,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearUserNotif,
       activateInChat,
       deactivateInChat,
+      disconnect,
     }),
     [
       onlineUsers,
@@ -120,6 +129,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearUserNotif,
       activateInChat,
       deactivateInChat,
+      disconnect,
     ]
   );
 

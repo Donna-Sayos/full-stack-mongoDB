@@ -99,9 +99,6 @@ const UserSchema = new Schema(
       type: Number,
       enum: ["Single", "Married", "In a relationship", "Engaged"],
     },
-    notificationCount: {
-      type: Number,
-    },
   },
   { timestamps: true }
 );
