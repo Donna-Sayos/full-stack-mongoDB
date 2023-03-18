@@ -38,9 +38,9 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    disconnect();
     dispatch({ type: "LOGOUT" });
     navigate("/");
-    disconnect();
     resetRecaptcha();
   };
 
