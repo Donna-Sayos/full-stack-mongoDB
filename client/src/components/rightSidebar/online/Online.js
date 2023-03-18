@@ -17,29 +17,37 @@ export default function Online({ userId }) {
   const { user: currentUser } = useAuthContext();
   const { onlineUsers } = useOnlineContext();
   const allUsers = useFetchUsers();
-  const following = allUsers.find(
-    (u) => u._id === userId && u._id !== currentUser._id
+  const onlineFollowing = allUsers.find(
+    (u) =>
+      u._id === userId &&
+      u._id !== currentUser._id &&
+      onlineUsers.includes(u._id)
   );
-  const isOnline = onlineUsers.includes(following?._id);
+  // const isOnline = onlineUsers.includes(onlineFollowing?._id);
+
+  if (!onlineFollowing) {
+    return <p className="noOnlineUsers">No online users</p>;
+  }
+
+  console.log("onlinUsers", onlineUsers);
 
   return (
     <>
-      {isOnline && (
-        <li className="rightSidebarFriend">
-          <div className="rightSidebarProfileImgContainer">
-            <ProfilePic style={rightSidebarProfileImg} user={following} />
-            <span
-              // TODO: Clean up this code
-              // className={isOnline ? "rightSidebarOnline" : "rightSidebarOffline"}
-              className="rightSidebarOnline"
-            ></span>
-          </div>
-          <div className="rightSidebarUsername">
-            {following?.username}
-            <span style={{ color: "gray" }}>({following?.pronouns})</span>
-          </div>
-        </li>
-      )}
+      {/* {onlineFollowing && ( */}
+      <li className="rightSidebarFriend">
+        <div className="rightSidebarProfileImgContainer">
+          <ProfilePic style={rightSidebarProfileImg} user={onlineFollowing} />
+          <span
+            // className={isOnline ? "rightSidebarOnline" : "rightSidebarOffline"}
+            className="rightSidebarOnline"
+          ></span>
+        </div>
+        <div className="rightSidebarUsername">
+          {onlineFollowing?.username}
+          <span style={{ color: "gray" }}>({onlineFollowing?.pronouns})</span>
+        </div>
+      </li>
+      {/* )} */}
     </>
   );
 }

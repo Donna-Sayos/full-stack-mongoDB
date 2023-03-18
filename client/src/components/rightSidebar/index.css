@@ -143,6 +143,12 @@
     right: 0;
     border: 2px solid white;
 }
+
+.noOnlineUsers {
+    margin-left: 15px;
+    color: gray;
+}
+
 /* TODO: Clean up this code */
 /* .rightSidebarOffline{
     width: 12px;
