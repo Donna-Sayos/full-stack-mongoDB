@@ -84,6 +84,9 @@ const UserSchema = new Schema(
       type: String,
       max: 50,
     },
+    birthday: {
+      type: Date,
+    },
     city: {
       type: String,
       max: 50,
@@ -94,23 +97,26 @@ const UserSchema = new Schema(
     },
     relationship: {
       type: Number,
-      enum: [1, 2, 3],
+      enum: ["Single", "Married", "In a relationship", "Engaged"],
+    },
+    notificationCount: {
+      type: Number,
     },
   },
   { timestamps: true }
 );
 
-UserSchema.index({ userId: 1 }); // create index for userId;
+// UserSchema.index({ userId: 1 }); // create index for userId;
 
-// this is for auto-incrementing the userId based on the last userId;
-UserSchema.statics.nextCount = async function () {
-  const count = await this.countDocuments();
-  if (count === 0) {
-    return 1;
-  }
-  const lastUser = await this.findOne().sort({ userId: -1 });
-  return lastUser.userId + 1;
-};
+// // this is for auto-incrementing the userId based on the last userId;
+// UserSchema.statics.nextCount = async function () {
+//   const count = await this.countDocuments();
+//   if (count === 0) {
+//     return 1;
+//   }
+//   const lastUser = await this.findOne().sort({ userId: -1 });
+//   return lastUser.userId + 1;
+// };
 
 // Encrypt the password; encrypt means to convert the password into a string of characters that cannot be read;
 const encryptPassword = (password) => {
