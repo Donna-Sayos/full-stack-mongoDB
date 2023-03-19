@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "../index.css";
 import ProfilePic from "../../../common/pic/ProfilePic";
 import useFetchUsers from "../../../utils/customHooks/UseFetchUsers";
@@ -19,9 +19,7 @@ export default function Online({ userId }) {
       <li className="rightSidebarFriend">
         <div className="rightSidebarProfileImgContainer">
           <ProfilePic style={rightSidebarProfileImg} user={onlineUsers} />
-          <span
-            className="rightSidebarOnline"
-          ></span>
+          <span className="rightSidebarOnline"></span>
         </div>
         <div className="rightSidebarUsername">
           {onlineUsers?.username}

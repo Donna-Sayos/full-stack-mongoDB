@@ -16,10 +16,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [userNotif, setUserNotif] = useState(0);
   const [inChat, setInChat] = useState(false);
   const [socket, setSocket] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     try {
       if (!currentUser) {
+        setIsLoading(false); // Set isLoading to false if there's no current user
         return;
       }
 
@@ -39,7 +41,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
             users.some((u) => u.userId === f)
           )
         );
-        // setOnlineUsers(users.map((user) => user.userId));
+        setIsLoading(false); // Set isLoading to false when onlineUsers are updated
       });
 
       // getMessage
@@ -95,6 +97,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       );
     } catch (err) {
       console.log(`Error connecting to socket: ${err}`);
+      setIsLoading(false); // Set isLoading to false if there's an error
     }
   }, [currentUser, inChat, notifications]);
 
@@ -125,6 +128,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       activateInChat,
       deactivateInChat,
       disconnect,
+      isLoading,
     }),
     [
       onlineUsers,
@@ -136,6 +140,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       activateInChat,
       deactivateInChat,
       disconnect,
+      isLoading,
     ]
   );
 
