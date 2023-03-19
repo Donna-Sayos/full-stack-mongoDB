@@ -71,8 +71,8 @@ export default function Sidebar({ currentUser }) {
         <hr className="sidebarHr" />
         <ul className="sidebarFriendList">
           {currentUser && currentUser.followings.length > 0
-            ? currentUser.followings.map((u, i) => (
-                <Friends key={i} userId={u} />
+            ? currentUser.followings.map((u, index) => (
+                <Friends key={index} userId={u} />
               ))
             : null}
         </ul>

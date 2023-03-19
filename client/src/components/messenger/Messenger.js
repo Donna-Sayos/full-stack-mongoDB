@@ -30,8 +30,8 @@ export default function Messenger() {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const res = await Axios.get("/api/v1/conversations/" + user._id);
-        setConversations(res.data.conversations);
+        const { data } = await Axios.get("/api/v1/conversations/" + user._id);
+        setConversations(data.conversations);
       } catch (err) {
         console.log(err);
       }
@@ -43,8 +43,10 @@ export default function Messenger() {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await Axios.get("/api/v1/messages/" + currentChat?._id);
-        setMessages(res.data);
+        const { data } = await Axios.get(
+          "/api/v1/messages/" + currentChat?._id
+        );
+        setMessages(data);
       } catch (err) {
         console.log(err);
       }
@@ -66,11 +68,10 @@ export default function Messenger() {
       conversationId: currentChat._id,
     };
 
-    const res = await Axios.post("/api/v1/messages", message);
+    const { data } = await Axios.post("/api/v1/messages", message);
 
     try {
       if (onlineUsers.includes(receiverId)) {
-
         socket.current = io("http://localhost:5001");
         // emit the message via Socket.io
         socket.current.emit("sendMessage", {
@@ -87,7 +88,7 @@ export default function Messenger() {
           receiverId,
         });
 
-        setMessages([...messages, res.data]);
+        setMessages([...messages, data]);
         setNewMessage("");
 
         await incrementConvoNotification(currentChat._id);
@@ -95,7 +96,7 @@ export default function Messenger() {
         // Clear the notification count for the conversation
         setNotificationCount(0);
       } else {
-        setMessages([...messages, res.data]);
+        setMessages([...messages, data]);
         setNewMessage("");
 
         await incrementConvoNotification(currentChat._id);

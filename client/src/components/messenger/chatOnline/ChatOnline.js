@@ -22,8 +22,10 @@ export default function ChatOnline({
 
   useEffect(() => {
     const getFriends = async () => {
-      const res = await Axios.get("/api/v1/users/friends/" + currentUserId);
-      setFriends(res.data.friends);
+      const { data } = await Axios.get(
+        "/api/v1/users/friends/" + currentUserId
+      );
+      setFriends(data.friends);
     };
 
     getFriends();
@@ -39,21 +41,21 @@ export default function ChatOnline({
 
   const handleClick = async (friendId) => {
     try {
-      const res = await Axios.get(
+      const { data } = await Axios.get(
         `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );
-      if (res.data) {
+      if (data) {
         // If conversation already exists, set it as current chat
-        setCurrentChat(res.data);
+        setCurrentChat(data);
       } else {
         // If conversation doesn't exist, create a new conversation
-        const newConversation = await Axios.post("/api/v1/conversations", {
+        const { data } = await Axios.post("/api/v1/conversations", {
           senderId: currentUserId,
           receiverId: friendId,
         });
-        setCurrentChat(newConversation.data);
-        setConversations((conversations) => [...conversations, newConversation.data]);
-      }     
+        setCurrentChat(data);
+        setConversations((conversations) => [...conversations, data]);
+      }
     } catch (err) {
       console.log(err);
     }

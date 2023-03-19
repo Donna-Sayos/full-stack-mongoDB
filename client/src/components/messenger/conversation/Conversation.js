@@ -38,8 +38,8 @@ export default function Conversation({
 
     const getUser = async () => {
       try {
-        const res = await Axios(`/api/v1/users/${friendId}`);
-        setUser(res.data);
+        const { data } = await Axios(`/api/v1/users/${friendId}`);
+        setUser(data);
       } catch (err) {
         console.log(err);
       }
@@ -52,10 +52,10 @@ export default function Conversation({
     const fetchCount = async () => {
       try {
         if (conversation) {
-          const res = await Axios.get(
+          const { data } = await Axios.get(
             `/api/v1/conversations/${conversation?._id}/notification`
           );
-          setNotificationCount(res.data.notificationCount);
+          setNotificationCount(data.notificationCount);
         }
       } catch (err) {
         console.log(err);

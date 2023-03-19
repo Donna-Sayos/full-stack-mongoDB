@@ -79,7 +79,7 @@ export default function Register({ resetRecaptcha }) {
                         onBlur={(e) => {
                           if (
                             !e.target.value.match(
-                              /^[^\\\/\:\*\?\"\<\>\|\.\#]+$/
+                              /^[^\\\/\:\*\?\"\<\>\|\.\#]+$/ // regex to check for invalid characters
                             )
                           ) {
                             e.target.setCustomValidity(

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
+import Axios from "axios";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import Online from "./online/Online";
 import { BsFillChatRightQuoteFill } from "react-icons/bs";
@@ -11,10 +12,9 @@ export default function HomeSidebar() {
   useEffect(() => {
     let isSubscribed = true;
     const fetcher = async () => {
-      const res = await fetch(
+      const { data } = await Axios.get(
         "https://official-joke-api.appspot.com/jokes/random"
       );
-      const data = await res.json();
 
       if (isSubscribed) {
         setQuote(data);
@@ -59,7 +59,7 @@ export default function HomeSidebar() {
       <h4 className="rightSidebarTitle">Online Friends</h4>
       <ul className="rightSidebarFriendList">
         {onlineUsers && onlineUsers.length > 0 ? (
-          onlineUsers.map((uid, i) => <Online key={i} userId={uid} />)
+          onlineUsers.map((uid, index) => <Online key={index} userId={uid} />)
         ) : (
           <p className="noOnlineUsers">No online users</p>
         )}
