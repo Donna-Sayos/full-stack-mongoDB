@@ -107,14 +107,14 @@ export default function Comments({
       </form>
       <div className="comments-container mt-3">
         {displayComments &&
-          displayComments.map((comment, i) => {
+          displayComments.map((comment, index) => {
             const specificUser =
               comment?.userId &&
               allUsers.find((user) => user._id === comment.userId);
             const isUserComment = comment?.userId && comment.userId === userId; // Check if the comment belongs to the current user
             return (
               <div
-                key={i}
+                key={index}
                 className="d-flex flex-column align-items-start mb-3"
               >
                 <div className="d-flex flex-row align-items-center">
