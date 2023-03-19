@@ -7,7 +7,7 @@ import { BsFillChatRightQuoteFill } from "react-icons/bs";
 
 export default function HomeSidebar() {
   const [quote, setQuote] = useState(null);
-  const { onlineUsers } = useOnlineContext();
+  const { onlineUsers, isLoading } = useOnlineContext();
 
   useEffect(() => {
     let isSubscribed = true;
@@ -57,13 +57,21 @@ export default function HomeSidebar() {
       <hr className="homeRightbarHr" />
 
       <h4 className="rightSidebarTitle">Online Friends</h4>
-      <ul className="rightSidebarFriendList">
-        {onlineUsers && onlineUsers.length > 0 ? (
-          onlineUsers.map((uid, index) => <Online key={index} userId={uid} />)
-        ) : (
-          <p className="noOnlineUsers">No online users</p>
-        )}
-      </ul>
+      {isLoading ? (
+        <div className="loading">
+          <div className="spinner-border text-secondary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      ) : (
+        <ul className="rightSidebarFriendList">
+          {onlineUsers && onlineUsers.length > 0 ? (
+            onlineUsers.map((uid, index) => <Online key={index} userId={uid} />)
+          ) : (
+            <p className="noOnlineUsers">No online users</p>
+          )}
+        </ul>
+      )}
     </div>
   );
 }
