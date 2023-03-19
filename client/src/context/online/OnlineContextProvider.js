@@ -114,7 +114,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
   };
 
   const disconnect = () => {
-    if (socket) socket.disconnect();
+    if (socket) {
+      socket.disconnect();
+    }
   };
 
   const memoizedValues = useMemo(
@@ -129,6 +131,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       deactivateInChat,
       disconnect,
       isLoading,
+      setIsLoading,
     }),
     [
       onlineUsers,
@@ -141,6 +144,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       deactivateInChat,
       disconnect,
       isLoading,
+      setIsLoading,
     ]
   );
 

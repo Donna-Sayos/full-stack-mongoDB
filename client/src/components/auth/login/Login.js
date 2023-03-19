@@ -156,7 +156,7 @@ export default function Login({
                           <Link
                             className="fw-bold text-body"
                             to="/signup"
-                            onClick={resetRecaptcha}
+                            onClick={() => resetRecaptcha()}
                           >
                             <u>Signup here</u>
                           </Link>

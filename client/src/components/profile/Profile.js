@@ -33,15 +33,19 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const { username } = useParams();
   const [specificUser, setSpecificUser] = useState(null); // initialize as null
   const { user: currentUser, dispatch } = useAuthContext();
-  const { disconnect } = useOnlineContext();
+  const { disconnect, setIsLoading } = useOnlineContext();
   const isCurrentUser = currentUser.username === specificUser?.username;
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    disconnect();
-    dispatch({ type: "LOGOUT" });
-    navigate("/");
-    resetRecaptcha();
+    setIsLoading(true);
+
+    if (currentUser) {
+      disconnect();
+      dispatch({ type: "LOGOUT" });
+      navigate("/");
+      resetRecaptcha();
+    }
   };
 
   const handleClickCover = async () => {
@@ -107,6 +111,11 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
     getUser();
   }, [username]);
 
+  useEffect(() => {
+    console.log("setting isLoading to false");
+    setIsLoading(false);
+  }, [currentUser]);
+
   return (
     <>
       <TopNav />
@@ -145,9 +154,7 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
 
                 {isCurrentUser && (
                   <div className="logout">
-                    <button ref={recaptchaRef} onClick={handleLogout}>
-                      Logout
-                    </button>
+                    <button onClick={handleLogout}>Logout</button>
                   </div>
                 )}
 

@@ -295,7 +295,7 @@ export default function Register({ resetRecaptcha }) {
                       <Link
                         className="fw-bold text-body"
                         to="/"
-                        onClick={resetRecaptcha}
+                        onClick={() => resetRecaptcha()}
                       >
                         <u>Login here</u>
                       </Link>

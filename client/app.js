@@ -21,7 +21,7 @@ export default function App() {
   };
 
   const resetRecaptcha = () => {
-    recaptchaRef.current.reset();
+    if (recaptchaRef.current) recaptchaRef.current.reset();
     setIsdisabled(true);
   };
 
@@ -48,7 +48,7 @@ export default function App() {
           </Routes>
         )}
         {user && (
-          <OnlineContextProvider currentUser={user} >
+          <OnlineContextProvider currentUser={user}>
             <Routes>
               <Route exact path="/" element={<Home />} />
               <Route path="/messenger" element={<Messenger />} />
