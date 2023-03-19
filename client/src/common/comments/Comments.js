@@ -33,7 +33,7 @@ export default function Comments({
     try {
       if (commentText === "") return;
 
-      const response = await Axios.post(`/api/v1/posts/${postId}/comments`, {
+      const { data } = await Axios.post(`/api/v1/posts/${postId}/comments`, {
         postId: postId,
         userId: userId,
         text: commentText,
@@ -41,7 +41,7 @@ export default function Comments({
 
       setCommentText("");
       setNumComments(numComments + 1);
-      setComments([...comments, response.data.comment]);
+      setComments([...comments, data.comment]);
       handleCommentAdded();
     } catch (error) {
       console.error(`Error at submitting comment: ${error.message}`);
@@ -52,14 +52,14 @@ export default function Comments({
     try {
       if (commentUserId !== currentUser?._id) return;
 
-      const response = await Axios.delete(
+      const { data } = await Axios.delete(
         `/api/v1/posts/${postId}/comments/${commentId}`,
         {
           data: { userId: commentUserId },
         }
       );
 
-      if (response.data.success) {
+      if (data.success) {
         setComments(comments.filter((comment) => comment._id !== commentId));
         setNumComments(numComments - 1);
         setCommentsLength((prevLength) => prevLength - 1);
@@ -73,9 +73,9 @@ export default function Comments({
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await Axios.get(`/api/v1/posts/${postId}/comments`);
-        setComments(response.data.comments);
-        setNumComments(response.data.comments.length);
+        const { data } = await Axios.get(`/api/v1/posts/${postId}/comments`);
+        setComments(data.comments);
+        setNumComments(data.comments.length);
       } catch (error) {
         console.error(`Error at fetching comments: ${error.message}`);
       }
