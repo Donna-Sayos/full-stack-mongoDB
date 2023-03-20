@@ -67,7 +67,8 @@ export default function HomeSidebar() {
         </div>
       ) : (
         <ul className="rightSidebarFriendList">
-          {onlineUsers && onlineUsers.length > 0 ? (
+          {onlineUsers.filter((uid) => currentUser.followings.includes(uid))
+            .length > 0 ? (
             onlineUsers
               .filter((uid) => currentUser.followings.includes(uid))
               .map((uid, index) => <Online key={index} userId={uid} />)
