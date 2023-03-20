@@ -36,9 +36,11 @@ export default function OnlineContextProvider({ children, currentUser }) {
       // Listen to the "getUsers" event to update the online status of the users.
       newSocket.on("getUsers", (users) => {
         setOnlineUsers(
-          currentUser?.followings.filter((f) =>
-            // .userId is the user id of the user in the "users" array on the server-side socket.
-            users.some((u) => u.userId === f)
+          // .userId is the user id of the user in the "users" array on the server-side socket.
+          users.map(
+            (user) => user.userId
+            // currentUser?.followings.filter((f) =>
+            //   users.some((u) => u.userId === f)
           )
         );
         setIsLoading(false); // Set isLoading to false when onlineUsers are updated
@@ -114,9 +116,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   };
 
   const disconnect = () => {
-    if (socket) {
-      socket.disconnect();
-    }
+    if (socket) socket.disconnect();
   };
 
   const memoizedValues = useMemo(
@@ -126,11 +126,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       userNotif,
       inChat,
+      isLoading,
+      setOnlineUsers,
       clearUserNotif,
       activateInChat,
       deactivateInChat,
       disconnect,
-      isLoading,
       setIsLoading,
     }),
     [
@@ -139,11 +140,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       userNotif,
       inChat,
+      isLoading,
+      setOnlineUsers,
       clearUserNotif,
       activateInChat,
       deactivateInChat,
       disconnect,
-      isLoading,
       setIsLoading,
     ]
   );

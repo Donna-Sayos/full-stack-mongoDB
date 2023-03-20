@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
+import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import Online from "./online/Online";
 import { BsFillChatRightQuoteFill } from "react-icons/bs";
 
 export default function HomeSidebar() {
   const [quote, setQuote] = useState(null);
+  const { user: currentUser } = useAuthContext();
   const { onlineUsers, isLoading } = useOnlineContext();
 
   useEffect(() => {
@@ -66,7 +68,9 @@ export default function HomeSidebar() {
       ) : (
         <ul className="rightSidebarFriendList">
           {onlineUsers && onlineUsers.length > 0 ? (
-            onlineUsers.map((uid, index) => <Online key={index} userId={uid} />)
+            onlineUsers
+              .filter((uid) => currentUser.followings.includes(uid))
+              .map((uid, index) => <Online key={index} userId={uid} />)
           ) : (
             <p className="noOnlineUsers">No online users</p>
           )}
