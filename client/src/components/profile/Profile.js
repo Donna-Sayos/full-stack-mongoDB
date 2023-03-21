@@ -33,7 +33,7 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const { username } = useParams();
   const [specificUser, setSpecificUser] = useState(null); // initialize as null
   const { user: currentUser, dispatch } = useAuthContext();
-  const { disconnect, setIsLoading } = useOnlineContext();
+  const { setIsLoading } = useOnlineContext();
   const isCurrentUser = currentUser.username === specificUser?.username;
   const navigate = useNavigate();
 
@@ -41,7 +41,6 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
     setIsLoading(true);
 
     if (currentUser) {
-      disconnect();
       dispatch({ type: "LOGOUT" });
       navigate("/");
       resetRecaptcha();

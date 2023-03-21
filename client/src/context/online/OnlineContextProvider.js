@@ -101,6 +101,11 @@ export default function OnlineContextProvider({ children, currentUser }) {
       console.log(`Error connecting to socket: ${err}`);
       setIsLoading(false); // Set isLoading to false if there's an error
     }
+
+    // Return a cleanup function to disconnect the socket when the component unmounts
+    return () => {
+      if (socket) socket.disconnect();
+    };
   }, [currentUser, inChat, notifications]);
 
   const clearUserNotif = () => {
@@ -115,10 +120,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
     setInChat(false);
   };
 
-  const disconnect = () => {
-    if (socket) socket.disconnect();
-  };
-
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
@@ -131,7 +132,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearUserNotif,
       activateInChat,
       deactivateInChat,
-      disconnect,
       setIsLoading,
     }),
     [
@@ -145,7 +145,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       clearUserNotif,
       activateInChat,
       deactivateInChat,
-      disconnect,
       setIsLoading,
     ]
   );
