@@ -48,6 +48,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
       // listen for the updateOnlineUsers event and update the onlineUsers state
       socket.on("updateOnlineUsers", (users) => {
+        console.log("online users updated");
         setOnlineUsers(users);
       });
 
