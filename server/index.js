@@ -36,6 +36,11 @@ const addUser = (userId, socketId) => {
 const removeUser = (socketId) => {
   // if the user is in the array, remove the user from the array
   users = users.filter((user) => user?.socketId !== socketId);
+  // emit an event to update the client-side state
+  io.emit(
+    "updateOnlineUsers",
+    users.map((user) => user.userId)
+  );
 };
 
 const getUser = (userId) => {
