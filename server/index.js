@@ -57,21 +57,25 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  // send and get message
-  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+  // event to the socket that is emitted when the user opens the chat
+  socket.on("read", ({ receiverId }) => {
     const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text,
-    });
+    if (user) {
+      user.notificationCount = 0;
+      io.to(user.socketId).emit("getNotification", {
+        userNotifications: user.notificationCount,
+      });
+    }
   });
 
   // send and get notification
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     const user = getUser(receiverId);
     if (user) {
-      user.notificationCount++;
-
+      if (!socket.rooms.has(user.socketId)) {
+        // user is not reading the chat, increment notification count
+        user.notificationCount++;
+      }
       io.to(user.socketId).emit("getNotification", {
         senderId,
         receiverId,
@@ -81,17 +85,16 @@ io.on("connection", (socket) => {
     }
   });
 
-  // clear notifications FIXME: not working
-  socket.on("clearNotifications", (userId) => {
-    const user = getUser(userId);
-    if (user) {
-      user.notificationCount = 0;
-      io.to(user.socketId).emit("getNotification", {
-        userNotifications: user.notificationCount,
-      });
-    }
+  // send and get message
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("getMessage", {
+      senderId,
+      text,
+    });
   });
 
+  // FIXME: in testing, the typing indicator is not working
   socket.on("isTyping", ({ senderId, receiverId }) => {
     const user = getUser(receiverId);
     if (user) {
