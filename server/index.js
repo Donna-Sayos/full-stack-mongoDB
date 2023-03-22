@@ -81,7 +81,7 @@ io.on("connection", (socket) => {
     }
   });
 
-  // clear notifications
+  // clear notifications FIXME: not working
   socket.on("clearNotifications", (userId) => {
     const user = getUser(userId);
     if (user) {
@@ -89,6 +89,13 @@ io.on("connection", (socket) => {
       io.to(user.socketId).emit("getNotification", {
         userNotifications: user.notificationCount,
       });
+    }
+  });
+
+  socket.on("isTyping", ({ senderId, receiverId }) => {
+    const user = getUser(receiverId);
+    if (user) {
+      io.to(user.socketId).emit("typingIndicator", { senderId });
     }
   });
 
