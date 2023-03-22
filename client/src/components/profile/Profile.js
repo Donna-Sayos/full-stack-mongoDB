@@ -13,7 +13,6 @@ import RightSidebar from "../rightSidebar/RightSidebar";
 import ProfilePic from "../../common/pic/ProfilePic";
 import { updateUserCoverPicture } from "../../utils/helper/helperCoverPicture";
 import { updateUserProfilePicture } from "../../utils/helper/helperProfilePicture";
-import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 
 const profileUserImg = {
   width: "150px",
@@ -31,15 +30,12 @@ const profileUserImg = {
 export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const [user, setUser] = useState([]);
   const { username } = useParams();
-  const [specificUser, setSpecificUser] = useState(null); // initialize as null
+  const [specificUser, setSpecificUser] = useState(null);
   const { user: currentUser, dispatch } = useAuthContext();
-  const { setIsLoading } = useOnlineContext();
   const isCurrentUser = currentUser.username === specificUser?.username;
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    setIsLoading(true);
-
     if (currentUser) {
       dispatch({ type: "LOGOUT" });
       navigate("/");
@@ -109,11 +105,6 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
     // Only fetch the user data when the `username` prop changes
     getUser();
   }, [username]);
-
-  useEffect(() => {
-    console.log("setting isLoading to false");
-    setIsLoading(false);
-  }, [currentUser]);
 
   return (
     <>

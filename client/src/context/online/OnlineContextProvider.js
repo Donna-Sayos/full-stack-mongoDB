@@ -37,18 +37,13 @@ export default function OnlineContextProvider({ children, currentUser }) {
       socket.on("getUsers", (users) => {
         setOnlineUsers(
           // .userId is the user id of the user in the "users" array on the server-side socket.
-          users.map(
-            (user) => user.userId
-            // currentUser?.followings.filter((f) =>
-            //   users.some((u) => u.userId === f)
-          )
+          users.map((user) => user.userId)
         );
         setIsLoading(false); // Set isLoading to false when onlineUsers are updated
       });
 
       // listen for the updateOnlineUsers event and update the onlineUsers state
       socket.on("updateOnlineUsers", (users) => {
-        console.log("online users updated");
         setOnlineUsers(users);
       });
 
