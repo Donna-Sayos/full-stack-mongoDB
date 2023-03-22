@@ -30,6 +30,7 @@ const addUser = (userId, socketId) => {
       userId,
       socketId,
       notificationCount: 0,
+      readMessages: [],
     });
 };
 
@@ -57,25 +58,20 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  // event to the socket that is emitted when the user opens the chat
-  socket.on("read", ({ receiverId }) => {
-    const user = getUser(receiverId);
-    if (user) {
-      user.notificationCount = 0;
-      io.to(user.socketId).emit("getNotification", {
-        userNotifications: user.notificationCount,
-      });
-    }
+  // event that returns the readMessages array of the user
+  socket.on("getReadMessages", (userId) => {
+    const user = getUser(userId);
+    io.to(user.socketId).emit("readMessages", {
+      readMessages: user.readMessages,
+    });
   });
 
   // send and get notification
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     const user = getUser(receiverId);
     if (user) {
-      if (!socket.rooms.has(user.socketId)) {
-        // user is not reading the chat, increment notification count
-        user.notificationCount++;
-      }
+      user.notificationCount++;
+
       io.to(user.socketId).emit("getNotification", {
         senderId,
         receiverId,
@@ -92,6 +88,9 @@ io.on("connection", (socket) => {
       senderId,
       text,
     });
+
+    // add the message to the readMessages array of the receiver
+    user.readMessages.push(senderId);
   });
 
   // FIXME: in testing, the typing indicator is not working
