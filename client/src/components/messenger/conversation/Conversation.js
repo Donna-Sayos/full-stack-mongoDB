@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
-import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
 import { resetConvoNotification } from "../../../utils/helper/helperFunctions";
 
 const conversationImg = {
@@ -20,14 +19,11 @@ export default function Conversation({
   setNotificationCount,
 }) {
   const [user, setUser] = useState(null);
-  const { activateInChat } = useOnlineContext();
 
   const handleClearConvo = async () => {
     try {
       await resetConvoNotification(conversation._id);
       setNotificationCount(0);
-
-      activateInChat();
     } catch (err) {
       console.log(err);
     }
