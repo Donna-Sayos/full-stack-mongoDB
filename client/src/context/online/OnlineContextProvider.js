@@ -56,45 +56,45 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // Listen to the "getNotification" event to update the notifications of the current user.
-      socket.on(
-        "getNotification",
-        ({ senderId, conversationId, receiverId, userNotifications }) => {
-          // setNotifications((prevNotifications) => {
-          //   const updatedConversationNotifications = {
-          //     ...prevNotifications,
-          //     [senderId]: {
-          //       senderId,
-          //       receiverId,
-          //       conversationId,
-          //       userNotifications,
-          //     },
-          //   };
+      // socket.on(
+      //   "getNotification",
+      //   ({ senderId, conversationId, receiverId, userNotifications }) => {
+      //     setNotifications((prevNotifications) => {
+      //       const updatedConversationNotifications = {
+      //         ...prevNotifications,
+      //         [senderId]: {
+      //           senderId,
+      //           receiverId,
+      //           conversationId,
+      //           userNotifications,
+      //         },
+      //       };
 
-          //   return updatedConversationNotifications;
-          // });
+      //       return updatedConversationNotifications;
+      //     });
 
-          // Update the user notification count
-          if (receiverId === currentUser?._id) {
-            setUserNotif(() => {
-              const totalUserNotif = Object.values({
-                ...notifications,
-                [conversationId]: {
-                  senderId,
-                  receiverId,
-                  conversationId,
-                  userNotifications,
-                },
-              }).reduce(
-                (acc, { userNotifications }) => acc + userNotifications,
-                0
-              );
-              return totalUserNotif;
-            });
-          } else {
-            setUserNotif(0);
-          }
-        }
-      );
+      //     // Update the user notification count
+      //     if (receiverId === currentUser?._id) {
+      //       setUserNotif(() => {
+      //         const totalUserNotif = Object.values({
+      //           ...notifications,
+      //           [conversationId]: {
+      //             senderId,
+      //             receiverId,
+      //             conversationId,
+      //             userNotifications,
+      //           },
+      //         }).reduce(
+      //           (acc, { userNotifications }) => acc + userNotifications,
+      //           0
+      //         );
+      //         return totalUserNotif;
+      //       });
+      //     } else {
+      //       setUserNotif(0);
+      //     }
+      //   }
+      // );
 
       // Return a cleanup function to disconnect the socket when the component unmounts
       return () => {
@@ -118,6 +118,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       userNotif,
       isLoading,
       setOnlineUsers,
+      setNotifications,
       clearUserNotif,
       setIsLoading,
     }),
@@ -128,6 +129,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       userNotif,
       isLoading,
       setOnlineUsers,
+      setNotifications,
       clearUserNotif,
       setIsLoading,
     ]
