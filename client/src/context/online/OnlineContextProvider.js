@@ -14,7 +14,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
   const [userNotif, setUserNotif] = useState(0);
-  const [inChat, setInChat] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -107,18 +106,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
       console.log(`Error connecting to socket: ${err}`);
       setIsLoading(false); // Set isLoading to false if there's an error
     }
-  }, [currentUser, inChat, notifications]);
+  }, [currentUser, notifications, userNotif]);
 
   const clearUserNotif = () => {
     setUserNotif(0);
-  };
-
-  const activateInChat = () => {
-    setInChat(true);
-  };
-
-  const deactivateInChat = () => {
-    setInChat(false);
   };
 
   const memoizedValues = useMemo(
@@ -127,12 +118,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
       arrivalMessage,
       notifications,
       userNotif,
-      inChat,
       isLoading,
       setOnlineUsers,
       clearUserNotif,
-      activateInChat,
-      deactivateInChat,
       setIsLoading,
     }),
     [
@@ -140,12 +128,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
       arrivalMessage,
       notifications,
       userNotif,
-      inChat,
       isLoading,
       setOnlineUsers,
       clearUserNotif,
-      activateInChat,
-      deactivateInChat,
       setIsLoading,
     ]
   );
