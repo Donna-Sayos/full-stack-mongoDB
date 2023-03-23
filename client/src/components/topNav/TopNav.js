@@ -33,7 +33,7 @@ export default function TopNav({ setDisplayFeed }) {
 
   return (
     <div className="topNavContainer">
-      <div className="topNavLeft" onClick={() => deactivateInChat()}>
+      <div className="topNavLeft">
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
         </Link>
