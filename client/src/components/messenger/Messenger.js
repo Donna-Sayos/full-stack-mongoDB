@@ -76,7 +76,7 @@ export default function Messenger() {
         // emit the message via Socket.io
         socket.current.emit("sendMessage", {
           senderId: user._id,
-          receiverId,
+          receiverId: receiverId,
           text: newMessage,
           conversationId: currentChat._id,
         });
@@ -85,7 +85,7 @@ export default function Messenger() {
         socket.current.emit("sendNotification", {
           senderId: user._id,
           conversationId: currentChat._id,
-          receiverId,
+          receiverId: receiverId,
         });
 
         setMessages([...messages, data]);

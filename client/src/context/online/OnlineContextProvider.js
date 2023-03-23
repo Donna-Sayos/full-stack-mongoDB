@@ -60,41 +60,23 @@ export default function OnlineContextProvider({ children, currentUser }) {
         "getNotification",
         ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => {
-            const updatedConversationNotifications = {
+            const updatedNotifications = {
               ...prevNotifications,
-              [senderId]: {
+              [receiverId]: {
                 senderId,
-                receiverId,
                 conversationId,
                 userNotifications,
               },
             };
-
-            return updatedConversationNotifications;
-          });
-
-          // Update the user notification count
-          if (receiverId === currentUser?._id) {
-            if (inChat === false) {
-              setUserNotif(() => {
-                const totalUserNotif = Object.values({
-                  ...notifications,
-                  [conversationId]: {
-                    senderId,
-                    receiverId,
-                    conversationId,
-                    userNotifications,
-                  },
-                }).reduce(
-                  (acc, { userNotifications }) => acc + userNotifications,
-                  0
-                );
-                return totalUserNotif;
-              });
-            } else {
-              setUserNotif(0);
+            if (receiverId === currentUser?._id) {
+              const totalUserNotif = Object.values(updatedNotifications).reduce(
+                (acc, { userNotifications }) => acc + userNotifications,
+                userNotif
+              );
+              setUserNotif(totalUserNotif);
             }
-          }
+            return updatedNotifications;
+          });
         }
       );
 
