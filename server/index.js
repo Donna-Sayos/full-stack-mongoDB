@@ -30,7 +30,6 @@ const addUser = (userId, socketId) => {
       userId,
       socketId,
       notificationCount: 0,
-      readMessages: [],
     });
 };
 
@@ -58,11 +57,12 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  // event that returns the readMessages array of the user
-  socket.on("getReadMessages", (userId) => {
-    const user = getUser(userId);
-    io.to(user.socketId).emit("readMessages", {
-      readMessages: user.readMessages,
+  // send and get message
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
+    io.to(user.socketId).emit("getMessage", {
+      senderId,
+      text,
     });
   });
 
@@ -81,19 +81,17 @@ io.on("connection", (socket) => {
     }
   });
 
-  // send and get message
-  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-    const user = getUser(receiverId);
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text,
-    });
-
-    // add the message to the readMessages array of the receiver
-    user.readMessages.push(senderId);
+  // clear notifications FIXME: not working
+  socket.on("clearNotifications", (userId) => {
+    const user = getUser(userId);
+    if (user) {
+      user.notificationCount = 0;
+      io.to(user.socketId).emit("getNotification", {
+        userNotifications: user.notificationCount,
+      });
+    }
   });
 
-  // FIXME: in testing, the typing indicator is not working
   socket.on("isTyping", ({ senderId, receiverId }) => {
     const user = getUser(receiverId);
     if (user) {

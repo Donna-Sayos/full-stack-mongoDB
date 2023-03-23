@@ -17,7 +17,7 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { onlineUsers, arrivalMessage } = useOnlineContext();
+  const { onlineUsers, arrivalMessage, inChat } = useOnlineContext();
   const socket = useRef(null);
   const scrollRef = useRef();
 
@@ -146,15 +146,16 @@ export default function Messenger() {
             {currentChat ? (
               <>
                 <div className="chatBoxTop">
-                  {messages.map((m, index) => (
-                    <div key={m._id || index} ref={scrollRef}>
-                      <Message
-                        message={m}
-                        own={m.sender === user._id}
-                        sender={m.sender}
-                      />
-                    </div>
-                  ))}
+                  {inChat &&
+                    messages.map((m, index) => (
+                      <div key={m._id || index} ref={scrollRef}>
+                        <Message
+                          message={m}
+                          own={m.sender === user._id}
+                          sender={m.sender}
+                        />
+                      </div>
+                    ))}
                 </div>
                 <div className="chatBoxBottom">
                   <textarea
