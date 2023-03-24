@@ -88,9 +88,6 @@ export default function Messenger() {
         setNewMessage("");
 
         await incrementConvoNotification(currentChat._id);
-
-        // Clear the notification count for the conversation
-        setNotificationCount(0);
       } else {
         setMessages([...messages, data]);
         setNewMessage("");
