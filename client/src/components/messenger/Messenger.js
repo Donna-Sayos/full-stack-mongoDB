@@ -17,7 +17,7 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { onlineUsers, arrivalMessage, inChat } = useOnlineContext();
+  const { onlineUsers, arrivalMessage } = useOnlineContext();
   const socket = useRef(null);
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find((member) => member !== user._id);
@@ -78,13 +78,11 @@ export default function Messenger() {
         });
 
         // Send a notification to the recipient
-        if (inChat === false) {
-          socket.current.emit("sendNotification", {
-            senderId: user._id,
-            conversationId: currentChat._id,
-            receiverId: receiverId,
-          });
-        }
+        socket.current.emit("sendNotification", {
+          senderId: user._id,
+          conversationId: currentChat._id,
+          receiverId: receiverId,
+        });
 
         setMessages([...messages, data]);
         setNewMessage("");
