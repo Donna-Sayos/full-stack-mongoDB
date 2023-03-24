@@ -17,9 +17,10 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { onlineUsers, arrivalMessage } = useOnlineContext();
+  const { onlineUsers, arrivalMessage, inChat } = useOnlineContext();
   const socket = useRef(null);
   const scrollRef = useRef();
+  const receiverId = currentChat.members.find((member) => member !== user._id);
 
   useEffect(() => {
     arrivalMessage &&
@@ -58,16 +59,11 @@ export default function Messenger() {
   const handleSend = async (e) => {
     e.preventDefault();
 
-    const receiverId = currentChat.members.find(
-      (member) => member !== user._id
-    );
-
     const message = {
       sender: user._id,
       text: newMessage,
       conversationId: currentChat._id,
     };
-
     const { data } = await Axios.post("/api/v1/messages", message);
 
     try {
@@ -82,11 +78,13 @@ export default function Messenger() {
         });
 
         // Send a notification to the recipient
-        socket.current.emit("sendNotification", {
-          senderId: user._id,
-          conversationId: currentChat._id,
-          receiverId: receiverId,
-        });
+        if (inChat === false) {
+          socket.current.emit("sendNotification", {
+            senderId: user._id,
+            conversationId: currentChat._id,
+            receiverId: receiverId,
+          });
+        }
 
         setMessages([...messages, data]);
         setNewMessage("");
