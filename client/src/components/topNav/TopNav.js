@@ -17,23 +17,26 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { userNotif, clearUserNotif } = useOnlineContext();
+  const { userNotif, clearUserNotif, deactivateInChat } = useOnlineContext();
 
   const handleUserNotif = () => {
     clearUserNotif();
+    deactivateInChat();
   };
 
   const handleFeed = () => {
     setDisplayFeed("friendFeeds");
+    deactivateInChat();
   };
 
   const handleExplore = () => {
-    setDisplayFeed("allFeeds"); 
+    setDisplayFeed("allFeeds");
+    deactivateInChat();
   };
 
   return (
     <div className="topNavContainer">
-      <div className="topNavLeft">
+      <div className="topNavLeft" onClick={() => deactivateInChat()}>
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
         </Link>

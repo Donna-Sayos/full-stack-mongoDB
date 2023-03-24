@@ -20,7 +20,7 @@ export default function Messenger() {
   const { onlineUsers, arrivalMessage, inChat } = useOnlineContext();
   const socket = useRef(null);
   const scrollRef = useRef();
-  const receiverId = currentChat.members.find((member) => member !== user._id);
+  const receiverId = currentChat?.members.find((member) => member !== user._id);
 
   useEffect(() => {
     arrivalMessage &&
