@@ -68,36 +68,27 @@ io.on("connection", (socket) => {
   });
 
   // // send and get notification
-  // socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
-  //   const user = getUser(receiverId);
-  //   if (user) {
-  //     user.notificationCount++;
-
-  //     io.to(user.socketId).emit("getNotification", {
-  //       senderId,
-  //       receiverId,
-  //       conversationId,
-  //       userNotifications: user.notificationCount,
-  //     });
-  //   }
-  // });
-
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     const user = getUser(receiverId);
-    const sender = getUser(senderId);
-    const bothUsersJoined = sender && sender.socketId !== user.socketId;
-
     if (user) {
-      // check if both users have joined the chat before incrementing the notification count
-
-      if (!bothUsersJoined) {
-        user.notificationCount++;
-      }
+      user.notificationCount++;
 
       io.to(user.socketId).emit("getNotification", {
         senderId,
         receiverId,
         conversationId,
+        userNotifications: user.notificationCount,
+      });
+    }
+  });
+
+  socket.on("resetNotification", ({ receiverId }) => {
+    const user = getUser(receiverId);
+    if (user) {
+      user.notificationCount = 0;
+
+      io.to(user.socketId).emit("resetNotification", {
+        receiverId,
         userNotifications: user.notificationCount,
       });
     }
