@@ -4,7 +4,6 @@ import Axios from "axios";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import { incrementConvoNotification } from "../../utils/helper/helperFunctions";
-import { io } from "socket.io-client";
 import TopNav from "../topNav/TopNav";
 import Conversation from "./conversation/Conversation";
 import Message from "./message/Message";
@@ -17,8 +16,8 @@ export default function Messenger() {
   const [newMessage, setNewMessage] = useState("");
   const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { onlineUsers, arrivalMessage } = useOnlineContext();
-  const socket = useRef(null);
+  const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
+    useOnlineContext();
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find((member) => member !== user._id);
 
@@ -68,21 +67,11 @@ export default function Messenger() {
 
     try {
       if (onlineUsers.includes(receiverId)) {
-        socket.current = io("http://localhost:5001");
         // emit the message via Socket.io
-        socket.current.emit("sendMessage", {
-          senderId: user._id,
-          receiverId: receiverId,
-          text: newMessage,
-          conversationId: currentChat._id,
-        });
+        sendMessage(user._id, receiverId, newMessage, currentChat._id);
 
         // Send a notification to the recipient
-        socket.current.emit("sendNotification", {
-          senderId: user._id,
-          conversationId: currentChat._id,
-          receiverId: receiverId,
-        });
+        sendNotification(user._id, currentChat._id, receiverId);
 
         setMessages([...messages, data]);
         setNewMessage("");

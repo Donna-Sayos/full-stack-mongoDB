@@ -5,6 +5,7 @@ import React, {
   useRef,
   useEffect,
   useMemo,
+  useCallback,
 } from "react";
 import io from "socket.io-client";
 
@@ -94,11 +95,34 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, [currentUser, notifications]);
 
-  const clearUserNotif = async (userId) => {
+  const clearUserNotif = useCallback((receiverId) => {
     socket.current.emit("resetNotification", {
-      receiverId: userId,
+      receiverId,
     });
-  };
+  }, []);
+
+  const sendMessage = useCallback(
+    (senderId, receiverId, text, conversationId) => {
+      socket.current.emit("sendMessage", {
+        senderId,
+        receiverId,
+        text,
+        conversationId,
+      });
+    },
+    []
+  );
+
+  const sendNotification = useCallback(
+    (senderId, conversationId, receiverId) => {
+      socket.current.emit("sendNotification", {
+        senderId,
+        conversationId,
+        receiverId,
+      });
+    },
+    []
+  );
 
   const memoizedValues = useMemo(
     () => ({
@@ -109,6 +133,8 @@ export default function OnlineContextProvider({ children, currentUser }) {
       setOnlineUsers,
       clearUserNotif,
       setIsLoading,
+      sendMessage,
+      sendNotification,
     }),
     [
       onlineUsers,
@@ -118,6 +144,8 @@ export default function OnlineContextProvider({ children, currentUser }) {
       setOnlineUsers,
       clearUserNotif,
       setIsLoading,
+      sendMessage,
+      sendNotification,
     ]
   );
 
