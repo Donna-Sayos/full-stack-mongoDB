@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
@@ -22,17 +22,10 @@ export default function Conversation({
   setFriendId,
 }) {
   const [user, setUser] = useState(null);
-  const { setUserNotif } = useOnlineContext(); // TODO: remove if not needed
-
-  const handleConvo = async () => {
-    try {
-      await resetConvoNotification(conversation._id, user?._id);
-      setNotificationCount(0);
-    } catch (err) {
-      console.log(`Error conversation click handler: ${err}`);
-    }
-  };
-
+  const friend = useMemo(
+    () => conversation.members.find((m) => m !== currentUser._id),
+    [conversation, currentUser]
+  );
   const fetchCount = useCallback(async () => {
     try {
       if (conversation && friendId) {
@@ -47,10 +40,16 @@ export default function Conversation({
     }
   }, [conversation, friendId, setNotificationCount]);
 
-  useEffect(() => {
-    const friend = conversation.members.find((m) => m !== currentUser._id);
-    setFriendId(friend);
+  const handleConvo = async () => {
+    try {
+      await resetConvoNotification(conversation._id, user?._id);
+      setNotificationCount(0);
+    } catch (err) {
+      console.log(`Error conversation click handler: ${err}`);
+    }
+  };
 
+  useEffect(() => {
     const getUser = async () => {
       try {
         const { data } = await Axios(`/api/v1/users/${friend}`);
@@ -61,11 +60,17 @@ export default function Conversation({
     };
 
     getUser();
-  }, [currentUser, conversation]);
+  }, [friend]);
+
+  useEffect(() => {
+    setFriendId(friend);
+  }, [friend, setFriendId]);
 
   useEffect(() => {
     fetchCount();
   }, [fetchCount]);
+
+  console.log(`Notification count (CONVO): ${notificationCount}`);
 
   return (
     <div

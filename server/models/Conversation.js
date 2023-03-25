@@ -7,7 +7,6 @@ const ConversationSchema = new mongoose.Schema(
     },
     notificationCount: {
       type: Number,
-      default: 0,
     },
   },
   { timestamps: true }
