@@ -17,6 +17,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [notifications, setNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
+  const [chatOpen, setChatOpen] = useState(false);
   const socket = useRef({ current: null });
 
   useEffect(() => {
@@ -125,6 +126,10 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
+  const openChat = () => setChatOpen(true);
+
+  const closeChat = () => setChatOpen(false);
+
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
@@ -132,12 +137,15 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       isLoading,
       notificationCount,
-      setNotificationCount,
+      chatOpen,
       setOnlineUsers,
       clearUserNotif,
       setIsLoading,
       sendMessage,
       sendNotification,
+      setNotificationCount,
+      openChat,
+      closeChat,
     }),
     [
       onlineUsers,
@@ -145,12 +153,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       isLoading,
       notificationCount,
-      setNotificationCount,
-      setOnlineUsers,
-      clearUserNotif,
-      setIsLoading,
-      sendMessage,
-      sendNotification,
+      chatOpen,
     ]
   );
 
