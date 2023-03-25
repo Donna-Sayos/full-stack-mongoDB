@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
@@ -6,7 +6,6 @@ import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import ProfilePic from "../../common/pic/ProfilePic";
-import { io } from "socket.io-client";
 
 const topNavImg = {
   width: "32px",
@@ -17,14 +16,16 @@ const topNavImg = {
 };
 
 export default function TopNav({ setDisplayFeed }) {
-  const socket = useRef(null);
   const { user: currentUser } = useAuthContext();
-  const { userNotif, clearUserNotif, notifications } = useOnlineContext();
+  const { notifications, clearUserNotif } = useOnlineContext();
   const count = notifications[currentUser._id]?.userNotifications;
 
-  const handleUserNotif = () => { //FIXME: this is not working
-    socket.current = io("http://localhost:5001");
-    socket.current.emit("resetNotification", { receiverId });
+  const handleUserNotif = async () => {
+    try {
+      await clearUserNotif(currentUser._id);
+    } catch (err) {
+      console.log(`Error clearing user notifications: ${err}`);
+    }
   };
 
   const handleFeed = () => {
@@ -34,8 +35,6 @@ export default function TopNav({ setDisplayFeed }) {
   const handleExplore = () => {
     setDisplayFeed("allFeeds");
   };
-
-  console.log("notification count", count);
 
   return (
     <div className="topNavContainer">

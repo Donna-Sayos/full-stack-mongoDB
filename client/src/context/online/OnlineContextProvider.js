@@ -13,7 +13,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
-  const [userNotif, setUserNotif] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -68,17 +67,22 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 userNotifications,
               },
             };
-            // if (receiverId === currentUser?._id) {
-            //   const totalUserNotif = Object.values(updatedNotifications).reduce(
-            //     (acc, { userNotifications }) => acc + userNotifications,
-            //     userNotif
-            //   );
-            //   setUserNotif(totalUserNotif);
-            // }
             return updatedNotifications;
           });
         }
       );
+
+      //resetNotification
+      socket.on("resetNotification", (data) => {
+        const updatedNotifications = {
+          ...notifications,
+          [data.receiverId]: {
+            ...notifications[data.receiverId],
+            userNotifications: 0,
+          },
+        };
+        setNotifications(updatedNotifications);
+      });
 
       // Return a cleanup function to disconnect the socket when the component unmounts
       return () => {
@@ -88,10 +92,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
       console.log(`Error connecting to socket: ${err}`);
       setIsLoading(false); // Set isLoading to false if there's an error
     }
-  }, [currentUser, notifications, userNotif]);
+  }, [currentUser, notifications]);
 
-  const clearUserNotif = () => {
-    setUserNotif(0);
+  const clearUserNotif = async (userId) => {
+    socket.emit("resetNotification", {
+      receiverId: userId,
+    });
   };
 
   const memoizedValues = useMemo(
@@ -99,22 +105,18 @@ export default function OnlineContextProvider({ children, currentUser }) {
       onlineUsers,
       arrivalMessage,
       notifications,
-      userNotif,
       isLoading,
       setOnlineUsers,
       clearUserNotif,
-      setUserNotif,
       setIsLoading,
     }),
     [
       onlineUsers,
       arrivalMessage,
       notifications,
-      userNotif,
       isLoading,
       setOnlineUsers,
       clearUserNotif,
-      setUserNotif,
       setIsLoading,
     ]
   );
