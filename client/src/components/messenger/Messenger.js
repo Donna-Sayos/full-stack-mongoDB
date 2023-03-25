@@ -14,10 +14,15 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [notificationCount, setNotificationCount] = useState(0);
   const { user } = useAuthContext();
-  const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
-    useOnlineContext();
+  const {
+    onlineUsers,
+    arrivalMessage,
+    sendMessage,
+    sendNotification,
+    notificationCount,
+    setNotificationCount,
+  } = useOnlineContext();
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find((member) => member !== user._id);
 
@@ -67,7 +72,7 @@ export default function Messenger() {
 
     try {
       if (onlineUsers.includes(receiverId)) {
-        // emit the message via Socket.io
+        // send a message to the recipient
         sendMessage(user._id, receiverId, newMessage, currentChat._id);
 
         // Send a notification to the recipient
