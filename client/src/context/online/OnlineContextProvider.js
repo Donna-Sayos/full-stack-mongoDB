@@ -102,6 +102,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
     });
   }, []);
 
+  // send a message to the recipient
   const sendMessage = useCallback(
     (senderId, receiverId, text, conversationId) => {
       socket.current.emit("sendMessage", {
@@ -114,6 +115,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
+  // Send a notification to the recipient
   const sendNotification = useCallback(
     (senderId, conversationId, receiverId) => {
       socket.current.emit("sendNotification", {
