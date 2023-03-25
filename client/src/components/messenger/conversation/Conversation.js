@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
-import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
+import { useOnlineContext } from "../../../context/online/OnlineContextProvider"; // TODO: remove if not needed
 import { resetConvoNotification } from "../../../utils/helper/helperFunctions";
 
 const conversationImg = {
@@ -20,14 +20,11 @@ export default function Conversation({
   setNotificationCount,
 }) {
   const [user, setUser] = useState(null);
-  const { openChat } = useOnlineContext();
+  const { setUserNotif } = useOnlineContext(); // TODO: remove if not needed
 
   const handleConvo = async () => {
     try {
-      openChat();
-
       await resetConvoNotification(conversation._id);
-      
       setNotificationCount(0);
     } catch (err) {
       console.log(`Error conversation click handler: ${err}`);
