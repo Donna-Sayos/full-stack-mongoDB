@@ -20,14 +20,17 @@ export default function Conversation({
   setNotificationCount,
 }) {
   const [user, setUser] = useState(null);
-  const { setUserNotif } = useOnlineContext();
+  const { openChat } = useOnlineContext();
 
   const handleConvo = async () => {
     try {
+      openChat();
+
       await resetConvoNotification(conversation._id);
+      
       setNotificationCount(0);
     } catch (err) {
-      console.log(err);
+      console.log(`Error conversation click handler: ${err}`);
     }
   };
 
