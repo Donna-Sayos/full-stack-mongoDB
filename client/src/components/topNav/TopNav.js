@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { Link } from "react-router-dom";
 import "./index.css";
 import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
@@ -6,6 +6,7 @@ import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import ProfilePic from "../../common/pic/ProfilePic";
+import { io } from "socket.io-client";
 
 const topNavImg = {
   width: "32px",
@@ -16,11 +17,14 @@ const topNavImg = {
 };
 
 export default function TopNav({ setDisplayFeed }) {
+  const socket = useRef(null);
   const { user: currentUser } = useAuthContext();
-  const { userNotif, clearUserNotif } = useOnlineContext();
+  const { userNotif, clearUserNotif, notifications } = useOnlineContext();
+  const count = notifications[currentUser._id]?.userNotifications;
 
-  const handleUserNotif = () => {
-    clearUserNotif();
+  const handleUserNotif = () => { //FIXME: this is not working
+    socket.current = io("http://localhost:5001");
+    socket.current.emit("resetNotification", { receiverId });
   };
 
   const handleFeed = () => {
@@ -28,8 +32,10 @@ export default function TopNav({ setDisplayFeed }) {
   };
 
   const handleExplore = () => {
-    setDisplayFeed("allFeeds"); 
+    setDisplayFeed("allFeeds");
   };
+
+  console.log("notification count", count);
 
   return (
     <div className="topNavContainer">
@@ -61,9 +67,7 @@ export default function TopNav({ setDisplayFeed }) {
           <div className="topNavIconItem" onClick={handleUserNotif}>
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
-              {userNotif > 0 && (
-                <span className="topNavIconBadge">{userNotif}</span>
-              )}
+              {count > 0 && <span className="topNavIconBadge"></span>}
             </Link>
           </div>
           <div className="topNavIconItem">

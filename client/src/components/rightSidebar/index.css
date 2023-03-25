@@ -154,18 +154,6 @@
     color: gray;
 }
 
-/* TODO: Clean up this code */
-/* .rightSidebarOffline{
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-color: #c0c5ce;
-    position: absolute;
-    top: -2px;
-    right: 0;
-    border: 2px solid white;
-} */
-
 .rightSidebarUsername{
     font-weight: 500;
 }

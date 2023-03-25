@@ -68,13 +68,13 @@ export default function OnlineContextProvider({ children, currentUser }) {
                 userNotifications,
               },
             };
-            if (receiverId === currentUser?._id) {
-              const totalUserNotif = Object.values(updatedNotifications).reduce(
-                (acc, { userNotifications }) => acc + userNotifications,
-                userNotif
-              );
-              setUserNotif(totalUserNotif);
-            }
+            // if (receiverId === currentUser?._id) {
+            //   const totalUserNotif = Object.values(updatedNotifications).reduce(
+            //     (acc, { userNotifications }) => acc + userNotifications,
+            //     userNotif
+            //   );
+            //   setUserNotif(totalUserNotif);
+            // }
             return updatedNotifications;
           });
         }
@@ -103,6 +103,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       isLoading,
       setOnlineUsers,
       clearUserNotif,
+      setUserNotif,
       setIsLoading,
     }),
     [
@@ -113,6 +114,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       isLoading,
       setOnlineUsers,
       clearUserNotif,
+      setUserNotif,
       setIsLoading,
     ]
   );
