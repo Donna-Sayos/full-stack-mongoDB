@@ -70,6 +70,8 @@ export default function Messenger() {
 
     const { data } = await Axios.post("/api/v1/messages", message);
 
+    if (newMessage === "") return;
+
     try {
       if (onlineUsers.includes(receiverId)) {
         sendMessage(user._id, receiverId, newMessage, currentChat._id);
