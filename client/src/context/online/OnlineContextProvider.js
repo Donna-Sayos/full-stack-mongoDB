@@ -2,6 +2,7 @@ import React, {
   createContext,
   useContext,
   useState,
+  useRef,
   useEffect,
   useMemo,
 } from "react";
@@ -14,25 +15,24 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const socket = useRef({ current: null });
 
   useEffect(() => {
-    let socket;
-
     try {
       if (!currentUser) {
         setIsLoading(false); // Set isLoading to false if there's no current user
         return;
       }
 
-      socket = io("http://localhost:5001");
+      socket.current = io("http://localhost:5001");
 
       // When connected to the server, emit the "addUser" event to add the current user to the "users" array on the server-side.
-      socket.on("connect", () => {
-        socket.emit("addUser", currentUser?._id);
+      socket.current.on("connect", () => {
+        socket.current.emit("addUser", currentUser?._id);
       });
 
       // Listen to the "getUsers" event to update the online status of the users.
-      socket.on("getUsers", (users) => {
+      socket.current.on("getUsers", (users) => {
         setOnlineUsers(
           // .userId is the user id of the user in the "users" array on the server-side socket.
           users.map((user) => user.userId)
@@ -41,12 +41,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // listen for the updateOnlineUsers event and update the onlineUsers state
-      socket.on("updateOnlineUsers", (users) => {
+      socket.current.on("updateOnlineUsers", (users) => {
         setOnlineUsers(users);
       });
 
       // getMessage
-      socket.on("getMessage", (data) => {
+      socket.current.on("getMessage", (data) => {
         setArrivalMessage({
           sender: data.senderId,
           text: data.text,
@@ -55,7 +55,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // Listen to the "getNotification" event to update the notifications of the current user.
-      socket.on(
+      socket.current.on(
         "getNotification",
         ({ senderId, conversationId, receiverId, userNotifications }) => {
           setNotifications((prevNotifications) => {
@@ -73,7 +73,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       );
 
       //resetNotification
-      socket.on("resetNotification", (data) => {
+      socket.current.on("resetNotification", (data) => {
         const updatedNotifications = {
           ...notifications,
           [data.receiverId]: {
@@ -86,7 +86,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
       // Return a cleanup function to disconnect the socket when the component unmounts
       return () => {
-        if (socket) socket.disconnect();
+        if (socket.current) socket.current.disconnect();
       };
     } catch (err) {
       console.log(`Error connecting to socket: ${err}`);
@@ -95,7 +95,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   }, [currentUser, notifications]);
 
   const clearUserNotif = async (userId) => {
-    socket.emit("resetNotification", {
+    socket.current.emit("resetNotification", {
       receiverId: userId,
     });
   };
