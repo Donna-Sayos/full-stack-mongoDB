@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
@@ -18,25 +18,42 @@ export default function Conversation({
   currentUser,
   notificationCount,
   setNotificationCount,
+  friendId,
+  setFriendId,
 }) {
   const [user, setUser] = useState(null);
   const { setUserNotif } = useOnlineContext(); // TODO: remove if not needed
 
   const handleConvo = async () => {
     try {
-      await resetConvoNotification(conversation._id);
+      await resetConvoNotification(conversation._id, user?._id);
       setNotificationCount(0);
     } catch (err) {
       console.log(`Error conversation click handler: ${err}`);
     }
   };
 
+  const fetchCount = useCallback(async () => {
+    try {
+      if (conversation && friendId) {
+        const { data } = await Axios.get(
+          `/api/v1/conversations/${conversation?._id}/notification/${friendId}`
+        );
+        console.log(`Notification count (GET): ${data.notificationCount}`);
+        setNotificationCount(data.notificationCount);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [conversation, friendId, setNotificationCount]);
+
   useEffect(() => {
-    const friendId = conversation.members.find((m) => m !== currentUser._id);
+    const friend = conversation.members.find((m) => m !== currentUser._id);
+    setFriendId(friend);
 
     const getUser = async () => {
       try {
-        const { data } = await Axios(`/api/v1/users/${friendId}`);
+        const { data } = await Axios(`/api/v1/users/${friend}`);
         setUser(data);
       } catch (err) {
         console.log(err);
@@ -47,21 +64,8 @@ export default function Conversation({
   }, [currentUser, conversation]);
 
   useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        if (conversation) {
-          const { data } = await Axios.get(
-            `/api/v1/conversations/${conversation?._id}/notification`
-          );
-          setNotificationCount(data.notificationCount);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     fetchCount();
-  }, [conversation]);
+  }, [fetchCount]);
 
   return (
     <div

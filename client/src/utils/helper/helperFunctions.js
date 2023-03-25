@@ -6,17 +6,23 @@ const shortUuid = () => {
   return fullUuid.substring(0, 10);
 };
 
-const incrementConvoNotification = async (conversationId) => {
+const incrementConvoNotification = async (conversationId, friendId) => {
   try {
-    await Axios.post(`/api/v1/conversations/${conversationId}/notification`);
+    await Axios.post(
+      `/api/v1/conversations/${conversationId}/notification/${friendId}}`
+    );
+    console.log(`notification for user with id ${friendId} incremented`);
   } catch (err) {
     console.log(`Error incrementing notification count: ${err}`);
   }
 };
 
-const resetConvoNotification = async (conversationId) => {
+const resetConvoNotification = async (conversationId, friendId) => {
   try {
-    await Axios.put(`/api/v1/conversations/${conversationId}/notification`);
+    await Axios.put(
+      `/api/v1/conversations/${conversationId}/notification/${friendId}}`
+    );
+    console.log(`notification for user with id ${friendId} reset`);
   } catch (err) {
     console.log(`Error resetting notification count: ${err}`);
   }
