@@ -65,11 +65,10 @@ io.on("connection", (socket) => {
     if (!conversations[conversationId]) {
       conversations[conversationId] = {
         participants: [userId],
-        conversationCount: 1, // initialize notification count to 1
+        conversationCount: 0, // initialize notification count to 0
       };
     } else {
       conversations[conversationId].participants.push(userId);
-      conversations[conversationId].conversationCount++; // increment notification count
     }
 
     // store the conversationId in the user object
@@ -111,14 +110,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // when a user leaves a conversation
-  socket.on("leaveConversation", ({ conversationId, userId }) => {
-    // remove the user from the conversation's list of participants
-    conversations[conversationId].participants = conversations[
-      conversationId
-    ].participants.filter((id) => id !== userId);
-  });
-
   // send and get notification
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     const user = getUser(receiverId);
@@ -133,6 +124,7 @@ io.on("connection", (socket) => {
       // increment the notification count only if both users have not joined the conversation
       if (!bothUsersJoined) {
         user.notificationCount++;
+        conversation.conversationCount++; // increment conversation count
       }
 
       io.to(user.socketId).emit("getNotification", {
@@ -145,6 +137,7 @@ io.on("connection", (socket) => {
     }
   });
 
+  // reset notification
   socket.on("resetNotification", ({ receiverId }) => {
     const user = getUser(receiverId);
     if (user) {
@@ -155,6 +148,27 @@ io.on("connection", (socket) => {
         userNotifications: user.notificationCount,
       });
     }
+  });
+
+  // reset conversation notification
+  socket.on("resetConversationCount", ({ conversationId }) => {
+    const conversation = conversations[conversationId];
+    if (conversation) {
+      conversation.conversationCount = 0;
+      // emit an event to update the conversation count for all participants
+      io.to(conversationId).emit("conversationCountUpdated", {
+        conversationId,
+        conversationCount: conversation.conversationCount,
+      });
+    }
+  });
+
+  // when a user leaves a conversation
+  socket.on("leaveConversation", ({ conversationId, userId }) => {
+    // remove the user from the conversation's list of participants
+    conversations[conversationId].participants = conversations[
+      conversationId
+    ].participants.filter((id) => id !== userId);
   });
 
   // when a user disconnects, remove the user from the array
