@@ -22,6 +22,7 @@ const io = require("socket.io")(server, {
 });
 
 let users = [];
+const conversations = {};
 
 const addUser = (userId, socketId) => {
   // if the user is not in the array, add the user to the array
@@ -30,6 +31,7 @@ const addUser = (userId, socketId) => {
       userId,
       socketId,
       notificationCount: 0,
+      conversationNotifications: 0,
     });
 };
 
@@ -57,27 +59,88 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  // send and get message
-  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-    const user = getUser(receiverId);
+  // when a user joins a conversation
+  socket.on("joinConversation", ({ conversationId, userId }) => {
+    // add the user to the conversation's list of participants
+    if (!conversations[conversationId]) {
+      conversations[conversationId] = {
+        participants: [userId],
+        conversationCount: 1, // initialize notification count to 1
+      };
+    } else {
+      conversations[conversationId].participants.push(userId);
+      conversations[conversationId].conversationCount++; // increment notification count
+    }
 
-    io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text,
-    });
+    // store the conversationId in the user object
+    const user = getUser(userId);
+    if (user) {
+      user.conversationId = conversationId;
+    }
+
+    // check if all participants are present in the conversation
+    const allParticipantsPresent =
+      conversations[conversationId].participants.length === 2;
+
+    // if all participants are present, emit a "joinedChat" event
+    if (allParticipantsPresent) {
+      io.emit("joinedChat", { conversationId });
+    }
+  });
+
+  // send and get message
+  // socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+  //   const user = getUser(receiverId);
+
+  //   io.to(user.socketId).emit("getMessage", {
+  //     senderId,
+  //     text,
+  //   });
+  // });
+  socket.on("sendMessage", ({ senderId, receiverId, text, conversationId }) => {
+    // send the message only if all participants are present in the conversation
+    if (
+      conversations[conversationId].participants.includes(senderId) &&
+      conversations[conversationId].participants.includes(receiverId)
+    ) {
+      const user = getUser(receiverId);
+      io.to(user.socketId).emit("getMessage", {
+        senderId,
+        text,
+      });
+    }
+  });
+
+  // when a user leaves a conversation
+  socket.on("leaveConversation", ({ conversationId, userId }) => {
+    // remove the user from the conversation's list of participants
+    conversations[conversationId].participants = conversations[
+      conversationId
+    ].participants.filter((id) => id !== userId);
   });
 
   // send and get notification
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     const user = getUser(receiverId);
     if (user) {
-      user.notificationCount++;
+      // check if both users have joined the conversation
+      const conversation = conversations[conversationId];
+      const bothUsersJoined =
+        conversation &&
+        conversation.participants.includes(senderId) &&
+        conversation.participants.includes(receiverId);
+
+      // increment the notification count only if both users have not joined the conversation
+      if (!bothUsersJoined) {
+        user.notificationCount++;
+      }
 
       io.to(user.socketId).emit("getNotification", {
         senderId,
         receiverId,
         conversationId,
         userNotifications: user.notificationCount,
+        conversationNotifications: conversation.conversationCount,
       });
     }
   });
