@@ -30,7 +30,6 @@ export default function Conversation({
         const { data } = await Axios.get(
           `/api/v1/conversations/${conversation?._id}/notification`
         );
-        console.log(`Notification count (GET): ${data.notificationCount}`);
         setNotificationCount(data.notificationCount);
       } 
     } catch (err) {
