@@ -23,21 +23,12 @@ const io = require("socket.io")(server, {
 
 let users = [];
 
-// const addUser = (userId, socketId) => {
-//   // if the user is not in the array, add the user to the array
-//   !users.some((user) => user?.userId === userId) &&
-//     users.push({
-//       userId,
-//       socketId,
-//       notificationCount: 0,
-//     });
-// };
-const addUser = (userId, socketId, conversationId) => {
+const addUser = (userId, socketId) => {
+  // if the user is not in the array, add the user to the array
   !users.some((user) => user?.userId === userId) &&
     users.push({
       userId,
       socketId,
-      conversationId,
       notificationCount: 0,
     });
 };
@@ -52,13 +43,8 @@ const removeUser = (socketId) => {
   );
 };
 
-// const getUser = (userId) => {
-//   return users.find((user) => user?.userId === userId);
-// };
-const getUser = (userId, conversationId) => {
-  return users.find(
-    (user) => user?.userId === userId && user?.conversationId === conversationId
-  );
+const getUser = (userId) => {
+  return users.find((user) => user?.userId === userId);
 };
 
 io.on("connection", (socket) => {
@@ -66,53 +52,27 @@ io.on("connection", (socket) => {
   console.log("A user connected!");
 
   // take userId and socketId from user
-  // socket.on("addUser", (userId) => {
-  //   addUser(userId, socket.id);
-  //   io.emit("getUsers", users);
-  // });
-  socket.on("addUser", ({ userId, conversationId }) => {
-    addUser(userId, socket.id, conversationId);
+  socket.on("addUser", (userId) => {
+    addUser(userId, socket.id);
     io.emit("getUsers", users);
   });
 
   // send and get message
-  // socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-  //   const user = getUser(receiverId);
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
 
-  //   io.to(user.socketId).emit("getMessage", {
-  //     senderId,
-  //     text,
-  //   });
-  // });
-  socket.on("sendMessage", ({ senderId, receiverId, text, conversationId }) => {
-    const user = getUser(receiverId, conversationId);
-
-    if (user) {
-      io.to(user.socketId).emit("getMessage", {
-        senderId,
-        text,
-      });
-    }
+    io.to(user.socketId).emit("getMessage", {
+      senderId,
+      text,
+    });
   });
 
   // send and get notification
-  // socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
-  //   const user = getUser(receiverId);
-  //   if (user) {
-  //     user.notificationCount++;
-
-  //     io.to(user.socketId).emit("getNotification", {
-  //       senderId,
-  //       receiverId,
-  //       conversationId,
-  //       userNotifications: user.notificationCount,
-  //     });
-  //   }
-  // });
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
-    const user = getUser(receiverId, conversationId);
-
+    const user = getUser(receiverId);
     if (user) {
+      user.notificationCount++;
+
       io.to(user.socketId).emit("getNotification", {
         senderId,
         receiverId,
@@ -133,13 +93,6 @@ io.on("connection", (socket) => {
       });
     }
   });
-
-  // socket.on("isTyping", ({ senderId, receiverId }) => { FIXME: not working
-  //   const user = getUser(receiverId);
-  //   if (user) {
-  //     io.to(user.socketId).emit("typingIndicator", { senderId });
-  //   }
-  // });
 
   // when a user disconnects, remove the user from the array
   socket.on("disconnect", () => {
