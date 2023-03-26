@@ -14,7 +14,6 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [friendId, setFriendId] = useState(null);
   const { user } = useAuthContext();
   const {
     onlineUsers,
@@ -81,15 +80,12 @@ export default function Messenger() {
         setNewMessage("");
 
         // increment the notification count for the conversation
-        friendId &&
-          (await incrementConvoNotification(currentChat._id, friendId));
+        await incrementConvoNotification(currentChat._id);
       } else {
         setMessages([...messages, data]);
         setNewMessage("");
 
-        friendId &&
-          (await incrementConvoNotification(currentChat._id, friendId));
-          
+        await incrementConvoNotification(currentChat._id);
         // Display a notification to the user that the recipient is offline
         console.log(
           "Recipient is offline. Message will be delivered once they come online."
@@ -125,7 +121,6 @@ export default function Messenger() {
                   currentUser={user}
                   notificationCount={notificationCount}
                   setNotificationCount={setNotificationCount}
-                  setFriendId={setFriendId}
                 />
                 <hr className="convoHr" />
               </div>

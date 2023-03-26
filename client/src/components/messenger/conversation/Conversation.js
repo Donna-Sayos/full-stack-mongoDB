@@ -18,8 +18,6 @@ export default function Conversation({
   currentUser,
   notificationCount,
   setNotificationCount,
-  friendId,
-  setFriendId,
 }) {
   const [user, setUser] = useState(null);
   const friend = useMemo(
@@ -28,21 +26,21 @@ export default function Conversation({
   );
   const fetchCount = useCallback(async () => {
     try {
-      if (conversation && friendId) {
+      if (conversation && user) {
         const { data } = await Axios.get(
-          `/api/v1/conversations/${conversation?._id}/notification/${friendId}`
+          `/api/v1/conversations/${conversation?._id}/notification`
         );
         console.log(`Notification count (GET): ${data.notificationCount}`);
         setNotificationCount(data.notificationCount);
-      }
+      } 
     } catch (err) {
       console.log(err);
     }
-  }, [conversation, friendId, setNotificationCount]);
+  }, [conversation, user]);
 
   const handleConvo = async () => {
     try {
-      await resetConvoNotification(conversation._id, user?._id);
+      await resetConvoNotification(conversation._id);
       setNotificationCount(0);
     } catch (err) {
       console.log(`Error conversation click handler: ${err}`);
@@ -63,14 +61,8 @@ export default function Conversation({
   }, [friend]);
 
   useEffect(() => {
-    setFriendId(friend);
-  }, [friend, setFriendId]);
-
-  useEffect(() => {
     fetchCount();
   }, [fetchCount]);
-
-  console.log(`Notification count (CONVO): ${notificationCount}`);
 
   return (
     <div

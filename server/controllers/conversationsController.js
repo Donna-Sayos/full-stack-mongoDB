@@ -41,11 +41,10 @@ const getTwoConvos = async (req, res) => {
 
 const incrementNotificationCount = async (req, res) => {
   const currentChatId = req.params.currentChatId;
-  const receiverId = req.params.receiverId;
 
   try {
     await Conversation.updateOne(
-      { _id: currentChatId, receiverId: receiverId },
+      { _id: currentChatId },
       { $inc: { notificationCount: 1 } }
     );
     res
@@ -59,16 +58,9 @@ const incrementNotificationCount = async (req, res) => {
 
 const getNotificationCount = async (req, res) => {
   const currentChatId = req.params.currentChatId;
-  const receiverId = req.params.receiverId;
-
+  
   try {
-    const conversation = await Conversation.findOne({
-      _id: currentChatId,
-      receiverId: receiverId,
-    });
-    if (!conversation) {
-      return res.status(404).json({ message: "Conversation not found" });
-    }
+    const conversation = await Conversation.findById(currentChatId);
     res.status(200).json({
       notificationCount: conversation.notificationCount,
     });
@@ -80,18 +72,13 @@ const getNotificationCount = async (req, res) => {
 
 const resetNotificationCount = async (req, res) => {
   const currentChatId = req.params.currentChatId;
-  const receiverId = req.params.receiverId;
 
   try {
-    const conversation = await Conversation.findOneAndUpdate(
-      { _id: currentChatId, receiverId: receiverId },
+    const conversation = await Conversation.findByIdAndUpdate(
+      currentChatId,
       { notificationCount: 0 },
       { new: true }
     );
-
-    if (!conversation) {
-      return res.status(404).json({ message: "Conversation not found" });
-    }
 
     res.status(200).json({
       message: "Notification count reset successfully",

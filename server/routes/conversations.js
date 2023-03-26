@@ -12,7 +12,7 @@ router.route("/").post(newConvo);
 router.route("/:userId").get(getConvo);
 router.route("/find/:firstUserId/:secondUserId").get(getTwoConvos);
 router
-  .route("/:currentChatId/notification/:receiverId")
+  .route("/:currentChatId/notification")
   .get(getNotificationCount)
   .post(incrementNotificationCount)
   .put(resetNotificationCount);
