@@ -20,6 +20,8 @@ export default function Conversation({
   setNotificationCount,
 }) {
   const [user, setUser] = useState(null);
+  const { joinConversation, setJoined } = useOnlineContext();
+
   const friend = useMemo(
     () => conversation.members.find((m) => m !== currentUser._id),
     [conversation, currentUser]
@@ -31,7 +33,7 @@ export default function Conversation({
           `/api/v1/conversations/${conversation?._id}/notification`
         );
         setNotificationCount(data.notificationCount);
-      } 
+      }
     } catch (err) {
       console.log(err);
     }
@@ -41,6 +43,12 @@ export default function Conversation({
     try {
       await resetConvoNotification(conversation._id);
       setNotificationCount(0);
+
+      setJoined(true);
+      joinConversation(conversation._id, currentUser._id);
+      console.log(
+        `CONVERSATION ID: ${conversation._id}; USER ID: ${currentUser._id}`
+      );
     } catch (err) {
       console.log(`Error conversation click handler: ${err}`);
     }
