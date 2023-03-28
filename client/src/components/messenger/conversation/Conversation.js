@@ -71,6 +71,8 @@ export default function Conversation({
     fetchCount();
   }, [fetchCount]);
 
+  console.log("join state: ", joined);
+
   return (
     <div
       className="conversation d-flex justify-content-between"
