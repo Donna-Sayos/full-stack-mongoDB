@@ -20,12 +20,14 @@ export default function Conversation({
   setNotificationCount,
 }) {
   const [user, setUser] = useState(null);
-  const { notifications } = useOnlineContext();
+  const { notifications } = useOnlineContext(); // TODO: remove if not needed
 
-  const friend = useMemo(
-    () => conversation.members.find((m) => m !== currentUser._id),
-    [conversation, currentUser]
-  );
+  // Check if the current user is the friend
+  const isFriend =
+    currentUser._id !== conversation.members[0]
+      ? conversation.members[0]
+      : conversation.members[1];
+
   const fetchCount = useCallback(async () => {
     try {
       if (conversation && user) {
@@ -51,7 +53,7 @@ export default function Conversation({
   useEffect(() => {
     const getUser = async () => {
       try {
-        const { data } = await Axios(`/api/v1/users/${friend}`);
+        const { data } = await Axios(`/api/v1/users/${isFriend}`);
         setUser(data);
       } catch (err) {
         console.log(err);
@@ -59,7 +61,7 @@ export default function Conversation({
     };
 
     getUser();
-  }, [friend]);
+  }, [isFriend]);
 
   useEffect(() => {
     fetchCount();
@@ -73,12 +75,14 @@ export default function Conversation({
       <div>
         <ProfilePic user={user} style={conversationImg} />
         <span
-          className={`conversationName ${notificationCount ? "fw-bold" : ""}`}
+          className={`conversationName ${
+            notificationCount && !currentUser ? "fw-bold" : ""
+          }`}
         >
           {user?.username}
         </span>
       </div>
-      {notificationCount > 0 && (
+      {!currentUser._id && notificationCount > 0 && (
         <span className="badge bg-primary">{notificationCount}</span>
       )}
     </div>
