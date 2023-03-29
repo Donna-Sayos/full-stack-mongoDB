@@ -18,6 +18,7 @@ export default function Conversation({
   currentUser,
   notificationCount,
   setNotificationCount,
+  otherUser,
 }) {
   const [user, setUser] = useState(null);
   const { notifications } = useOnlineContext(); // TODO: remove if not needed
@@ -66,6 +67,9 @@ export default function Conversation({
   useEffect(() => {
     fetchCount();
   }, [fetchCount]);
+
+  console.log(`otherUser: ${otherUser}`);
+  console.log(`currentUser: ${currentUser._id}`); //FIXME: I want only the receiver of the message to see the notification count. How do I do this?
 
   return (
     <div

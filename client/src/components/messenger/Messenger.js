@@ -121,6 +121,7 @@ export default function Messenger() {
                   currentUser={user}
                   notificationCount={notificationCount}
                   setNotificationCount={setNotificationCount}
+                  otherUser={c.members.find((member) => member !== user._id)}
                 />
                 <hr className="convoHr" />
               </div>
