@@ -37,7 +37,7 @@ export default function Conversation({
         setNotificationCount(data.notificationCount);
       }
     } catch (err) {
-      console.log(err);
+      console.log(`Error fetching notification count: ${err}`);
     }
   }, [conversation, user]);
 
@@ -56,7 +56,7 @@ export default function Conversation({
         const { data } = await Axios(`/api/v1/users/${isFriend}`);
         setUser(data);
       } catch (err) {
-        console.log(err);
+        console.log(`Error fetching user: ${err}`);
       }
     };
 
@@ -75,14 +75,12 @@ export default function Conversation({
       <div>
         <ProfilePic user={user} style={conversationImg} />
         <span
-          className={`conversationName ${
-            notificationCount && !currentUser ? "fw-bold" : ""
-          }`}
+          className={`conversationName ${notificationCount ? "fw-bold" : ""}`}
         >
           {user?.username}
         </span>
       </div>
-      {!currentUser._id && notificationCount > 0 && (
+      {notificationCount > 0 && (
         <span className="badge bg-primary">{notificationCount}</span>
       )}
     </div>
