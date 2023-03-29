@@ -22,7 +22,6 @@ const io = require("socket.io")(server, {
 });
 
 let users = [];
-const conversations = {};
 
 const addUser = (userId, socketId) => {
   // if the user is not in the array, add the user to the array
@@ -31,7 +30,6 @@ const addUser = (userId, socketId) => {
       userId,
       socketId,
       notificationCount: 0,
-      conversationNotifications: 0,
     });
 };
 
@@ -59,80 +57,27 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 
-  // when a user joins a conversation
-  socket.on("joinConversation", ({ conversationId, userId }) => {
-    // add the user to the conversation's list of participants
-    if (!conversations[conversationId]) {
-      conversations[conversationId] = {
-        participants: [userId],
-        conversationCount: 0, // initialize notification count to 0
-      };
-    } else {
-      conversations[conversationId].participants.push(userId);
-    }
-
-    // store the conversationId in the user object
-    const user = getUser(userId);
-    if (user) {
-      user.conversationId = conversationId;
-    }
-
-    // check if all participants are present in the conversation
-    const allParticipantsPresent =
-      conversations[conversationId].participants.length === 2;
-
-    // if all participants are present, emit a "joinedChat" event
-    if (allParticipantsPresent) {
-      io.emit("joinedChat", { conversationId });
-    }
-  });
-
   // send and get message
-  // socket.on("sendMessage", ({ senderId, receiverId, text }) => {
-  //   const user = getUser(receiverId);
+  socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+    const user = getUser(receiverId);
 
-  //   io.to(user.socketId).emit("getMessage", {
-  //     senderId,
-  //     text,
-  //   });
-  // });
-  socket.on("sendMessage", ({ senderId, receiverId, text, conversationId }) => {
-    // send the message only if all participants are present in the conversation
-    if (
-      conversations[conversationId].participants.includes(senderId) &&
-      conversations[conversationId].participants.includes(receiverId)
-    ) {
-      const user = getUser(receiverId);
-      io.to(user.socketId).emit("getMessage", {
-        senderId,
-        text,
-      });
-    }
+    io.to(user.socketId).emit("getMessage", {
+      senderId,
+      text,
+    });
   });
 
   // send and get notification
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     const user = getUser(receiverId);
     if (user) {
-      // check if both users have joined the conversation
-      const conversation = conversations[conversationId];
-      const bothUsersJoined =
-        conversation &&
-        conversation.participants.includes(senderId) &&
-        conversation.participants.includes(receiverId);
-
-      // increment the notification count only if both users have not joined the conversation
-      if (!bothUsersJoined) {
-        user.notificationCount++;
-        conversation.conversationCount++; // increment conversation count
-      }
+      user.notificationCount++;
 
       io.to(user.socketId).emit("getNotification", {
         senderId,
         receiverId,
         conversationId,
         userNotifications: user.notificationCount,
-        conversationNotifications: conversation.conversationCount,
       });
     }
   });
@@ -148,27 +93,6 @@ io.on("connection", (socket) => {
         userNotifications: user.notificationCount,
       });
     }
-  });
-
-  // reset conversation notification
-  socket.on("resetConversationCount", ({ conversationId }) => {
-    const conversation = conversations[conversationId];
-    if (conversation) {
-      conversation.conversationCount = 0;
-      // emit an event to update the conversation count for all participants
-      io.to(conversationId).emit("conversationCountUpdated", {
-        conversationId,
-        conversationCount: conversation.conversationCount,
-      });
-    }
-  });
-
-  // when a user leaves a conversation
-  socket.on("leaveConversation", ({ conversationId, userId }) => {
-    // remove the user from the conversation's list of participants
-    conversations[conversationId].participants = conversations[
-      conversationId
-    ].participants.filter((id) => id !== userId);
   });
 
   // when a user disconnects, remove the user from the array

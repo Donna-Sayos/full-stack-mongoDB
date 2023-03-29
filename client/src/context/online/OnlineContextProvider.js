@@ -17,7 +17,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [notifications, setNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [notificationCount, setNotificationCount] = useState(0);
-  const [joined, setJoined] = useState(false);
   const socket = useRef({ current: null });
 
   useEffect(() => {
@@ -128,25 +127,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
-  const joinConversation = useCallback((conversationId, userId) => {
-    socket.current.emit("joinConversation", {
-      conversationId,
-      userId,
-    });
-
-    console.log(`user ${userId} joined conversation ${conversationId}`);
-
-    useEffect(() => {
-      socket.current.on("joinConversation", ({ conversationId, userId }) => {
-        socket.current.emit("joinedChat", { conversationId, userId });
-      });
-
-      return () => {
-        socket.current.off("joinConversation");
-      };
-    }, []);
-  }, []);
-
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
@@ -154,24 +134,14 @@ export default function OnlineContextProvider({ children, currentUser }) {
       notifications,
       isLoading,
       notificationCount,
-      joined,
       setOnlineUsers,
       clearUserNotif,
       setIsLoading,
       sendMessage,
       sendNotification,
       setNotificationCount,
-      setJoined,
-      joinConversation,
     }),
-    [
-      onlineUsers,
-      arrivalMessage,
-      notifications,
-      isLoading,
-      notificationCount,
-      joined,
-    ]
+    [onlineUsers, arrivalMessage, notifications, isLoading, notificationCount]
   );
 
   return (
