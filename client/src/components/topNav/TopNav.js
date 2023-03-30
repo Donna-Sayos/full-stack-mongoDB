@@ -20,13 +20,13 @@ export default function TopNav({ setDisplayFeed }) {
   const { notifications, clearUserNotif } = useOnlineContext();
   const count = notifications[currentUser._id]?.userNotifications;
 
-  const handleUserNotif = async () => {
-    try {
-      await clearUserNotif(currentUser._id);
-    } catch (err) {
-      console.log(`Error clearing user notifications: ${err}`);
-    }
-  };
+  // const handleUserNotif = async () => {
+  //   try {
+  //     await clearUserNotif(currentUser._id);
+  //   } catch (err) {
+  //     console.log(`Error clearing user notifications: ${err}`);
+  //   }
+  // };
 
   const handleFeed = () => {
     setDisplayFeed("friendFeeds");
@@ -63,7 +63,7 @@ export default function TopNav({ setDisplayFeed }) {
             <BiUserPin size={25} />
             {/* <span className="topNavIconBadge">1</span> */}
           </div>
-          <div className="topNavIconItem" onClick={handleUserNotif}>
+          <div className="topNavIconItem">
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
               {count > 0 && <span className="topNavIconBadge"></span>}

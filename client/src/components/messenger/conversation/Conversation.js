@@ -21,7 +21,8 @@ export default function Conversation({
   otherUser,
 }) {
   const [user, setUser] = useState(null);
-  const { notifications } = useOnlineContext(); // TODO: remove if not needed
+  const { notifications, clearUserNotif } = useOnlineContext(); // TODO: remove if not needed
+  const count = notifications[currentUser._id]?.userNotifications;
 
   // Check if the current user is the friend
   const isFriend =
@@ -31,7 +32,7 @@ export default function Conversation({
 
   const fetchCount = useCallback(async () => {
     try {
-      if (conversation && user) {
+      if (conversation) {
         const { data } = await Axios.get(
           `/api/v1/conversations/${conversation?._id}/notification`
         );
@@ -40,11 +41,13 @@ export default function Conversation({
     } catch (err) {
       console.log(`Error fetching notification count: ${err}`);
     }
-  }, [conversation, user]);
+  }, [conversation]);
 
   const handleConvo = async () => {
     try {
+      await clearUserNotif(currentUser._id);
       await resetConvoNotification(conversation._id);
+
       setNotificationCount(0);
     } catch (err) {
       console.log(`Error conversation click handler: ${err}`);
@@ -68,8 +71,8 @@ export default function Conversation({
     fetchCount();
   }, [fetchCount]);
 
-  console.log(`otherUser: ${otherUser}`);
-  console.log(`currentUser: ${currentUser._id}`); //FIXME: I want only the receiver of the message to see the notification count. How do I do this?
+  // console.log(`otherUser: ${otherUser}`);
+  // console.log(`currentUser: ${currentUser._id}`); //FIXME: I want only the receiver of the message to see the notification count. How do I do this?
 
   return (
     <div
@@ -79,12 +82,14 @@ export default function Conversation({
       <div>
         <ProfilePic user={user} style={conversationImg} />
         <span
-          className={`conversationName ${notificationCount ? "fw-bold" : ""}`}
+          className={`conversationName ${
+            notificationCount && count ? "fw-bold" : ""
+          }`}
         >
           {user?.username}
         </span>
       </div>
-      {notificationCount > 0 && (
+      {count > 0 && notificationCount > 0 && (
         <span className="badge bg-primary">{notificationCount}</span>
       )}
     </div>
