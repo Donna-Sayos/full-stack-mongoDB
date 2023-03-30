@@ -15,14 +15,8 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const { user } = useAuthContext();
-  const {
-    onlineUsers,
-    arrivalMessage,
-    sendMessage,
-    sendNotification,
-    notificationCount,
-    setNotificationCount,
-  } = useOnlineContext();
+  const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
+    useOnlineContext();
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find((member) => member !== user._id);
   const message = {
@@ -67,11 +61,8 @@ export default function Messenger() {
 
   const handleSend = async (e) => {
     e.preventDefault();
-
     const { data } = await Axios.post("/api/v1/messages", message);
-
     if (newMessage === "") return;
-
     try {
       if (onlineUsers.includes(receiverId)) {
         sendMessage(user._id, receiverId, newMessage, currentChat._id);
@@ -119,8 +110,6 @@ export default function Messenger() {
                 <Conversation
                   conversation={c}
                   currentUser={user}
-                  notificationCount={notificationCount}
-                  setNotificationCount={setNotificationCount}
                   otherUser={c.members.find((member) => member !== user._id)}
                 />
                 <hr className="convoHr" />

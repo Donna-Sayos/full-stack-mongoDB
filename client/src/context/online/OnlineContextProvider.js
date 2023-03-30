@@ -16,7 +16,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [notificationCount, setNotificationCount] = useState(0);
   const socket = useRef({ current: null });
 
   useEffect(() => {
@@ -133,15 +132,13 @@ export default function OnlineContextProvider({ children, currentUser }) {
       arrivalMessage,
       notifications,
       isLoading,
-      notificationCount,
       setOnlineUsers,
       clearUserNotif,
       setIsLoading,
       sendMessage,
       sendNotification,
-      setNotificationCount,
     }),
-    [onlineUsers, arrivalMessage, notifications, isLoading, notificationCount]
+    [onlineUsers, arrivalMessage, notifications, isLoading]
   );
 
   return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
@@ -16,13 +16,12 @@ const conversationImg = {
 export default function Conversation({
   conversation,
   currentUser,
-  notificationCount,
-  setNotificationCount,
   otherUser,
 }) {
   const [user, setUser] = useState(null);
+  const [notificationCount, setNotificationCount] = useState(0);
   const { notifications, clearUserNotif } = useOnlineContext(); // TODO: remove if not needed
-  const count = notifications[currentUser._id]?.userNotifications;
+  const userNotifCount = notifications[currentUser._id]?.userNotifications; // FIXME: need to fix this
 
   // Check if the current user is the friend
   const isFriend =
@@ -34,7 +33,7 @@ export default function Conversation({
     try {
       if (conversation) {
         const { data } = await Axios.get(
-          `/api/v1/conversations/${conversation?._id}/notification`
+          `/api/v1/conversations/${conversation._id}/notification`
         );
         setNotificationCount(data.notificationCount);
       }
@@ -71,9 +70,6 @@ export default function Conversation({
     fetchCount();
   }, [fetchCount]);
 
-  // console.log(`otherUser: ${otherUser}`);
-  // console.log(`currentUser: ${currentUser._id}`); //FIXME: I want only the receiver of the message to see the notification count. How do I do this?
-
   return (
     <div
       className="conversation d-flex justify-content-between"
@@ -83,13 +79,13 @@ export default function Conversation({
         <ProfilePic user={user} style={conversationImg} />
         <span
           className={`conversationName ${
-            notificationCount && count ? "fw-bold" : ""
+            notificationCount && userNotifCount ? "fw-bold" : ""
           }`}
         >
           {user?.username}
         </span>
       </div>
-      {count > 0 && notificationCount > 0 && (
+      {userNotifCount > 0 && notificationCount > 0 && (
         <span className="badge bg-primary">{notificationCount}</span>
       )}
     </div>
