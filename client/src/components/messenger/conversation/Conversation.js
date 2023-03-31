@@ -73,12 +73,13 @@ export default function Conversation({
 
   useEffect(() => {
     fetchCount();
-    setTotalConversation((prev) => prev + notificationCount);
+  }, [fetchCount]);
 
-    return () => {
-      setTotalConversation((prev) => prev - notificationCount);
-    };
-  }, [fetchCount, notificationCount, setTotalConversation]);
+  useEffect(() => {
+    if (userNotifCount > 0 && notificationCount > 0) {
+      setTotalConversation((prev) => prev + notificationCount);
+    }
+  }, [userNotifCount, notificationCount, setTotalConversation]);
 
   return (
     <div
