@@ -16,10 +16,12 @@ const conversationImg = {
 export default function Conversation({
   conversation,
   currentUser,
+  totalConversation,
+  setTotalConversation,
 }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
-  const { notifications, clearUserNotif } = useOnlineContext(); 
+  const { notifications, clearUserNotif } = useOnlineContext();
   const userNotifCount = notifications[currentUser._id]?.userNotifications;
 
   // Check if the current user is the friend
@@ -43,10 +45,14 @@ export default function Conversation({
 
   const handleConvo = async () => {
     try {
-      await clearUserNotif(currentUser._id);
       await resetConvoNotification(conversation._id);
 
       setNotificationCount(0);
+      setTotalConversation((prev) => prev - notificationCount);
+
+      if (totalConversation - notificationCount === 0) {
+        await clearUserNotif(currentUser._id);
+      }
     } catch (err) {
       console.log(`Error conversation click handler: ${err}`);
     }
@@ -67,7 +73,12 @@ export default function Conversation({
 
   useEffect(() => {
     fetchCount();
-  }, [fetchCount]);
+    setTotalConversation((prev) => prev + notificationCount);
+
+    return () => {
+      setTotalConversation((prev) => prev - notificationCount);
+    };
+  }, [fetchCount, notificationCount, setTotalConversation]);
 
   return (
     <div

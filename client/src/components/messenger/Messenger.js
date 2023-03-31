@@ -14,6 +14,7 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const [totalConversation, setTotalConversation] = useState(0); // TODO: in testing
   const { user } = useAuthContext();
   const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
     useOnlineContext();
@@ -91,6 +92,8 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  console.log(`totalConversation: ${totalConversation}`);
+
   return (
     <>
       <TopNav />
@@ -110,6 +113,8 @@ export default function Messenger() {
                 <Conversation
                   conversation={c}
                   currentUser={user}
+                  totalConversation={totalConversation}
+                  setTotalConversation={setTotalConversation}
                 />
                 <hr className="convoHr" />
               </div>
