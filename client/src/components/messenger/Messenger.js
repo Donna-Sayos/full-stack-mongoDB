@@ -110,7 +110,6 @@ export default function Messenger() {
                 <Conversation
                   conversation={c}
                   currentUser={user}
-                  otherUser={c.members.find((member) => member !== user._id)}
                 />
                 <hr className="convoHr" />
               </div>

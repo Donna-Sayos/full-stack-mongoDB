@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
-import { useOnlineContext } from "../../../context/online/OnlineContextProvider"; // TODO: remove if not needed
+import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
 import { resetConvoNotification } from "../../../utils/helper/helperFunctions";
 
 const conversationImg = {
@@ -16,12 +16,11 @@ const conversationImg = {
 export default function Conversation({
   conversation,
   currentUser,
-  otherUser,
 }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
-  const { notifications, clearUserNotif } = useOnlineContext(); // TODO: remove if not needed
-  const userNotifCount = notifications[currentUser._id]?.userNotifications; // FIXME: need to fix this
+  const { notifications, clearUserNotif } = useOnlineContext(); 
+  const userNotifCount = notifications[currentUser._id]?.userNotifications;
 
   // Check if the current user is the friend
   const isFriend =
