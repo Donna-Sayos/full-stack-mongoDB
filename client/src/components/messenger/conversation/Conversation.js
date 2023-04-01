@@ -16,8 +16,8 @@ const conversationImg = {
 export default function Conversation({
   conversation,
   currentUser,
-  totalConversation,
-  setTotalConversation,
+  totalConversationCount,
+  setTotalConversationCount,
 }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
@@ -47,9 +47,9 @@ export default function Conversation({
       await resetConvoNotification(conversation._id);
 
       setNotificationCount(0);
-      setTotalConversation((prev) => prev - notificationCount);
+      setTotalConversationCount((prev) => prev - notificationCount);
 
-      if (totalConversation - notificationCount === 0) {
+      if (totalConversationCount - notificationCount === 0) {
         await clearUserNotif(currentUser._id);
       }
     } catch (err) {
@@ -76,9 +76,9 @@ export default function Conversation({
 
   useEffect(() => {
     if (userNotifCount > 0 && notificationCount > 0) {
-      setTotalConversation((prev) => prev + notificationCount);
+      setTotalConversationCount((prev) => prev + notificationCount);
     }
-  }, [userNotifCount, notificationCount, setTotalConversation]);
+  }, [userNotifCount, notificationCount, setTotalConversationCount]);
 
   return (
     <div

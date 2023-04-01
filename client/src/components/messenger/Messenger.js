@@ -14,7 +14,7 @@ export default function Messenger() {
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-  const [totalConversation, setTotalConversation] = useState(0);
+  const [totalConversationCount, setTotalConversationCount] = useState(0);
   const { user } = useAuthContext();
   const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
     useOnlineContext();
@@ -111,8 +111,8 @@ export default function Messenger() {
                 <Conversation
                   conversation={c}
                   currentUser={user}
-                  totalConversation={totalConversation}
-                  setTotalConversation={setTotalConversation}
+                  totalConversationCount={totalConversationCount}
+                  setTotalConversationCount={setTotalConversationCount}
                 />
                 <hr className="convoHr" />
               </div>
