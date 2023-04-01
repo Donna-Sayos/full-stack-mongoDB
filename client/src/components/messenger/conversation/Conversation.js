@@ -24,8 +24,7 @@ export default function Conversation({
   const { notifications, clearUserNotif } = useOnlineContext();
   const userNotifCount = notifications[currentUser._id]?.userNotifications;
 
-  // Check if the current user is the friend
-  const isFriend =
+  const isFriend =  // Check if the current user is the friend
     currentUser._id !== conversation.members[0]
       ? conversation.members[0]
       : conversation.members[1];
