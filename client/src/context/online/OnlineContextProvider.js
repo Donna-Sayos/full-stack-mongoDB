@@ -126,11 +126,17 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
-  const isReading = useCallback((receiverId) => {
-    socket.current.emit("isReading", {
-      receiverId,
-    });
-  }, [])
+  const isReading = useCallback(
+    (receiverId) => {
+      socket.current.emit("isReading", {
+        receiverId,
+      });
+
+      const user = onlineUsers.find((user) => user._id === receiverId);
+      return user ? user.isReading : false;
+    },
+    [onlineUsers]
+  );
 
   const memoizedValues = useMemo(
     () => ({
