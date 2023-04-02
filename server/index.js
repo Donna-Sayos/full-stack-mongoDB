@@ -30,6 +30,7 @@ const addUser = (userId, socketId) => {
       userId,
       socketId,
       notificationCount: 0,
+      isReading: false, // FIXME: testing!
     });
 };
 
@@ -78,6 +79,20 @@ io.on("connection", (socket) => {
         receiverId,
         conversationId,
         userNotifications: user.notificationCount,
+      });
+    }
+  });
+
+  // reading socket
+  socket.on("isReading", ({ receiverId }) => {
+    const user = getUser(receiverId);
+
+    if (user) {
+      user.isReading = true;
+
+      io.to(user.socketId).emit("isReading", {
+        senderId,
+        receiverId,
       });
     }
   });

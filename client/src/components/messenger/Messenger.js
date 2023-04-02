@@ -15,7 +15,7 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [totalConversationCount, setTotalConversationCount] = useState(0);
-  const [isReadingConversation, setIsReadingConversation] = useState(false); // FIXME: testing!
+  const [isReading, setIsReading] = useState({}); // FIXME: testing!
   const { user } = useAuthContext();
   const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
     useOnlineContext();
@@ -69,6 +69,7 @@ export default function Messenger() {
       if (onlineUsers.includes(receiverId)) {
         sendMessage(user._id, receiverId, newMessage, currentChat._id);
         sendNotification(user._id, currentChat._id, receiverId);
+        
         setMessages([...messages, data]);
         setNewMessage("");
 
@@ -79,10 +80,6 @@ export default function Messenger() {
         setNewMessage("");
 
         await incrementConvoNotification(currentChat._id);
-        // Display a notification to the user that the recipient is offline
-        console.log(
-          "Recipient is offline. Message will be delivered once they come online."
-        );
       }
     } catch (err) {
       console.log(`Error sending message and notification: ${err}`);
