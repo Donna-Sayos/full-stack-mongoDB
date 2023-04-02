@@ -15,17 +15,27 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [totalConversationCount, setTotalConversationCount] = useState(0);
-  const [isReading, setIsReading] = useState({}); // FIXME: testing!
-  const { user } = useAuthContext();
-  const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
-    useOnlineContext();
+  const { user: currentUser } = useAuthContext();
+  const {
+    onlineUsers,
+    arrivalMessage,
+    sendMessage,
+    sendNotification,
+    isReading,
+  } = useOnlineContext();
   const scrollRef = useRef();
-  const receiverId = currentChat?.members.find((member) => member !== user._id);
+  const receiverId = currentChat?.members.find(
+    (member) => member !== currentUser._id
+  );
   const message = {
-    sender: user?._id,
+    sender: currentUser?._id,
     text: newMessage,
     conversationId: currentChat?._id,
   };
+  const senderUser = isReading(currentUser._id);
+  const receiverUser = isReading(receiverId);
+  console.log(`Sender user: ${senderUser}`);
+  console.log(`Receiver user: ${receiverUser}`);
 
   useEffect(() => {
     arrivalMessage &&
@@ -36,7 +46,9 @@ export default function Messenger() {
   useEffect(() => {
     const getConversations = async () => {
       try {
-        const { data } = await Axios.get("/api/v1/conversations/" + user._id);
+        const { data } = await Axios.get(
+          "/api/v1/conversations/" + currentUser._id
+        );
         setConversations(data.conversations);
       } catch (err) {
         console.log(err);
@@ -44,7 +56,7 @@ export default function Messenger() {
     };
 
     getConversations();
-  }, [user._id]);
+  }, [currentUser._id]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -65,11 +77,12 @@ export default function Messenger() {
     e.preventDefault();
     const { data } = await Axios.post("/api/v1/messages", message);
     if (newMessage === "") return;
+
     try {
       if (onlineUsers.includes(receiverId)) {
-        sendMessage(user._id, receiverId, newMessage, currentChat._id);
-        sendNotification(user._id, currentChat._id, receiverId);
-        
+        sendMessage(currentUser._id, receiverId, newMessage, currentChat._id);
+        sendNotification(currentUser._id, currentChat._id, receiverId);
+
         setMessages([...messages, data]);
         setNewMessage("");
 
@@ -108,7 +121,7 @@ export default function Messenger() {
                 <hr className="convoHr" />
                 <Conversation
                   conversation={c}
-                  currentUser={user}
+                  currentUser={currentUser}
                   totalConversationCount={totalConversationCount}
                   setTotalConversationCount={setTotalConversationCount}
                 />
@@ -126,7 +139,7 @@ export default function Messenger() {
                     <div key={m._id || index} ref={scrollRef}>
                       <Message
                         message={m}
-                        own={m.sender === user._id}
+                        own={m.sender === currentUser._id}
                         sender={m.sender}
                       />
                     </div>
@@ -156,7 +169,7 @@ export default function Messenger() {
           <div className="chatOnlineWrapper">
             <ChatOnline
               onlineUsers={onlineUsers}
-              currentUserId={user._id}
+              currentUserId={currentUser._id}
               setCurrentChat={setCurrentChat}
               setConversations={setConversations}
             />

@@ -126,6 +126,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
+  const isReading = useCallback((receiverId) => {
+    socket.current.emit("isReading", {
+      receiverId,
+    });
+  }, [])
+
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
@@ -137,6 +143,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       setIsLoading,
       sendMessage,
       sendNotification,
+      isReading,
     }),
     [onlineUsers, arrivalMessage, notifications, isLoading]
   );
