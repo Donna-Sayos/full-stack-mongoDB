@@ -15,6 +15,7 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [totalConversationCount, setTotalConversationCount] = useState(0);
+  const [isReadingConversation, setIsReadingConversation] = useState(false); // FIXME: testing!
   const { user } = useAuthContext();
   const { onlineUsers, arrivalMessage, sendMessage, sendNotification } =
     useOnlineContext();
