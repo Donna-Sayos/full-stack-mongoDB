@@ -21,7 +21,7 @@ export default function Conversation({
 }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
-  const { notifications, clearUserNotif, isReading } = useOnlineContext();
+  const { notifications, clearUserNotif, isReadingHandler } = useOnlineContext();
   const userNotifCount = notifications[currentUser._id]?.userNotifications;
 
   const isFriend =  // Check if the current user is the friend
@@ -46,7 +46,7 @@ export default function Conversation({
     try {
       await resetConvoNotification(conversation._id);
 
-      isReading(currentUser._id);
+      isReadingHandler(currentUser._id);
 
       setNotificationCount(0);
       setTotalConversationCount((prev) => prev - notificationCount);

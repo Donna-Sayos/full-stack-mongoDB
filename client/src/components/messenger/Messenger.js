@@ -21,7 +21,7 @@ export default function Messenger() {
     arrivalMessage,
     sendMessage,
     sendNotification,
-    isReading,
+    isReadingHandler,
   } = useOnlineContext();
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find(
@@ -32,8 +32,8 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
-  const senderUser = isReading(currentUser._id);
-  const receiverUser = isReading(receiverId);
+  const senderUser = isReadingHandler(currentUser._id);
+  const receiverUser = isReadingHandler(receiverId);
   console.log(`Sender user: ${senderUser}`);
   console.log(`Receiver user: ${receiverUser}`);
 

@@ -90,7 +90,7 @@ io.on("connection", (socket) => {
     if (user) {
       user.isReading = true;
 
-      io.to(user.socketId).emit("isReading", {
+      io.to(user.socketId).emit("getIsReading", {
         receiverId,
         isReading: user.isReading,
       });

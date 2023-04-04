@@ -126,10 +126,11 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
-  const isReading = useCallback(
+  const isReadingHandler = useCallback(
     (receiverId) => {
-      socket.current.emit("isReading", {
+      socket.current.emit("getIsReading", {
         receiverId,
+        isReading,
       });
 
       const user = onlineUsers.find((user) => user._id === receiverId);
@@ -149,7 +150,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       setIsLoading,
       sendMessage,
       sendNotification,
-      isReading,
+      isReadingHandler,
     }),
     [onlineUsers, arrivalMessage, notifications, isLoading]
   );
