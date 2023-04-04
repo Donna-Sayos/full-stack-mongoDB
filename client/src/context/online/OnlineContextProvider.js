@@ -16,6 +16,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [readingChat, setReadingChat] = useState({});
   const socket = useRef({ current: null });
 
   useEffect(() => {
@@ -52,6 +53,19 @@ export default function OnlineContextProvider({ children, currentUser }) {
           sender: data.senderId,
           text: data.text,
           createdAt: Date.now(),
+        });
+      });
+
+      // getIsReading
+      socket.current.on("getIsReading", ({ receiverId, isReading }) => {
+        setReadingChat((prevReadingChat) => {
+          const updatedReadingChat = {
+            ...prevReadingChat,
+            [receiverId]: {
+              isReading,
+            },
+          };
+          return updatedReadingChat;
         });
       });
 
@@ -93,7 +107,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       console.log(`Error connecting to socket: ${err}`);
       setIsLoading(false); // Set isLoading to false if there's an error
     }
-  }, [currentUser, notifications]);
+  }, [currentUser, notifications, readingChat]);
 
   const clearUserNotif = useCallback((receiverId) => {
     socket.current.emit("resetNotification", {
@@ -126,18 +140,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
-  const isReadingHandler = useCallback(
-    (receiverId) => {
-      socket.current.emit("getIsReading", {
-        receiverId,
-        isReading,
-      });
-
-      const user = onlineUsers.find((user) => user._id === receiverId);
-      return user ? user.isReading : false;
-    },
-    [onlineUsers]
-  );
+  // Set the isReading property of the recipient to true
+  const isReadingHandler = useCallback((receiverId) => {
+    socket.current.emit("setIsReading", {
+      receiverId,
+    });
+  }, []);
 
   const memoizedValues = useMemo(
     () => ({
@@ -145,6 +153,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       arrivalMessage,
       notifications,
       isLoading,
+      readingChat,
       setOnlineUsers,
       clearUserNotif,
       setIsLoading,
@@ -152,7 +161,14 @@ export default function OnlineContextProvider({ children, currentUser }) {
       sendNotification,
       isReadingHandler,
     }),
-    [onlineUsers, arrivalMessage, notifications, isLoading]
+    [
+      onlineUsers,
+      arrivalMessage,
+      notifications,
+      isLoading,
+      isReadingHandler,
+      readingChat,
+    ]
   );
 
   return (

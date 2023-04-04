@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
   });
 
   // reading socket
-  socket.on("isReading", ({ receiverId }) => {
+  socket.on("setIsReading", ({ receiverId }) => {
     const user = getUser(receiverId);
 
     if (user) {
