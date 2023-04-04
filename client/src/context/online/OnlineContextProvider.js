@@ -62,7 +62,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
           const updatedReadingChat = {
             ...prevReadingChat,
             [receiverId]: {
-              isReading,
+              isReading: prevReadingChat[receiverId]?.isReading || isReading,
             },
           };
           return updatedReadingChat;

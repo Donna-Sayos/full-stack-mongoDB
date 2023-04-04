@@ -33,7 +33,10 @@ export default function Messenger() {
     conversationId: currentChat?._id,
   };
 
-  console.log(`reading chat: ${readingChat}`);
+  console.log(`reading chat RECEIVER: ${readingChat[receiverId]?.isReading}`);
+  console.log(
+    `reading chat CURRENT USER: ${readingChat[currentUser?._id]?.isReading}`
+  );
 
   useEffect(() => {
     arrivalMessage &&
