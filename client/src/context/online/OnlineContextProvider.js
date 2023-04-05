@@ -58,6 +58,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
       // getIsReading
       socket.current.on("getIsReading", ({ receiverId, isReading }) => {
+        console.log("receiverId:", receiverId, "isReading:", isReading);
         setReadingChat((prevReadingChat) => {
           const updatedReadingChat = {
             ...prevReadingChat,
