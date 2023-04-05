@@ -100,6 +100,19 @@ export default function OnlineContextProvider({ children, currentUser }) {
         setNotifications(updatedNotifications);
       });
 
+      // resetIsReading
+      socket.current.on("resetIsReading", ({ receiverId, isReading }) => {
+        setReadingChat((prevReadingChat) => {
+          const updatedReadingChat = {
+            ...prevReadingChat,
+            [receiverId]: {
+              isReading: prevReadingChat[receiverId]?.isReading || isReading,
+            },
+          };
+          return updatedReadingChat;
+        });
+      });
+
       // Return a cleanup function to disconnect the socket when the component unmounts
       return () => {
         if (socket.current) socket.current.disconnect();
@@ -148,6 +161,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
     });
   }, []);
 
+  const resetIsReadingHandler = useCallback((receiverId) => {
+    socket.current.emit("resetIsReading", {
+      receiverId,
+    });
+  }, []);
+
   const memoizedValues = useMemo(
     () => ({
       onlineUsers,
@@ -161,15 +180,9 @@ export default function OnlineContextProvider({ children, currentUser }) {
       sendMessage,
       sendNotification,
       isReadingHandler,
+      resetIsReadingHandler,
     }),
-    [
-      onlineUsers,
-      arrivalMessage,
-      notifications,
-      isLoading,
-      isReadingHandler,
-      readingChat,
-    ]
+    [onlineUsers, arrivalMessage, notifications, isLoading, readingChat]
   );
 
   return (

@@ -97,9 +97,24 @@ io.on("connection", (socket) => {
     }
   });
 
+  // reset isReading
+  socket.on("resetIsReading", ({ receiverId }) => {
+    const user = getUser(receiverId);
+
+    if (user) {
+      user.isReading = false;
+
+      io.to(user.socketId).emit("resetIsReading", {
+        senderId,
+        isReading: user.isReading,
+      });
+    }
+  });
+
   // reset notification
   socket.on("resetNotification", ({ receiverId }) => {
     const user = getUser(receiverId);
+
     if (user) {
       user.notificationCount = 0;
 
