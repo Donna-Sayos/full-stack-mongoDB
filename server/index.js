@@ -84,13 +84,14 @@ io.on("connection", (socket) => {
   });
 
   // reading socket
-  socket.on("setIsReading", ({ receiverId }) => {
-    const user = getUser(receiverId);
-
+  socket.on("setIsReading", ({ senderId }) => {
+    const user = getUser(senderId);
+  
     if (user) {
       user.isReading = true;
-
-      io.to(user.socketId).emit("getIsReading", {
+  
+      // Emit the event only to the client that initiated the setIsReading event
+      socket.emit("getIsReading", {
         senderId,
         isReading: user.isReading,
       });
@@ -98,13 +99,14 @@ io.on("connection", (socket) => {
   });
 
   // reset isReading
-  socket.on("resetIsReading", ({ receiverId }) => {
-    const user = getUser(receiverId);
-
+  socket.on("resetIsReading", ({ senderId }) => {
+    const user = getUser(senderId);
+  
     if (user) {
       user.isReading = false;
-
-      io.to(user.socketId).emit("resetIsReading", {
+  
+      // Emit the event only to the client that initiated the resetIsReading event
+      socket.emit("resetIsReading", {
         senderId,
         isReading: user.isReading,
       });
