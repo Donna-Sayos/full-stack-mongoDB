@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
+import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
 
 const chatOnlineImg = {
   width: "40px",
@@ -19,6 +20,7 @@ export default function ChatOnline({
 }) {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
+  const { isReadingHandler } = useOnlineContext();
 
   useEffect(() => {
     const getFriends = async () => {
@@ -41,6 +43,7 @@ export default function ChatOnline({
 
   const handleClick = async (friendId) => {
     try {
+      isReadingHandler(currentUserId); // FIXME: testing feature
       const { data } = await Axios.get(
         `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );
