@@ -35,7 +35,7 @@ export default function Messenger() {
 
   console.log(`reading chat RECEIVER: ${readingChat[receiverId]?.isReading}`);
   console.log(
-    `reading chat CURRENT USER: ${readingChat[currentUser?._id]?.isReading}`
+    `reading chat SENDER: ${readingChat[currentUser?._id]?.isReading}`
   );
 
   useEffect(() => {

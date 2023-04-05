@@ -57,13 +57,13 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // getIsReading
-      socket.current.on("getIsReading", ({ receiverId, isReading }) => {
-        console.log("receiverId:", receiverId, "isReading:", isReading);
+      socket.current.on("getIsReading", ({ senderId, isReading }) => {
+        console.log("senderId:", senderId, "isReading:", isReading);
         setReadingChat((prevReadingChat) => {
           const updatedReadingChat = {
             ...prevReadingChat,
-            [receiverId]: {
-              isReading: prevReadingChat[receiverId]?.isReading || isReading,
+            [senderId]: {
+              isReading: prevReadingChat[senderId]?.isReading || isReading,
             },
           };
           return updatedReadingChat;
@@ -101,12 +101,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // resetIsReading
-      socket.current.on("resetIsReading", ({ receiverId, isReading }) => {
+      socket.current.on("resetIsReading", ({ senderId, isReading }) => {
         setReadingChat((prevReadingChat) => {
           const updatedReadingChat = {
             ...prevReadingChat,
-            [receiverId]: {
-              isReading: prevReadingChat[receiverId]?.isReading || isReading,
+            [senderId]: {
+              isReading: prevReadingChat[senderId]?.isReading || isReading,
             },
           };
           return updatedReadingChat;
@@ -155,15 +155,15 @@ export default function OnlineContextProvider({ children, currentUser }) {
   );
 
   // Set the isReading property of the recipient to true
-  const isReadingHandler = useCallback((receiverId) => {
+  const isReadingHandler = useCallback((senderId) => {
     socket.current.emit("setIsReading", {
-      receiverId,
+      senderId,
     });
   }, []);
 
-  const resetIsReadingHandler = useCallback((receiverId) => {
+  const resetIsReadingHandler = useCallback((senderId) => {
     socket.current.emit("resetIsReading", {
-      receiverId,
+      senderId,
     });
   }, []);
 
