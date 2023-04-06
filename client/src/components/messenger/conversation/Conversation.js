@@ -46,7 +46,7 @@ export default function Conversation({
     try {
       await resetConvoNotification(conversation._id);
 
-      isReadingHandler(currentUser._id);
+      isReadingHandler(currentUser._id); // FIXME: testing feature
 
       setNotificationCount(0);
       setTotalConversationCount((prev) => prev - notificationCount);

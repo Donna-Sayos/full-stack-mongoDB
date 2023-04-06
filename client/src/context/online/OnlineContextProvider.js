@@ -16,7 +16,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const [notifications, setNotifications] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [readingChat, setReadingChat] = useState({});
+  const [readingChat, setReadingChat] = useState({}); // FIXME: testing feature
   const socket = useRef({ current: null });
 
   useEffect(() => {

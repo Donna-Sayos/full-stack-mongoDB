@@ -21,7 +21,7 @@ export default function Messenger() {
     arrivalMessage,
     sendMessage,
     sendNotification,
-    readingChat,
+    readingChat, // FIXME: testing feature
   } = useOnlineContext();
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find(
@@ -33,7 +33,7 @@ export default function Messenger() {
     conversationId: currentChat?._id,
   };
 
-  console.log(`reading chat RECEIVER: ${readingChat[receiverId]?.isReading}`);
+  console.log(`reading chat RECEIVER: ${readingChat[receiverId]?.isReading}`); // FIXME: testing feature
   console.log(
     `reading chat SENDER: ${readingChat[currentUser?._id]?.isReading}`
   );
