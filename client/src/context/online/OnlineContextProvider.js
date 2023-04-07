@@ -101,12 +101,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // resetIsReading
-      socket.current.on("resetIsReading", ({ senderId, isReading }) => {
+      socket.current.on("resetIsReading", ({ senderId }) => {
         setReadingChat((prevReadingChat) => {
           const updatedReadingChat = {
             ...prevReadingChat,
             [senderId]: {
-              isReading: prevReadingChat[senderId]?.isReading || isReading,
+              isReading: false,
             },
           };
           return updatedReadingChat;
@@ -182,7 +182,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       isReadingHandler,
       resetIsReadingHandler,
     }),
-    [onlineUsers, arrivalMessage, notifications, isLoading, readingChat, resetIsReadingHandler]
+    [onlineUsers, arrivalMessage, notifications, isLoading, readingChat]
   );
 
   return (
