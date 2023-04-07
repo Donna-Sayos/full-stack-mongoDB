@@ -17,28 +17,25 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { notifications, clearUserNotif } = useOnlineContext();
+  const { notifications, resetIsReadingHandler } = useOnlineContext();
   const count = notifications[currentUser._id]?.userNotifications;
-
-  // const handleUserNotif = async () => {
-  //   try {
-  //     await clearUserNotif(currentUser._id);
-  //   } catch (err) {
-  //     console.log(`Error clearing user notifications: ${err}`);
-  //   }
-  // };
 
   const handleFeed = () => {
     setDisplayFeed("friendFeeds");
+    resetIsReadingHandler(currentUser._id);
   };
 
   const handleExplore = () => {
     setDisplayFeed("allFeeds");
+    resetIsReadingHandler(currentUser._id);
   };
 
   return (
     <div className="topNavContainer">
-      <div className="topNavLeft">
+      <div
+        className="topNavLeft"
+        onClick={() => resetIsReadingHandler(currentUser._id)}
+      >
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
         </Link>

@@ -182,7 +182,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       isReadingHandler,
       resetIsReadingHandler,
     }),
-    [onlineUsers, arrivalMessage, notifications, isLoading, readingChat]
+    [onlineUsers, arrivalMessage, notifications, isLoading, readingChat, resetIsReadingHandler]
   );
 
   return (
