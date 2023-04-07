@@ -43,7 +43,7 @@ export default function ChatOnline({
 
   const handleClick = async (friendId) => {
     try {
-      isReadingHandler(currentUserId); // FIXME: testing feature
+      isReadingHandler(currentUserId, friendId); // FIXME: testing feature
       const { data } = await Axios.get(
         `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );
