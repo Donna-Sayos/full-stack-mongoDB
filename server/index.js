@@ -105,19 +105,6 @@ io.on("connection", (socket) => {
   });
 
   // reading socket
-  // socket.on("setIsReading", ({ senderId }) => {
-  //   const user = getUser(senderId);
-
-  //   if (user) {
-  //     user.isReading = true;
-
-  //     // Emit the event only to the socket of the user being read by senderId
-  //     io.to(user.socketId).emit("getIsReading", {
-  //       senderId,
-  //       isReading: user.isReading,
-  //     });
-  //   }
-  // });
   socket.on("setIsReading", ({ senderId, receiverId }) => { // FIXME: testing feature
     const senderUser = getUser(senderId);
     const receiverUser = getUser(receiverId);

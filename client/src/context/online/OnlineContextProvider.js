@@ -154,12 +154,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
     []
   );
 
-  // Set the isReading property of the recipient to true
-  // const isReadingHandler = useCallback((senderId) => {
-  //   socket.current.emit("setIsReading", {
-  //     senderId,
-  //   });
-  // }, []);
   const isReadingHandler = useCallback((senderId, receiverId) => { // FIXME: testing feature
     socket.current.emit("setIsReading", {
       senderId,
