@@ -82,14 +82,14 @@ io.on("connection", (socket) => {
   //     });
   //   }
   // });
-
-  socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => { // FIXME: testing feature
+  socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
+    // FIXME: testing feature
     const receiver = getUser(receiverId);
     const sender = getUser(senderId);
 
     if (receiver) {
       // check if both members of the conversation have an active socket connection
-      const isBothOnline = sender && sender.isReading;
+      const isBothOnline = sender && sender.isReading && receiver.isReading;
 
       if (!isBothOnline) {
         receiver.notificationCount++;
@@ -105,17 +105,35 @@ io.on("connection", (socket) => {
   });
 
   // reading socket
-  socket.on("setIsReading", ({ senderId }) => {
-    const user = getUser(senderId);
+  // socket.on("setIsReading", ({ senderId }) => {
+  //   const user = getUser(senderId);
 
-    if (user) {
-      user.isReading = true;
+  //   if (user) {
+  //     user.isReading = true;
 
-      // Emit the event only to the socket of the user being read by senderId
-      io.to(user.socketId).emit("getIsReading", {
-        senderId,
-        isReading: user.isReading,
-      });
+  //     // Emit the event only to the socket of the user being read by senderId
+  //     io.to(user.socketId).emit("getIsReading", {
+  //       senderId,
+  //       isReading: user.isReading,
+  //     });
+  //   }
+  // });
+  socket.on("setIsReading", ({ senderId, receiverId }) => { // FIXME: testing feature
+    const senderUser = getUser(senderId);
+    const receiverUser = getUser(receiverId);
+
+    if (senderUser && receiverUser) {
+      senderUser.isReading = true;
+      receiverUser.isReading = true;
+
+      // Emit the event only to the sockets of the sender and the receiver
+      io.to(senderUser.socketId)
+        .to(receiverUser.socketId)
+        .emit("getIsReading", {
+          senderId,
+          receiverId,
+          isReading: true,
+        });
     }
   });
 
