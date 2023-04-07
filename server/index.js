@@ -69,17 +69,38 @@ io.on("connection", (socket) => {
   });
 
   // send and get notification
-  socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
-    const user = getUser(receiverId);
-    if (user) {
-      user.notificationCount++;
+  // socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
+  //   const user = getUser(receiverId);
+  //   if (user) {
+  //     user.notificationCount++;
 
-      io.to(user.socketId).emit("getNotification", {
-        senderId,
-        receiverId,
-        conversationId,
-        userNotifications: user.notificationCount,
-      });
+  //     io.to(user.socketId).emit("getNotification", {
+  //       senderId,
+  //       receiverId,
+  //       conversationId,
+  //       userNotifications: user.notificationCount,
+  //     });
+  //   }
+  // });
+
+  socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => { // FIXME: testing feature
+    const receiver = getUser(receiverId);
+    const sender = getUser(senderId);
+
+    if (receiver) {
+      // check if both members of the conversation have an active socket connection
+      const isBothOnline = sender && sender.isReading;
+
+      if (!isBothOnline) {
+        receiver.notificationCount++;
+
+        io.to(receiver.socketId).emit("getNotification", {
+          senderId,
+          receiverId,
+          conversationId,
+          userNotifications: receiver.notificationCount,
+        });
+      }
     }
   });
 
