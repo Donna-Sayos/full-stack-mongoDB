@@ -32,11 +32,11 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
+  const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
+  const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
 
-  console.log(`reading chat RECEIVER: ${readingChat[receiverId]?.isReading}`); // FIXME: testing feature
-  console.log(
-    `reading chat SENDER: ${readingChat[currentUser?._id]?.isReading}`
-  );
+  console.log(`senderReadingState: ${senderReadingState}`); // FIXME: testing feature
+  console.log(`receiverReadingState: ${receiverReadingState}`); // FIXME: testing feature
 
   useEffect(() => {
     arrivalMessage &&
@@ -76,23 +76,26 @@ export default function Messenger() {
 
   const handleSend = async (e) => {
     e.preventDefault();
+
     const { data } = await Axios.post("/api/v1/messages", message);
-    if (newMessage === "") return;
+
+    if (newMessage === "") {
+      return;
+    }
 
     try {
-      if (onlineUsers.includes(receiverId)) {
+      if (
+        onlineUsers.includes(receiverId) &&
+        senderReadingState &&
+        receiverReadingState
+      ) {
         sendMessage(currentUser._id, receiverId, newMessage, currentChat._id);
-        sendNotification(currentUser._id, currentChat._id, receiverId);
-
         setMessages([...messages, data]);
         setNewMessage("");
-
-        // increment the notification count for the conversation
-        await incrementConvoNotification(currentChat._id);
       } else {
+        sendNotification(currentUser._id, currentChat._id, receiverId);
         setMessages([...messages, data]);
         setNewMessage("");
-
         await incrementConvoNotification(currentChat._id);
       }
     } catch (err) {
@@ -103,6 +106,8 @@ export default function Messenger() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  console.log(`totalConversationCount: ${totalConversationCount}`); // FIXME: testing feature
 
   return (
     <>
