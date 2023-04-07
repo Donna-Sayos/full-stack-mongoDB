@@ -22,19 +22,19 @@ export default function TopNav({ setDisplayFeed }) {
 
   const handleFeed = () => {
     setDisplayFeed("friendFeeds");
-    resetIsReadingHandler(currentUser._id);
+    resetIsReadingHandler(currentUser._id); // FIXME: testing feature
   };
 
   const handleExplore = () => {
     setDisplayFeed("allFeeds");
-    resetIsReadingHandler(currentUser._id);
+    resetIsReadingHandler(currentUser._id); // FIXME: testing feature
   };
 
   return (
     <div className="topNavContainer">
       <div
         className="topNavLeft"
-        onClick={() => resetIsReadingHandler(currentUser._id)}
+        onClick={() => resetIsReadingHandler(currentUser._id)} // FIXME: testing feature
       >
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
