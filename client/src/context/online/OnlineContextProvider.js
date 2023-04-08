@@ -106,7 +106,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
           const updatedReadingChat = {
             ...prevReadingChat,
             [senderId]: {
-              isReading: false,
+              isReading: false, // FIXME: testing feature
             },
           };
           return updatedReadingChat;
