@@ -76,12 +76,16 @@ export default function Messenger() {
   useEffect(() => { // FIXME: testing feature
     if (readingChat[receiverId]) {
       setReceiverReadingState(readingChat[receiverId].isReading);
+    } else {
+      setReceiverReadingState(false);
     }
 
-    if (readingChat[currentUser._id]) {
+    if (readingChat[currentUser?._id]) {
       setSenderReadingState(readingChat[currentUser._id].isReading);
+    } else {
+      setSenderReadingState(false);
     }
-  }, [readingChat, receiverId, currentUser._id]);
+  }, [readingChat, receiverId, currentUser?._id]);
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -117,6 +121,8 @@ export default function Messenger() {
   }, [messages]);
 
   console.log(`totalConversationCount: ${totalConversationCount}`); // FIXME: testing feature
+  console.log(`receiverReadingState: ${receiverReadingState}`); // FIXME: testing feature
+  console.log(`senderReadingState: ${senderReadingState}`); // FIXME: testing feature
 
   return (
     <>
