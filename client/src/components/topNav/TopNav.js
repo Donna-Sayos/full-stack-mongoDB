@@ -17,7 +17,7 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { notifications, resetIsReadingHandler } = useOnlineContext();
+  const { notifications, resetIsReadingHandler, readingChat } = useOnlineContext();
   const count = notifications[currentUser._id]?.userNotifications;
 
   const handleFeed = () => {

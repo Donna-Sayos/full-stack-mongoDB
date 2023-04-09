@@ -15,6 +15,8 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [totalConversationCount, setTotalConversationCount] = useState(0);
+  const [receiverReadingState, setReceiverReadingState] = useState(false); // FIXME: testing feature
+  const [senderReadingState, setSenderReadingState] = useState(false); // FIXME: testing feature
   const { user: currentUser } = useAuthContext();
   const {
     onlineUsers,
@@ -32,11 +34,8 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
-  const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
-  const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
-
-  console.log(`senderReadingState: ${senderReadingState}`); // FIXME: testing feature
-  console.log(`receiverReadingState: ${receiverReadingState}`); // FIXME: testing feature
+  // const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
+  // const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
 
   useEffect(() => {
     arrivalMessage &&
@@ -73,6 +72,16 @@ export default function Messenger() {
 
     getMessages();
   }, [currentChat]);
+
+  useEffect(() => { // FIXME: testing feature
+    if (readingChat[receiverId]) {
+      setReceiverReadingState(readingChat[receiverId].isReading);
+    }
+
+    if (readingChat[currentUser._id]) {
+      setSenderReadingState(readingChat[currentUser._id].isReading);
+    }
+  }, [readingChat, receiverId, currentUser._id]);
 
   const handleSend = async (e) => {
     e.preventDefault();
