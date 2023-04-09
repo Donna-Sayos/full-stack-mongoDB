@@ -50,7 +50,7 @@ export default function Conversation({
       isReadingHandler(currentUser._id, isFriend); // FIXME: testing feature
 
       setNotificationCount(0);
-      setTotalConversationCount((prev) => prev - notificationCount);
+      setTotalConversationCount(totalConversationCount - notificationCount);
 
       if (totalConversationCount - notificationCount === 0) {
         await clearUserNotif(currentUser._id);
