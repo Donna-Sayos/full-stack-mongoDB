@@ -103,7 +103,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       // resetIsReading
       socket.current.on("resetIsReading", ({ senderId, isReading }) => {
         console.log(
-          "resetIsReading called with senderId: ",
+          "resetIsReading called with senderId: ", // FIXME: testing feature
           senderId,
           "isReading: ",
           isReading
@@ -112,7 +112,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
           const updatedReadingChat = {
             ...prevReadingChat,
             [senderId]: {
-              isReading: false, // FIXME: testing feature
+              isReading: false, 
             },
           };
           return updatedReadingChat;
