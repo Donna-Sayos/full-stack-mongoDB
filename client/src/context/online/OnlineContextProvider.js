@@ -200,7 +200,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
   const resetIsReadingHandler = useCallback(
     (senderId) => {
-      console.log("Resetting isReading for senderId", senderId); // FIXME: testing feature
+      console.log("Reset handler invoked. Resetting isReading for senderId", senderId); // FIXME: testing feature
       // Makes sure socket is defined and connected to the server-side socket.io instance
       if (socket && socket.current) {
         socket.current.emit("resetIsReading", {
