@@ -58,7 +58,12 @@ export default function OnlineContextProvider({ children, currentUser }) {
 
       // getIsReading
       socket.current.on("getIsReading", ({ senderId, isReading }) => {
-        console.log("getIsReading called with senderId:", senderId, "isReading:", isReading);
+        console.log(
+          "getIsReading called with senderId:",
+          senderId,
+          "isReading:",
+          isReading
+        );
         setReadingChat((prevReadingChat) => {
           const updatedReadingChat = {
             ...prevReadingChat,
@@ -112,7 +117,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
           const updatedReadingChat = {
             ...prevReadingChat,
             [senderId]: {
-              isReading: false, 
+              isReading: false,
             },
           };
           return updatedReadingChat;
@@ -129,51 +134,84 @@ export default function OnlineContextProvider({ children, currentUser }) {
     }
   }, [currentUser, notifications, readingChat]);
 
-  const clearUserNotif = useCallback((receiverId) => {
-    socket.current.emit("resetNotification", {
-      receiverId,
-    });
-  }, []);
+  const clearUserNotif = useCallback(
+    (receiverId) => {
+      if (socket && socket.current) {
+        socket.current.emit("resetNotification", {
+          receiverId,
+        });
+      } else {
+        console.error("Socket is not defined or connected."); // FIXME: testing feature
+      }
+    },
+    [socket]
+  );
 
   // send a message to the recipient
   const sendMessage = useCallback(
     (senderId, receiverId, text, conversationId) => {
-      socket.current.emit("sendMessage", {
-        senderId,
-        receiverId,
-        text,
-        conversationId,
-      });
+      if (socket && socket.current) {
+        socket.current.emit("sendMessage", {
+          senderId,
+          receiverId,
+          text,
+          conversationId,
+        });
+      } else {
+        console.error("Socket is not defined or connected."); // FIXME: testing feature
+      }
     },
-    []
+    [socket]
   );
 
   // Send a notification to the recipient
   const sendNotification = useCallback(
     (senderId, conversationId, receiverId) => {
-      socket.current.emit("sendNotification", {
-        senderId,
-        conversationId,
-        receiverId,
-      });
+      if (socket && socket.current) {
+        socket.current.emit("sendNotification", {
+          senderId,
+          conversationId,
+          receiverId,
+        });
+      } else {
+        console.error("Socket is not defined or connected."); // FIXME: testing feature
+      }
     },
-    []
+    [socket]
   );
 
-  const isReadingHandler = useCallback((senderId, receiverId) => {
-    // FIXME: testing feature
-    socket.current.emit("setIsReading", {
-      senderId,
-      receiverId,
-    });
-  }, []);
+  const isReadingHandler = useCallback(
+    (senderId, receiverId) => {
+      // FIXME: testing feature
+      console.log("Resetting isReading for senderId", senderId);
+      console.log("Resetting isReading for receiverId", receiverId);
 
-  const resetIsReadingHandler = useCallback((senderId) => {
-    console.log("Resetting isReading for senderId", senderId); // FIXME: testing feature
-    socket.current.emit("resetIsReading", {
-      senderId,
-    });
-  }, []);
+      if (socket && socket.current) {
+        socket.current.emit("setIsReading", {
+          senderId,
+          receiverId,
+        });
+      } else {
+        console.error("Socket is not defined or connected.");
+      }
+    },
+    [socket]
+  );
+
+  const resetIsReadingHandler = useCallback(
+    (senderId) => {
+      console.log("Resetting isReading for senderId", senderId); // FIXME: testing feature
+      // Makes sure socket is defined and connected to the server-side socket.io instance
+      if (socket && socket.current) {
+        socket.current.emit("resetIsReading", {
+          senderId,
+        });
+      } else {
+        console.error("Socket is not defined or connected.");
+      }
+    },
+    [socket]
+  );
 
   const memoizedValues = useMemo(
     () => ({
@@ -201,4 +239,3 @@ export default function OnlineContextProvider({ children, currentUser }) {
 }
 
 export const useOnlineContext = () => useContext(OnlineContext);
-
