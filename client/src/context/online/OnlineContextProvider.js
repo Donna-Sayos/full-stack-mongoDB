@@ -66,7 +66,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
             "isReading:",
             isReading
           );
-          setReadingChat((prevReadingChat) => {
+          setReadingChat((prevReadingChat) => { // FIXME: testing feature
             const updatedReadingChat = {
               ...prevReadingChat,
               [senderId]: {
@@ -199,7 +199,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
         socket.current.emit("setIsReading", {
           senderId,
           receiverId,
-          isReading: true,
         });
       } else {
         console.error("Socket is not defined or connected.");
@@ -218,7 +217,6 @@ export default function OnlineContextProvider({ children, currentUser }) {
       if (socket && socket.current) {
         socket.current.emit("resetIsReading", {
           senderId,
-          isReading: false,
         });
       } else {
         console.error("Socket is not defined or connected.");
