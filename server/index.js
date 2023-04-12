@@ -126,7 +126,8 @@ io.on("connection", (socket) => {
   });
 
   // reset isReading
-  socket.on("resetIsReading", ({ senderId, receiverId }) => { // FIXME: testing feature
+  socket.on("resetIsReading", ({ senderId, receiverId }) => {
+    // FIXME: testing feature
     let user;
 
     if (senderId) {
