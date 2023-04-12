@@ -26,9 +26,7 @@ export default function Conversation({
   const userNotifCount = notifications[currentUser._id]?.userNotifications;
 
   const isFriend = // Check if the current user is the friend
-    currentUser._id !== conversation.members[0]
-      ? conversation.members[0]
-      : conversation.members[1];
+    conversation.members.find((member) => member !== currentUser._id); // FIXME: testing feature
 
   const fetchCount = useCallback(async () => {
     try {
@@ -104,4 +102,3 @@ export default function Conversation({
     </div>
   );
 }
-
