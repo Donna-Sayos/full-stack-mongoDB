@@ -43,7 +43,6 @@ const addUser = (userId, socketId) => {
       socketId,
       notificationCount: 0,
       isReading: false, // FIXME: testing!
-      conversations: [], // Initialize conversations array as empty
     };
     users.push(newUser);
   } else {
@@ -67,6 +66,7 @@ const getUser = (userId) => {
 };
 
 const getConversation = (conversationId) => {
+  // FIXME: testing!
   return users.find((user) =>
     user.conversations.some(
       (conversation) => conversation.conversationId === conversationId
@@ -152,23 +152,48 @@ io.on("connection", (socket) => {
   });
 
   // reset isReading
+  // socket.on("resetIsReading", ({ senderId, receiverId }) => {
+  //   // FIXME: testing feature
+  //   let user;
+
+  //   if (senderId) {
+  //     user = getUser(senderId);
+  //   } else if (receiverId) {
+  //     user = getUser(receiverId);
+  //   }
+
+  //   if (user) {
+  //     user.isReading = false;
+
+  //     // Emit the event only to the socket of the user being read by senderId or receiverId
+  //     io.to(user.socketId).emit("resetIsReading", {
+  //       userId: user.id,
+  //       isReading: user.isReading,
+  //     });
+  //   }
+  // });
   socket.on("resetIsReading", ({ senderId, receiverId }) => {
     // FIXME: testing feature
-    let user;
+    const senderUser = getUser(senderId);
+    const receiverUser = getUser(receiverId);
 
-    if (senderId) {
-      user = getUser(senderId);
-    } else if (receiverId) {
-      user = getUser(receiverId);
-    }
+    if (senderUser) {
+      senderUser.isReading = false;
 
-    if (user) {
-      user.isReading = false;
+      // Emit the event only to the sockets of the sender and the receiver
+      io.to(senderUser.socketId).emit("getIsReading", {
+        senderId,
+        receiverId,
+        isReading: false,
+      });
+    } else if (receiverUser) {
+      receiverUser.isReading = false;
 
-      // Emit the event only to the socket of the user being read by senderId or receiverId
-      io.to(user.socketId).emit("resetIsReading", {
-        userId: user.id,
-        isReading: user.isReading,
+      // Emit the event only to the socket of the receiver
+      io.to(receiverUser.socketId).emit("getIsReading", {
+        senderId,
+        receiverId,
+        isReading: false,
       });
     }
   });
