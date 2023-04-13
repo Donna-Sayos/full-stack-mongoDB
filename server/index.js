@@ -23,15 +23,33 @@ const io = require("socket.io")(server, {
 
 let users = [];
 
+// const addUser = (userId, socketId) => {
+//   // if the user is not in the array, add the user to the array
+//   !users.some((user) => user?.userId === userId) &&
+//     users.push({
+//       userId,
+//       socketId,
+//       notificationCount: 0,
+//       isReading: false, // FIXME: testing!
+//     });
+// };
 const addUser = (userId, socketId) => {
-  // if the user is not in the array, add the user to the array
-  !users.some((user) => user?.userId === userId) &&
-    users.push({
+  // Check if user already exists in the array
+  const existingUser = users.find((user) => user.userId === userId);
+  if (!existingUser) {
+    // If user does not exist, add the user to the array
+    const newUser = {
       userId,
       socketId,
       notificationCount: 0,
       isReading: false, // FIXME: testing!
-    });
+      conversations: [], // Initialize conversations array as empty
+    };
+    users.push(newUser);
+  } else {
+    // If user already exists, update the socketId
+    existingUser.socketId = socketId;
+  }
 };
 
 const removeUser = (socketId) => {
