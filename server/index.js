@@ -66,6 +66,14 @@ const getUser = (userId) => {
   return users.find((user) => user?.userId === userId);
 };
 
+const getConversation = (conversationId) => {
+  return users.find((user) =>
+    user.conversations.some(
+      (conversation) => conversation.conversationId === conversationId
+    )
+  );
+};
+
 io.on("connection", (socket) => {
   // when a user connects, add the user to the array
   console.log("A user connected!");
