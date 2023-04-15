@@ -72,6 +72,16 @@ But that's not all! <kbd>JustBeYou</kbd> is a work in progress, with continuous 
           $${\color{lightgreen}Interact \space with \space posts!}$$
         </h3>
       </td>
+    </tr>
+    <tr>
+      <td align="center"><kbd><img src="public/assets/readMePics/likes.png" width="650" height="450"/></kbd></td>
+    </tr>
+   </table>
+</div>
+
+<div align="center">
+  <table>
+    <tr>
       <td>
         <h3 align="center">
           $${\color{lightgreen}Leave \space a \space comment \space if \space you \space like}$$
@@ -79,11 +89,11 @@ But that's not all! <kbd>JustBeYou</kbd> is a work in progress, with continuous 
       </td>
     </tr>
     <tr>
-      <td align="center"><kbd><img src="public/assets/readMePics/likes.png" width="500" height="450"/></kbd></td>
-      <td align="center"><kbd><img src="public/assets/readMePics/comments.png" width="550" height="450"/></kbd></td>
+      <td align="center"><kbd><img src="public/assets/readMePics/comments.png" width="650" height="450"/></kbd></td>
     </tr>
    </table>
 </div>
+
 
 <h2 align="center">
   Creator:
