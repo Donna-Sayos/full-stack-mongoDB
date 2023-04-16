@@ -37,13 +37,13 @@ export default function ChatOnline({
     if (!friends) return;
     setOnlineFriends(
       Array.isArray(friends) &&
-        friends.filter((f) => onlineUsers.includes(f._id))
+        friends.filter((f) => onlineUsers.find((u) => u.userId === f._id)) // FIXME: testing feature
     );
   }, [friends, onlineUsers]);
 
   const handleClick = async (friendId) => {
     try {
-      isReadingHandler(currentUserId, friendId); // FIXME: testing feature
+      isReadingHandler(currentUserId); // FIXME: testing feature
       const { data } = await Axios.get(
         `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );

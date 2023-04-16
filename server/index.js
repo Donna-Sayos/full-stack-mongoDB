@@ -70,8 +70,19 @@ io.on("connection", (socket) => {
   console.log("A user connected!");
 
   // take userId and socketId from user
+  // socket.on("addUser", (userId) => {
+  //   addUser(userId, socket.id);
+  //   io.emit("getUsers", users);
+  // });
   socket.on("addUser", (userId) => {
+    // FIXME: testing feature
+    // Call addUser function with userId and socket.id
     addUser(userId, socket.id);
+
+    // Set isReading property to false for the newly added user
+    users.find((user) => user.userId === userId).isReading = false;
+
+    // Emit "getUsers" event with updated users list
     io.emit("getUsers", users);
   });
 
@@ -122,21 +133,36 @@ io.on("connection", (socket) => {
   });
 
   // reading socket
-  socket.on("setIsReading", ({ senderId, receiverId }) => {
+  // socket.on("setIsReading", ({ senderId, receiverId }) => {
+  //   // FIXME: testing feature
+  //   const senderUser = getUser(senderId);
+  //   const receiverUser = getUser(receiverId);
+
+  //   if (senderUser && receiverUser) {
+  //     senderUser.isReading = true;
+  //     receiverUser.isReading = true;
+
+  //     // Emit the event only to the sockets of the sender and the receiver
+  //     io.to(senderUser.socketId)
+  //       .to(receiverUser.socketId)
+  //       .emit("getIsReading", {
+  //         senderId,
+  //         receiverId,
+  //         isReading: true,
+  //       });
+  //   }
+  // });
+  socket.on("setIsReading", ({ senderId }) => {
     // FIXME: testing feature
     const senderUser = getUser(senderId);
-    const receiverUser = getUser(receiverId);
 
-    if (senderUser && receiverUser) {
+    if (senderUser) {
       senderUser.isReading = true;
-      receiverUser.isReading = true;
 
       // Emit the event only to the sockets of the sender and the receiver
       io.to(senderUser.socketId)
-        .to(receiverUser.socketId)
         .emit("getIsReading", {
           senderId,
-          receiverId,
           isReading: true,
         });
     }

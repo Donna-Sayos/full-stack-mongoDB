@@ -67,11 +67,12 @@ export default function HomeSidebar() {
         </div>
       ) : (
         <ul className="rightSidebarFriendList">
-          {onlineUsers.filter((uid) => currentUser.followings.includes(uid))
-            .length > 0 ? (
+          {onlineUsers.filter((user) => currentUser.followings.includes(user.userId)) 
+          // this line filters the onlineUsers array to only include users that are in the currentUser's followings array
+            .length > 0 ? ( // if there are online users in the currentUser's followings array, map through them and render them
             onlineUsers
-              .filter((uid) => currentUser.followings.includes(uid))
-              .map((uid, index) => <Online key={index} userId={uid} />)
+              .filter((user) => currentUser.followings.includes(user.userId)) // this excludes the currentUser from the onlineUsers array
+              .map((user, index) => <Online key={index} userId={user.userId} />)
           ) : (
             <p className="noOnlineUsers">No online users</p>
           )}

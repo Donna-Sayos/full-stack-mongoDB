@@ -21,12 +21,15 @@ export default function Conversation({
 }) {
   const [user, setUser] = useState(null);
   const [notificationCount, setNotificationCount] = useState(0);
-  const { notifications, clearUserNotif, isReadingHandler } =
+  const { notifications, clearUserNotif, isReadingHandler, onlineUsers } =
     useOnlineContext();
   const userNotifCount = notifications[currentUser._id]?.userNotifications;
 
   const isFriend = // Check if the current user is the friend
     conversation.members.find((member) => member !== currentUser._id); // FIXME: testing feature
+
+  const onlineFriend = onlineUsers.find((user) => user.userId === isFriend); // FIXME: testing feature
+  console.log("onlineFriend", onlineFriend); // FIXME: testing feature
 
   const fetchCount = useCallback(async () => {
     try {
@@ -45,7 +48,7 @@ export default function Conversation({
     try {
       await resetConvoNotification(conversation._id);
 
-      isReadingHandler(currentUser._id, isFriend); // FIXME: testing feature
+      isReadingHandler(currentUser._id); // FIXME: testing feature
 
       setNotificationCount(0);
       setTotalConversationCount(totalConversationCount - notificationCount);
