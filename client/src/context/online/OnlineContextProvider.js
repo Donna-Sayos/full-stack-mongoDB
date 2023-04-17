@@ -37,10 +37,7 @@ export default function OnlineContextProvider({ children, currentUser }) {
       socket.current.on("getUsers", (users) => {
         setOnlineUsers(
           // .userId is the user id of the user in the "users" array on the server-side socket.
-          users.map((user) => ({
-            userId: user.userId,
-            isReading: user.isReading,
-          }))
+          users.map((user) => user.userId)
         );
         setIsLoading(false); // Set isLoading to false when onlineUsers are updated
       });
@@ -60,56 +57,35 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // getIsReading
-      // socket.current.on(
-      //   "getIsReading",
-      //   ({ senderId, receiverId, isReading }) => {
-      //     console.log(
-      //       "getIsReading called with senderId:",
-      //       senderId,
-      //       "isReading:",
-      //       isReading
-      //     );
-      //     console.log(
-      //       "getIsReading called with receiverId:",
-      //       receiverId,
-      //       "isReading:",
-      //       isReading
-      //     );
-      //     setReadingChat((prevReadingChat) => {
-      //       // FIXME: testing feature
-      //       const updatedReadingChat = {
-      //         ...prevReadingChat,
-      //         [senderId]: {
-      //           isReading: prevReadingChat[senderId]?.isReading || isReading,
-      //         },
-      //         [receiverId]: {
-      //           isReading: prevReadingChat[receiverId]?.isReading || isReading,
-      //         },
-      //       };
-      //       return updatedReadingChat;
-      //     });
-      //   }
-      // );
-      socket.current.on("getIsReading", ({ senderId, isReading }) => {
-        console.log(
-          "getIsReading called with senderId:",
-          senderId,
-          "isReading:",
-          isReading
-        );
-        setOnlineUsers((prevOnlineUsers) => {
-          const updatedOnlineUsers = prevOnlineUsers.map((user) => {
-            if (user.userId === senderId) {
-              return {
-                ...user,
-                isReading: true, // Update the isReading property to true for the user with matching senderId
-              };
-            }
-            return user;
+      socket.current.on(
+        "getIsReading",
+        ({ senderId, receiverId, isReading }) => {
+          console.log(
+            "getIsReading called with senderId:",
+            senderId,
+            "isReading:",
+            isReading
+          );
+          console.log(
+            "getIsReading called with receiverId:",
+            receiverId,
+            "isReading:",
+            isReading
+          );
+          setReadingChat((prevReadingChat) => { // FIXME: testing feature
+            const updatedReadingChat = {
+              ...prevReadingChat,
+              [senderId]: {
+                isReading: prevReadingChat[senderId]?.isReading || isReading,
+              },
+              [receiverId]: {
+                isReading: prevReadingChat[receiverId]?.isReading || isReading,
+              },
+            };
+            return updatedReadingChat;
           });
-          return updatedOnlineUsers;
-        });
-      });
+        }
+      );
 
       // Listen to the "getNotification" event to update the notifications of the current user.
       socket.current.on(
@@ -142,23 +118,26 @@ export default function OnlineContextProvider({ children, currentUser }) {
       });
 
       // resetIsReading
-      socket.current.on("resetIsReading", ({ senderId, isReading }) => {
-        console.log(
-          "resetIsReading called with senderId: ", // FIXME: testing feature
-          senderId,
-          "isReading: ",
-          isReading
-        );
-        setReadingChat((prevReadingChat) => {
-          const updatedReadingChat = {
-            ...prevReadingChat,
-            [senderId]: {
-              isReading: false,
-            },
-          };
-          return updatedReadingChat;
-        });
-      });
+      socket.current.on(
+        "resetIsReading",
+        ({ senderId, isReading }) => {
+          console.log(
+            "resetIsReading called with senderId: ", // FIXME: testing feature
+            senderId,
+            "isReading: ",
+            isReading
+          );
+          setReadingChat((prevReadingChat) => {
+            const updatedReadingChat = {
+              ...prevReadingChat,
+              [senderId]: {
+                isReading: false,
+              },
+            };
+            return updatedReadingChat;
+          });
+        }
+      );
 
       // Return a cleanup function to disconnect the socket when the component unmounts
       return () => {
@@ -216,31 +195,16 @@ export default function OnlineContextProvider({ children, currentUser }) {
     [socket]
   );
 
-  // const isReadingHandler = useCallback(
-  //   (senderId, receiverId) => {
-  //     // FIXME: testing feature
-  //     console.log("Setting isReading for senderId", senderId);
-  //     console.log("Setting isReading for receiverId", receiverId);
-
-  //     if (socket && socket.current) {
-  //       socket.current.emit("setIsReading", {
-  //         senderId,
-  //         receiverId,
-  //       });
-  //     } else {
-  //       console.error("Socket is not defined or connected.");
-  //     }
-  //   },
-  //   [socket]
-  // );
   const isReadingHandler = useCallback(
-    (senderId) => {
+    (senderId, receiverId) => {
       // FIXME: testing feature
       console.log("Setting isReading for senderId", senderId);
+      console.log("Setting isReading for receiverId", receiverId);
 
       if (socket && socket.current) {
         socket.current.emit("setIsReading", {
           senderId,
+          receiverId,
         });
       } else {
         console.error("Socket is not defined or connected.");
