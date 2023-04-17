@@ -23,16 +23,6 @@ const io = require("socket.io")(server, {
 
 let users = [];
 
-// const addUser = (userId, socketId) => {
-//   // if the user is not in the array, add the user to the array
-//   !users.some((user) => user?.userId === userId) &&
-//     users.push({
-//       userId,
-//       socketId,
-//       notificationCount: 0,
-//       isReading: false, // FIXME: testing!
-//     });
-// };
 const addUser = (userId, socketId) => {
   // Check if user already exists in the array
   const existingUser = users.find((user) => user.userId === userId);
@@ -85,20 +75,6 @@ io.on("connection", (socket) => {
     });
   });
 
-  // send and get notification
-  // socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
-  //   const user = getUser(receiverId);
-  //   if (user) {
-  //     user.notificationCount++;
-
-  //     io.to(user.socketId).emit("getNotification", {
-  //       senderId,
-  //       receiverId,
-  //       conversationId,
-  //       userNotifications: user.notificationCount,
-  //     });
-  //   }
-  // });
   socket.on("sendNotification", ({ senderId, receiverId, conversationId }) => {
     // FIXME: testing feature
     const receiver = getUser(receiverId);
@@ -142,27 +118,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  // reset isReading
-  // socket.on("resetIsReading", ({ senderId, receiverId }) => {
-  //   // FIXME: testing feature
-  //   let user;
-
-  //   if (senderId) {
-  //     user = getUser(senderId);
-  //   } else if (receiverId) {
-  //     user = getUser(receiverId);
-  //   }
-
-  //   if (user) {
-  //     user.isReading = false;
-
-  //     // Emit the event only to the socket of the user being read by senderId or receiverId
-  //     io.to(user.socketId).emit("resetIsReading", {
-  //       userId: user.id,
-  //       isReading: user.isReading,
-  //     });
-  //   }
-  // });
   socket.on("resetIsReading", ({ senderId, receiverId }) => {
     // FIXME: testing feature
     const senderUser = getUser(senderId);
