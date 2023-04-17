@@ -21,7 +21,7 @@ export default function Messenger() {
     arrivalMessage,
     sendMessage,
     sendNotification,
-    readingChat, // FIXME: testing feature
+    // readingChat, // FIXME: testing feature
   } = useOnlineContext();
   const scrollRef = useRef();
   const receiverId = currentChat?.members.find(
@@ -32,8 +32,8 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
-  const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
-  const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
+  // const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
+  // const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
 
   useEffect(() => {
     arrivalMessage &&
@@ -81,18 +81,21 @@ export default function Messenger() {
     }
 
     try {
-      if (
-        onlineUsers.includes(receiverId) &&
-        senderReadingState &&
-        receiverReadingState
-      ) {
+      if (onlineUsers.includes(receiverId)) {
+        // sendMessage(currentUser._id, receiverId, newMessage, currentChat._id);
+        // setMessages([...messages, data]);
+        // setNewMessage("");
+      // } else {
         sendMessage(currentUser._id, receiverId, newMessage, currentChat._id);
-        setMessages([...messages, data]);
-        setNewMessage("");
-      } else {
         sendNotification(currentUser._id, currentChat._id, receiverId);
         setMessages([...messages, data]);
         setNewMessage("");
+
+        await incrementConvoNotification(currentChat._id);
+      } else {
+        setMessages([...messages, data]);
+        setNewMessage("");
+
         await incrementConvoNotification(currentChat._id);
       }
     } catch (err) {
@@ -103,10 +106,6 @@ export default function Messenger() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  console.log(`totalConversationCount: ${totalConversationCount}`); // FIXME: testing feature
-  console.log(`receiverReadingState: ${receiverReadingState}`); // FIXME: testing feature
-  console.log(`senderReadingState: ${senderReadingState}`); // FIXME: testing feature
 
   return (
     <>

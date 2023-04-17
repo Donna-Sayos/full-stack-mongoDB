@@ -20,7 +20,7 @@ export default function ChatOnline({
 }) {
   const [friends, setFriends] = useState([]);
   const [onlineFriends, setOnlineFriends] = useState([]);
-  const { isReadingHandler } = useOnlineContext();
+  // const { isReadingHandler } = useOnlineContext();
 
   useEffect(() => {
     const getFriends = async () => {
@@ -43,7 +43,7 @@ export default function ChatOnline({
 
   const handleClick = async (friendId) => {
     try {
-      isReadingHandler(currentUserId, friendId); // FIXME: testing feature
+      // isReadingHandler(currentUserId, friendId); // FIXME: testing feature
       const { data } = await Axios.get(
         `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );
@@ -83,4 +83,3 @@ export default function ChatOnline({
     </div>
   );
 }
-

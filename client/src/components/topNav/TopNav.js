@@ -17,24 +17,26 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { notifications, resetIsReadingHandler, readingChat } = useOnlineContext();
+  const { notifications, 
+    // resetIsReadingHandler 
+  } = useOnlineContext();
   const count = notifications[currentUser._id]?.userNotifications;
 
   const handleFeed = () => {
     setDisplayFeed("friendFeeds");
-    resetIsReadingHandler(currentUser._id); // FIXME: testing feature
+    // resetIsReadingHandler(currentUser._id); // FIXME: testing feature
   };
 
   const handleExplore = () => {
     setDisplayFeed("allFeeds");
-    resetIsReadingHandler(currentUser._id); // FIXME: testing feature
+    // resetIsReadingHandler(currentUser._id); // FIXME: testing feature
   };
 
   return (
     <div className="topNavContainer">
       <div
         className="topNavLeft"
-        onClick={() => resetIsReadingHandler(currentUser._id)} // FIXME: testing feature
+        // onClick={() => resetIsReadingHandler(currentUser._id)} // FIXME: testing feature
       >
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
