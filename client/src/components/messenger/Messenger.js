@@ -32,8 +32,8 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
-  const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
-  const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
+  // const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
+  // const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
 
   useEffect(() => {
     arrivalMessage &&
@@ -82,15 +82,18 @@ export default function Messenger() {
 
     try {
       if (
-        onlineUsers.includes(receiverId) &&
-        senderReadingState &&
-        receiverReadingState
+        onlineUsers.includes(receiverId)
+        // &&
+        // senderReadingState &&
+        // receiverReadingState
       ) {
         sendMessage(currentUser._id, receiverId, newMessage, currentChat._id);
+        sendNotification(currentUser._id, currentChat._id, receiverId);
         setMessages([...messages, data]);
         setNewMessage("");
+
+        await incrementConvoNotification(currentChat._id);
       } else {
-        sendNotification(currentUser._id, currentChat._id, receiverId);
         setMessages([...messages, data]);
         setNewMessage("");
         await incrementConvoNotification(currentChat._id);
@@ -103,10 +106,6 @@ export default function Messenger() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  console.log(`totalConversationCount: ${totalConversationCount}`); // FIXME: testing feature
-  console.log(`receiverReadingState: ${receiverReadingState}`); // FIXME: testing feature
-  console.log(`senderReadingState: ${senderReadingState}`); // FIXME: testing feature
 
   return (
     <>
