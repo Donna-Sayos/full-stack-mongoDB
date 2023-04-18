@@ -22,21 +22,23 @@ const resetConvoNotification = async (conversationId) => {
   }
 };
 
-const markAsRead = async (conversationId, userId) => {
+const markAsRead = async (conversationId, userId) => { // FIXME: testing feature
   try {
     await Axios.put(
       `/api/v1/conversations/${conversationId}/markRead/${userId}`
     );
+    console.log(`Conversation ${conversationId} marked as read by USER: ${userId}`)
   } catch (e) {
     console.log(`Error marking conversation as read: ${e}`);
   }
 };
 
-const markAsUnRead = async (conversationId, userId) => {
+const markAsUnRead = async (conversationId, userId) => { // FIXME: testing feature
   try {
     await Axios.put(
       `/api/v1/conversations/${conversationId}/markUnread/${userId}`
     );
+    console.log(`Conversation ${conversationId} marked as unRead by USER: ${userId}`)
   } catch (e) {
     console.log(`Error marking conversation as unread: ${e}`);
   }

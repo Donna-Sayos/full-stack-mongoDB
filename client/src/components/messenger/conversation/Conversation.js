@@ -3,7 +3,10 @@ import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
 import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
-import { resetConvoNotification } from "../../../utils/helper/helperFunctions";
+import {
+  resetConvoNotification,
+  markAsRead,
+} from "../../../utils/helper/helperFunctions";
 
 const conversationImg = {
   width: "40px",
@@ -46,6 +49,8 @@ export default function Conversation({
       await resetConvoNotification(conversation._id);
 
       // isReadingHandler(currentUser._id, isFriend); // FIXME: testing feature
+
+      await markAsRead(conversation._id, currentUser._id); // FIXME: testing feature
 
       setNotificationCount(0);
       setTotalConversationCount(totalConversationCount - notificationCount);

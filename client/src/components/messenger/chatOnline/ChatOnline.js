@@ -3,6 +3,7 @@ import "./index.css";
 import Axios from "axios";
 import ProfilePic from "../../../common/pic/ProfilePic";
 import { useOnlineContext } from "../../../context/online/OnlineContextProvider";
+import { markAsRead } from "../../../utils/helper/helperFunctions"; // FIXME: testing feature
 
 const chatOnlineImg = {
   width: "40px",
@@ -44,6 +45,7 @@ export default function ChatOnline({
   const handleClick = async (friendId) => {
     try {
       // isReadingHandler(currentUserId, friendId); // FIXME: testing feature
+      
       const { data } = await Axios.get(
         `/api/v1/conversations/find/${currentUserId}/${friendId}`
       );
