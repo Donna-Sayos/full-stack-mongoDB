@@ -29,15 +29,16 @@ const getUsers = async (req, res, next) => {
 const getFriends = async (req, res) => {
   try {
     const user = await User.findById(req.params.userId);
+    const uniqueFollowings = [...new Set(user.followings)]; // Remove duplicates from followings array
     const friends = await Promise.all(
-      user.followings.map((friendId) => {
+      uniqueFollowings.map((friendId) => {
         return User.findById(friendId);
       })
     );
     let friendList = [];
     friends.map((friend) => {
-      const { _id, username, profilePicture } = friend;
-      friendList.push({ _id, username, profilePicture });
+      const { _id, username, profilePicture, isReading } = friend;
+      friendList.push({ _id, username, profilePicture, isReading });
     });
     res.status(200).json({
       status: "success",
@@ -104,9 +105,7 @@ const unfollow = async (req, res) => {
 
 const createUser = async (req, res, next) => {
   try {
-    const nextUserId = await User.nextCount();
-    console.log("next UserId: ", nextUserId);
-    const user = await User.create({ ...req.body, userId: nextUserId });
+    const user = await User.create(req.body);
     const token = user.getSignedJwtToken();
 
     const options = {

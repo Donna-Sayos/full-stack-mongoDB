@@ -6,7 +6,6 @@ const signup = async (req, res, next) => {
   try {
     const { username, firstName, lastName, gender, pronouns, email, password } =
       req.body;
-    const userId = await User.nextCount();
     const user = new User({
       username,
       firstName,
@@ -15,7 +14,6 @@ const signup = async (req, res, next) => {
       pronouns,
       email,
       password,
-      userId,
     });
     const savedUser = await user.save();
     res.status(201).json({
@@ -23,6 +21,7 @@ const signup = async (req, res, next) => {
       data: savedUser,
     });
   } catch (error) {
+    console.error(`Error signing up: ${error.message}`);
     res.status(400).json({
       success: false,
       error: error.message,
@@ -67,9 +66,10 @@ const login = async (req, res, next) => {
       desc: user.desc,
       likedPosts: user.likedPosts,
       profilePicture: user.profilePicture,
+      isReading: user.isReading,
     });
   } catch (error) {
-    console.error(error);
+    console.error(`Error at login: ${error.message}`);
     res.status(400).json({
       success: false,
       error: "Error at login",

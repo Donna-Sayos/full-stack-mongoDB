@@ -53,10 +53,6 @@ const UserSchema = new Schema(
     iv: {
       type: String,
     },
-    userId: {
-      type: Number,
-      unique: true,
-    },
     profilePicture: {
       type: String,
     },
@@ -79,6 +75,10 @@ const UserSchema = new Schema(
       type: [Schema.Types.ObjectId],
       ref: "Post",
       default: [],
+    },
+    isReading: {
+      type: Boolean,
+      default: false,
     },
     desc: {
       type: String,
