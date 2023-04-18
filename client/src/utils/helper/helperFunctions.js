@@ -22,4 +22,30 @@ const resetConvoNotification = async (conversationId) => {
   }
 };
 
-export { shortUuid, incrementConvoNotification, resetConvoNotification }; // Export the function so it can be used in other files
+const markAsRead = async (conversationId, userId) => {
+  try {
+    await Axios.put(
+      `/api/v1/conversations/${conversationId}/markRead/${userId}`
+    );
+  } catch (e) {
+    console.log(`Error marking conversation as read: ${e}`);
+  }
+};
+
+const markAsUnRead = async (conversationId, userId) => {
+  try {
+    await Axios.put(
+      `/api/v1/conversations/${conversationId}/markUnread/${userId}`
+    );
+  } catch (e) {
+    console.log(`Error marking conversation as unread: ${e}`);
+  }
+};
+
+export {
+  shortUuid,
+  incrementConvoNotification,
+  resetConvoNotification,
+  markAsRead,
+  markAsUnRead,
+}; // Export the function so it can be used in other files
