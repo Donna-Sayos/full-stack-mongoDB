@@ -2,9 +2,17 @@ const mongoose = require("mongoose");
 
 const ConversationSchema = new mongoose.Schema(
   {
-    members: {
-      type: Array,
-    },
+    // members: {
+    //   type: Array,
+    // },
+    members: [{ // FIXME: testing feature
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      isReading: {
+        type: Boolean,
+        default: false,
+      },
+    }],
     notificationCount: {
       type: Number,
     },
