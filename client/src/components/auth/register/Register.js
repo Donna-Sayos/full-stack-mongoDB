@@ -42,8 +42,8 @@ export default function Register({ resetRecaptcha }) {
       };
       try {
         await Axios.post("/api/v1/auth/signup", newUser);
-        navigate("/");
         resetRecaptcha();
+        navigate("/");
       } catch (err) {
         console.error(err);
       }

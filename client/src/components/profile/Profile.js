@@ -27,7 +27,7 @@ const profileUserImg = {
   margin: "auto",
 };
 
-export default function Profile({ resetRecaptcha, recaptchaRef }) {
+export default function Profile({ resetRecaptcha }) {
   const [user, setUser] = useState([]);
   const { username } = useParams();
   const [specificUser, setSpecificUser] = useState(null);
@@ -38,8 +38,8 @@ export default function Profile({ resetRecaptcha, recaptchaRef }) {
   const handleLogout = () => {
     if (currentUser) {
       dispatch({ type: "LOGOUT" });
-      navigate("/");
       resetRecaptcha();
+      navigate("/");
     }
   };
 
