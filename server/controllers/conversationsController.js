@@ -1,29 +1,9 @@
 const Conversation = require("../models/Conversation");
 
-// const newConvo = async (req, res) => {
-//   const newConversation = new Conversation({
-//     members: [req.body.senderId, req.body.receiverId],
-//     notificationCount: 0, // set initial notification count to zero
-//   });
-
-//   try {
-//     const savedConversation = await newConversation.save();
-//     res.status(200).json(savedConversation);
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// };
 const newConvo = async (req, res) => {
-  // FIXME: testing feature
-  const senderId = req.body.senderId;
-  const receiverId = req.body.receiverId;
-
   const newConversation = new Conversation({
-    members: [
-      { _id: senderId, isReading: false },
-      { _id: receiverId, isReading: false },
-    ],
-    notificationCount: 0,
+    members: [req.body.senderId, req.body.receiverId],
+    notificationCount: 0, // set initial notification count to zero
   });
 
   try {
@@ -110,76 +90,6 @@ const resetNotificationCount = async (req, res) => {
   }
 };
 
-const markConversationAsRead = async (req, res) => {
-  // FIXME: testing feature
-  const conversationId = req.params.conversationId;
-  const userId = req.params.userId;
-
-  try {
-    const conversation = await Conversation.findById(conversationId);
-
-    if (!conversation) {
-      return res.status(404).json({ message: "Conversation not found" });
-    }
-
-    // Find the member with the given userId in the members array
-    const member = conversation.members.find((member) =>
-      member._id.equals(userId)
-    );
-
-    if (!member) {
-      return res
-        .status(404)
-        .json({ message: "User not found in conversation" });
-    }
-
-    // Update the member's isReading status to true
-    member.isReading = true;
-
-    // Save the updated conversation
-    await conversation.save();
-
-    res.status(200).json(conversation);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
-
-const markConversationAsUnread = async (req, res) => {
-  // FIXME: testing feature
-  const conversationId = req.params.conversationId;
-  const userId = req.params.userId;
-
-  try {
-    const conversation = await Conversation.findById(conversationId);
-
-    if (!conversation) {
-      return res.status(404).json({ message: "Conversation not found" });
-    }
-
-    // Find the member with the given userId in the members array
-    const member = conversation.members.find((member) =>
-      member._id.equals(userId)
-    );
-
-    if (!member) {
-      return res
-        .status(404)
-        .json({ message: "User not found in conversation" });
-    }
-
-    // Update the member's isReading status to false
-    member.isReading = false;
-
-    // Save the updated conversation
-    await conversation.save();
-
-    res.status(200).json(conversation);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-};
-
 module.exports = {
   newConvo,
   getConvo,
@@ -187,6 +97,4 @@ module.exports = {
   incrementNotificationCount,
   getNotificationCount,
   resetNotificationCount,
-  markConversationAsRead,
-  markConversationAsUnread,
 };

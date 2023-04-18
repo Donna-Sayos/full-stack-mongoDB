@@ -107,6 +107,8 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  console.log()
+
   return (
     <>
       <TopNav />
