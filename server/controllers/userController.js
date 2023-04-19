@@ -187,6 +187,32 @@ const updateUserPhoto = async (req, res, next) => {
   }
 };
 
+const markAsRead = async (req, res) => { // FIXME: testing feature
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).json("user not found");
+    user.isReading = true;
+    await user.save();
+
+    res.status(200).json({ message: "marked as read" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const markAsUnread = async (req, res) => { // FIXME: testing feature
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).json("user not found");
+    user.isReading = false;
+    await user.save();
+
+    res.status(200).json({ message: "marked as unread" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 module.exports = {
   getUsers,
   getFriends,
@@ -196,4 +222,6 @@ module.exports = {
   getSingleUser,
   deleteUser,
   updateUserPhoto,
+  markAsRead,
+  markAsUnread,
 };

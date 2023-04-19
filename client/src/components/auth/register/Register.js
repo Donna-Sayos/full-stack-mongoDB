@@ -9,7 +9,7 @@ export default function Register({ resetRecaptcha }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [gender, setGender] = useState("");
-  const [otherGender, setOtherGender] = useState("");
+  const [otherGender, setOtherGender] = useState(""); // FIXME: not properly working
   const [pronouns, setPronouns] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

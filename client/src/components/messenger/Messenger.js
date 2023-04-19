@@ -107,7 +107,7 @@ export default function Messenger() {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  console.log()
+  console.log(`current user reading state: ${currentUser?.isReading}`)
 
   return (
     <>
