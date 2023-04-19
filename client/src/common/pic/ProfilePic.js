@@ -6,7 +6,7 @@ export default function ProfilePic({ user, style }) {
 
   useEffect(() => {
     setCurrentUser(user);
-  }, [user, user.profilePicture]);
+  }, [user, user?.profilePicture]); // FIXME: not updating when uploading new picture
 
   return (
     <img
