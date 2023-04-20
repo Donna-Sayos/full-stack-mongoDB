@@ -16,7 +16,10 @@ export default function Messenger() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [totalConversationCount, setTotalConversationCount] = useState(0);
+  const [senderUser, setSenderUser] = useState(null);
+  const [receiverUser, setReceiverUser] = useState(null);
   const { user: currentUser } = useAuthContext();
+  const allUsers = useFetchUsers();
   const {
     onlineUsers,
     arrivalMessage,
@@ -33,11 +36,6 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
-  const allUsers = useFetchUsers();
-  const senderUser = allUsers.find((user) => user._id === currentUser?._id);
-  const receiverUser = allUsers.find((user) => user._id === receiverId);
-  console.log("senderUser", senderUser?.isReading);
-  console.log("receiverUser", receiverUser?.isReading);
   // const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
   // const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
 
@@ -76,6 +74,16 @@ export default function Messenger() {
 
     getMessages();
   }, [currentChat]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setSenderUser(allUsers.find((user) => user._id === currentUser._id));
+      console.log("senderUser", senderUser?.isReading);
+    } else if (receiverId) {
+      setReceiverUser(allUsers.find((user) => user._id === receiverId));
+      console.log("receiverUser", receiverUser?.isReading);
+    }
+  }, [currentUser, receiverId, allUsers, senderUser?.isReading, receiverUser?.isReading]);
 
   const handleSend = async (e) => {
     e.preventDefault();

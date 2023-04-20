@@ -5,6 +5,7 @@ import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
+import { markAsUnread } from "../../utils/helper/helperFunctions";
 import ProfilePic from "../../common/pic/ProfilePic";
 
 const topNavImg = {
@@ -17,24 +18,25 @@ const topNavImg = {
 
 export default function TopNav({ setDisplayFeed }) {
   const { user: currentUser } = useAuthContext();
-  const { notifications, resetIsReadingHandler, readingChat } = useOnlineContext();
-  const count = notifications[currentUser._id]?.userNotifications;
+  const { notifications, resetIsReadingHandler, readingChat } =
+    useOnlineContext(); // FIXME: testing feature
+  const notif = notifications[currentUser._id]?.userNotifications;
 
   const handleFeed = () => {
     setDisplayFeed("friendFeeds");
-    resetIsReadingHandler(currentUser._id); // FIXME: testing feature
+    markAsUnread(currentUser._id); // FIXME: testing feature
   };
 
   const handleExplore = () => {
     setDisplayFeed("allFeeds");
-    resetIsReadingHandler(currentUser._id); // FIXME: testing feature
+    markAsUnread(currentUser._id); // FIXME: testing feature
   };
 
   return (
     <div className="topNavContainer">
       <div
         className="topNavLeft"
-        onClick={() => resetIsReadingHandler(currentUser._id)} // FIXME: testing feature
+        onClick={() => markAsUnread(currentUser._id)} // FIXME: testing feature
       >
         <Link to="/" style={{ textDecoration: "none" }}>
           <span className="logo">JustBeYou</span>
@@ -63,7 +65,7 @@ export default function TopNav({ setDisplayFeed }) {
           <div className="topNavIconItem">
             <Link to="/messenger">
               <BsFillChatLeftTextFill size={18} color="white" />
-              {count > 0 && <span className="topNavIconBadge"></span>}
+              {notif > 0 && <span className="topNavIconBadge"></span>}
             </Link>
           </div>
           <div className="topNavIconItem">
@@ -78,4 +80,3 @@ export default function TopNav({ setDisplayFeed }) {
     </div>
   );
 }
-
