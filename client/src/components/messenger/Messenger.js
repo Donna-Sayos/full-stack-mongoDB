@@ -4,6 +4,7 @@ import Axios from "axios";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
 import { incrementConvoNotification } from "../../utils/helper/helperFunctions";
+import useFetchUsers from "../../utils/customHooks/UseFetchUsers";
 import TopNav from "../topNav/TopNav";
 import Conversation from "./conversation/Conversation";
 import Message from "./message/Message";
@@ -32,6 +33,11 @@ export default function Messenger() {
     text: newMessage,
     conversationId: currentChat?._id,
   };
+  const allUsers = useFetchUsers();
+  const senderUser = allUsers.find((user) => user._id === currentUser?._id);
+  const receiverUser = allUsers.find((user) => user._id === receiverId);
+  console.log("senderUser", senderUser?.isReading);
+  console.log("receiverUser", receiverUser?.isReading);
   // const receiverReadingState = readingChat[receiverId]?.isReading || false; // FIXME: testing feature
   // const senderReadingState = readingChat[currentUser?._id]?.isReading || false; // FIXME: testing feature
 
@@ -106,8 +112,6 @@ export default function Messenger() {
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  console.log(`current user reading state: ${currentUser?.isReading}`)
 
   return (
     <>
