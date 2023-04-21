@@ -5,7 +5,7 @@ import { BsFillChatLeftTextFill, BsFillBellFill } from "react-icons/bs";
 import { BiSearchAlt2, BiUserPin } from "react-icons/bi";
 import { useAuthContext } from "../../context/auth/AuthProvider";
 import { useOnlineContext } from "../../context/online/OnlineContextProvider";
-import { markAsUnread } from "../../utils/helper/helperFunctions";
+import { markAsUnread } from "../../utils/helper/helperFunctions"; // FIXME: testing feature
 import ProfilePic from "../../common/pic/ProfilePic";
 
 const topNavImg = {
